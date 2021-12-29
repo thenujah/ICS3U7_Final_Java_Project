@@ -76,3 +76,5 @@ public class Application extends Canvas {
 	}
 
 }
+
+// edit
