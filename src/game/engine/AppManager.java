@@ -9,7 +9,7 @@ import game.scenes.Game;
 public class AppManager {
 
 	public String currentScene;
-	private HashMap<String, Scene> scenes = new HashMap<String, Scene>();
+	private HashMap<String, Scene> scenes = new HashMap <String, Scene>();
 
 	public AppManager() {
 		scenes.put("title screen", new TitleScreen(this));
