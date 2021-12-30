@@ -38,7 +38,7 @@ public class Application extends Canvas {
 
 		Graphics g = buffStrat.getDrawGraphics();
 
-		app.render();
+		app.render(g);
 
 		g.dispose();
 		buffStrat.show();

@@ -1,6 +1,7 @@
 package game.engine;
 
 import java.util.ArrayList;
+import java.awt.Graphics;
 
 import game.engine.GameObject;
 
@@ -14,6 +15,6 @@ public abstract class Scene {
 	}
 
 	public void update() {};
-	public void render() {};
+	public void render(Graphics g) {};
 
 }

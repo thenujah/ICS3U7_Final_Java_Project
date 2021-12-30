@@ -1,8 +1,10 @@
 package game.engine;
 
 import java.util.HashMap;
+import java.awt.Graphics;
 
 import game.engine.Scene;
+import game.engine.AppManager;
 import game.scenes.TitleScreen;
 import game.scenes.Game;
 
@@ -22,8 +24,8 @@ public class AppManager {
 		scenes.get(currentScene).update();
 	}
 
-	public void render() {
-		scenes.get(currentScene).render();
+	public void render(Graphics g) {
+		scenes.get(currentScene).render(g);
 	}
 
 }
