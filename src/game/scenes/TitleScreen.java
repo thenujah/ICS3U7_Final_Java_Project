@@ -6,20 +6,21 @@ import java.awt.Graphics;
 
 import game.engine.AppManager;
 import game.engine.Scene;
+import game.engine.util.Button;
 
 public class TitleScreen extends Scene {
 
+	private Button button;
+
 	public TitleScreen(AppManager app) {
 		super(app);
-		
-		
-		
-		
+	}
+
+	public void update() {
 		
 	}
 
 	public void render(Graphics g) {
-		
 		// Title of the game formatting:'Winter Wonderland'
 		Font font = new Font("Verdana", Font.BOLD, 50);
 	    g.setFont(font);

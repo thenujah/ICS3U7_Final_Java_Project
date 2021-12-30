@@ -64,3 +64,6 @@ public class MouseInput extends MouseAdapter {
 	public static int getY() { return y; }
 
 }
+
+// TODO: Add a method which says if the button was clicked that frame to 
+// fix the bug where the button can be clicked when the mouse is dragged over it.
