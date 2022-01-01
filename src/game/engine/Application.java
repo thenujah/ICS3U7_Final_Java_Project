@@ -1,8 +1,9 @@
 package game.engine;
 
 import java.awt.Canvas;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
+import java.awt.RenderingHints;
 
 import game.engine.AppManager;
 import game.engine.util.KeyboardInput;
@@ -36,8 +37,11 @@ public class Application extends Canvas {
 			return;
 		}
 
-		Graphics g = buffStrat.getDrawGraphics();
+		Graphics2D g = (Graphics2D) buffStrat.getDrawGraphics(); // Returns sun.java2d.SunGraphics2D
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                          RenderingHints.VALUE_ANTIALIAS_ON);
 
+		g.clearRect(0, 0, 1280, 800);
 		app.render(g);
 
 		g.dispose();

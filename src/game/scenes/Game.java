@@ -11,13 +11,7 @@ public class Game extends Scene {
 	}
 
 	public void update() {
-		int x = MouseInput.getX();
-		int y = MouseInput.getY();
-
-		if (MouseInput.isPressed(1)){
-			System.out.println("Mouse pressed.");
-			app.currentScene = "title screen";
-		}
+		
 	}
 
 }

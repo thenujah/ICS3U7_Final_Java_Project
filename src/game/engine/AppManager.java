@@ -1,10 +1,9 @@
 package game.engine;
 
 import java.util.HashMap;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import game.engine.Scene;
-import game.engine.AppManager;
 import game.scenes.TitleScreen;
 import game.scenes.Game;
 import game.scenes.MainMenu;
@@ -19,14 +18,14 @@ public class AppManager {
 		scenes.put("main menu", new MainMenu(this));
 		scenes.put("game", new Game(this));
 
-		currentScene = "game";
+		currentScene = "title screen";
 	}
 
 	public void update() {
 		scenes.get(currentScene).update();
 	}
 
-	public void render(Graphics g) {
+	public void render(Graphics2D g) {
 		scenes.get(currentScene).render(g);
 	}
 
