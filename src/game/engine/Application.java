@@ -48,7 +48,10 @@ public class Application extends Canvas {
 		buffStrat.show();
 	}
 
-	// Notch's Game Loop :D
+	/**
+	 * 
+	 * 
+	 */
 	public void start() {
 
 		long lastime = System.nanoTime();
@@ -81,4 +84,4 @@ public class Application extends Canvas {
 
 }
 
-// edit
+// Source: https://www.youtube.com/watch?v=1gir2R7G9ws

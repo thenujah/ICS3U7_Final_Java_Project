@@ -3,6 +3,12 @@ package game.engine.util;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * A class used to handle mouse input.
+ * 
+ * @version 1.0
+ * @since 1.0
+ */
 public class MouseInput extends MouseAdapter {
 	
 	private static int x, y;
@@ -10,6 +16,12 @@ public class MouseInput extends MouseAdapter {
 	private static boolean button2Pressed = false;
 	private static boolean button3Pressed = false;
 
+	/**
+	 * The method which will be called upon whenever a mouse button is pressed. It will set the
+	 * corresponding variable to the pressed mouse button to true.
+	 * 
+	 * @param e The MouseEvent.
+	 */
 	public void mousePressed(MouseEvent e) {
 		switch (e.getButton()) {
 		case MouseEvent.BUTTON1:
@@ -24,6 +36,12 @@ public class MouseInput extends MouseAdapter {
 		}
 	}
 
+	/**
+	 * The method which will be called upon whenever a mouse button is released. It will set the
+	 * corresponding variable to the pressed mouse button to false.
+	 * 
+	 * @param e The MouseEvent.
+	 */
 	public void mouseReleased(MouseEvent e) {
 		switch (e.getButton()) {
 		case MouseEvent.BUTTON1:
@@ -38,16 +56,31 @@ public class MouseInput extends MouseAdapter {
 		}
 	}
 
+	/**
+	 * The method which will be called upon whenever the mouse is dragged. It will get the position
+	 * of the mouse while it's dragged.
+	 * 
+	 * @param e The MouseEvent.
+	 */
 	public void mouseDragged(MouseEvent e) {
 		x = e.getX();
 		y = e.getY();
 	}
 
+	/**
+	 * The method which will be called upon whenever the mouse is moved. It will get the position
+	 * of the mouse while it's moving.
+	 * 
+	 * @param e The MouseEvent.
+	 */
 	public void mouseMoved(MouseEvent e) {
 		x = e.getX();
 		y = e.getY();
 	}
 
+	/**
+	 * 
+	 */
 	public static boolean isPressed(int button) {
 		switch (button) {
 		case 1:

@@ -7,7 +7,14 @@ import java.awt.Graphics2D;
 import game.engine.AppManager;
 import game.engine.Scene;
 import game.engine.util.Button;
+import game.engine.util.KeyboardInput;
 
+/**
+ * A class which controls the title screen scene of the game.
+ * 
+ * @version 1.0
+ * @since 1.0
+ */
 public class TitleScreen extends Scene {
 
 	private Color BLACK = new Color(40, 38, 48);
@@ -29,19 +36,23 @@ public class TitleScreen extends Scene {
 		
 		// Main Menu Button
 		mainMenuButton = new Button(150, 50);
-		mainMenuButton.setBackgroundColor(BLUE);
-		mainMenuButton.setFont(subtitleFont);
-		mainMenuButton.setText("Main Menu");
 		mainMenuButton.setCenter(625, 350);
+		mainMenuButton.backgroundColor = BLUE;
+		mainMenuButton.font = subtitleFont;
+		mainMenuButton.text = "Main Menu";
 		
 		// Quit Game Button
 		exitButton = new Button(625, 420, 150, 50);
-		exitButton.setText("Quit Game");
+		exitButton.text = "Quit Game";
 	}
 
 	public void update() {
 		if (mainMenuButton.isClicked()) {
 			app.currentScene = "main menu";
+		}
+
+		if (KeyboardInput.isPressed("space")) {
+			System.out.println(true);
 		}
 	}
 

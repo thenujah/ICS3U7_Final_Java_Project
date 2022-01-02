@@ -8,7 +8,12 @@ import game.engine.AppManager;
 import game.engine.Scene;
 import game.engine.util.Button;
 
-
+/**
+ * A class which controls the main menu scene of the game.
+ * 
+ * @version 1.0
+ * @since 1.0
+ */
 public class MainMenu extends Scene{
 	
 	private Button startButton;
@@ -21,7 +26,7 @@ public class MainMenu extends Scene{
 		
 		// Main Menu Button
 		startButton = new Button(60, 200, 150, 50);
-		startButton.setText("Start Game");
+		startButton.text = "Start Game";
 		
 		// Quit Game Button
 		// button2 = new Button(625, 350, 150, 50);
