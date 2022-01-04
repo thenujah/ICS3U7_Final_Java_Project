@@ -33,7 +33,7 @@ public class Button {
 	// TODO: Add the option to use images for the button.
 	
 	/**
-	 * The constructor which initailizes the rect of the button.
+	 * The constructor which initializes the rect of the button.
 	 * 
 	 * @param x The x position of the button.
 	 * @param y The y position of the button.
@@ -45,7 +45,7 @@ public class Button {
 	}
 
 	/**
-	 * An alternate constructior for the Button class which doesn't include a position.
+	 * An alternate constructor for the Button class which doesn't include a position.
 	 * 
 	 * @see #Button(int, int, int, int)
 	 */
