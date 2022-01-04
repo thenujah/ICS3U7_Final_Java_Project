@@ -16,51 +16,40 @@ import game.engine.util.Button;
  */
 public class MainMenu extends Scene{
 	
-	private Button startButton;
-	private Button button2;
-	private Button button3;
-	private Button button4;
+	private final Button startButton;
+	private final Button instructionsButton;
+	private final Button backButton;
+	private final Button quitButton;
 
 	public MainMenu(AppManager app) {
 		super(app);
 		
-		// Main Menu Button
+		// Start Button
 		startButton = new Button(60, 200, 150, 50);
 		startButton.text = "Start Game";
 		
 		// Instructions Button
-		button3 = new Button(625, 350, 150, 50);
-		button3.text = "Instructions";
-				
+		instructionsButton = new Button(625, 350, 150, 50);
+		instructionsButton.text = "Instructions";
+
 		// Back to Title Screen Button
-		button3 = new Button(625, 300, 150, 50);
-		button3.text = "Back to Title Screen";
-				
+		backButton = new Button(625, 350, 150, 50);
+		backButton.text = "Back to Title Screen";
+
 		// Quit Game Button
-		button2 = new Button(625, 350, 150, 50);
-		button2.text = "Quit Game";
-
-		button4 = new Button(625, 250, 150, 50);
-		button4.text = "Quit Game";
+		quitButton = new Button(625, 250, 150, 50);
+		quitButton.text = "Quit Game";
 	}
 
-	public void update() {
-		
-	}
+	public void update() {}
 
 	public void render(Graphics2D g) {
-		
-		// Implementing Buttons
-		startButton.render(g);
-		// button2.render(g);
 
-		//Implementing Buttons
 		startButton.render(g);
-		button2.render(g);
-		button3.render(g);
-		button4.render(g);
+		instructionsButton.render(g);
+		backButton.render(g);
+		quitButton.render(g);
 
 	}
-	
 
 }

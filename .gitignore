@@ -1,4 +1,7 @@
 jc
+Project.iml
 .DS_Store
 bin/
+out/
+.idea/
 *.class

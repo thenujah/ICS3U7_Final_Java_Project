@@ -1,5 +1,3 @@
-package game;
-
 import game.engine.Window;
 import game.engine.Application;
 

@@ -10,13 +10,12 @@ public class TileMap {
 	public static final int SIZE = 16;
 	public static final int NUMBER_OF_RECTS = 3;
 
-	private final int RECT_NUMBER;
 	public Rect[] rects;
 	public int topX, topY, botX, botY;
 	public int[][] map;
 
 	public TileMap() {
-		RECT_NUMBER = (int) (Math.random() * NUMBER_OF_RECTS) + 1;
+		int RECT_NUMBER = (int) (Math.random() * NUMBER_OF_RECTS) + 1;
 
 		rects = new Rect[RECT_NUMBER];
 
@@ -56,8 +55,8 @@ public class TileMap {
 					break;
 				}
 	
-				if (rect.contains(newRect.topLeft) || rect.contains(newRect.topRight) ||
-					rect.contains(newRect.bottomLeft) || rect.contains(newRect.bottomRight)) {
+				if (rect.contains(newRect.getTopLeft()) || rect.contains(newRect.getTopRight()) ||
+					rect.contains(newRect.getBottomLeft()) || rect.contains(newRect.getBottomRight())) {
 	
 					overlaps = true;
 					break;
@@ -72,7 +71,7 @@ public class TileMap {
 
 	private void removeWhiteSpace() {
 		for (Rect rect : rects) {
-			rect.update(rect.x - topX + 1, rect.y - topY + 1, rect.width, rect.height);
+			rect.update(rect.getX() - topX + 1, rect.getY() - topY + 1, rect.getWidth(), rect.getHeight());
 		}
 
 		botX -= topX - 1;
@@ -81,8 +80,8 @@ public class TileMap {
 	}
 
 	public boolean contains(int[] pos) {
-		for (int i = 0; i < rects.length; i++) {
-			if (rects[i].contains(pos)) {
+		for (Rect rect : rects) {
+			if (rect.contains(pos)) {
 				return true;
 			}
 		}

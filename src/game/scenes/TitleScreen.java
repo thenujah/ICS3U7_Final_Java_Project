@@ -17,16 +17,16 @@ import game.engine.util.KeyboardInput;
  */
 public class TitleScreen extends Scene {
 
-	private Color BLACK = new Color(40, 38, 48);
-	private Color BLUE = new Color(75, 80, 105);
-	private Color LIGHT_BLUE = new Color(160, 190, 200);
-	private Color WHITE = new Color(230, 240, 238);
+	private final Color BLACK = new Color(40, 38, 48);
+	private final Color BLUE = new Color(75, 80, 105);
+	private final Color LIGHT_BLUE = new Color(160, 190, 200);
+	private final Color WHITE = new Color(230, 240, 238);
 
-	private Font titleFont;
-	private Font subtitleFont;
+	private final Font titleFont;
+	private final Font subtitleFont;
 
-	private Button mainMenuButton;
-	private Button exitButton;
+	private final Button mainMenuButton;
+	private final Button exitButton;
 
 	public TitleScreen(AppManager app) {
 		super(app);
@@ -60,7 +60,7 @@ public class TitleScreen extends Scene {
 		g.setColor(WHITE);
 		g.fillRect(0, 0, 1280, 800);
 
-		// Title of the game formatting:'Winter Wonderland'
+		// Title
 	    g.setFont(titleFont);
 	    g.setColor(BLACK);
 		g.drawString("Winter Wonderland", 410, 300);
@@ -68,16 +68,10 @@ public class TitleScreen extends Scene {
 		// Formatting of names, date and class
 	    g.setFont(subtitleFont);
 
-	    // Names: Monica and Thenujah
 		g.drawString("By: Monica and Thenujah", 900, 500);
-		
-		// Class and Teacher's Name
 		g.drawString("Ms.Xie - ICS3U7", 900, 540);
-		
-		// Class and Teacher's Name
 		g.drawString("January 4, 2022", 900, 580);
-		
-		//Implementing General Buttons
+
 		mainMenuButton.render(g);
 		exitButton.render(g);
 	}

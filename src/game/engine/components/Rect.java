@@ -25,9 +25,7 @@ public class Rect {
 	 * @param width The width of the Rect.
 	 * @param height The height of the Rect.
 	 */
-	public Rect(int x, int y, int width, int height) {
-		this.update(x, y, width, height);
-	}
+	public Rect(int x, int y, int width, int height) { this.update(x, y, width, height); }
 
 	/**
 	 * A method which updates the positions of all the points on the rect as well as other 
@@ -226,7 +224,7 @@ public class Rect {
 	/**
 	 * The setter method for the bottom of the Rect.
 	 * 
-	 * @param x The x position for the bottom of the Rect.
+	 * @param y The y position for the bottom of the Rect.
 	 */
 	public void setBottom(int y) { update(x, this.y + (y - bottom), width, height); }
 

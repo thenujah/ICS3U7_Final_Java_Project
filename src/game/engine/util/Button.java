@@ -4,12 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 
 import game.engine.components.Rect;
-import game.engine.util.MouseInput;
 
 /**
  * A class which creates buttons.
@@ -40,18 +36,14 @@ public class Button {
 	 * @param width The width of the button.
 	 * @param height The height of the button.
 	 */
-	public Button(int x, int y, int width, int height) {
-		rect = new Rect(x, y, width, height);
-	}
+	public Button(int x, int y, int width, int height) { rect = new Rect(x, y, width, height); }
 
 	/**
 	 * An alternate constructor for the Button class which doesn't include a position.
 	 * 
 	 * @see #Button(int, int, int, int)
 	 */
-	public Button(int width, int height) {
-		this(0, 0, width, height);
-	}
+	public Button(int width, int height) { this(0, 0, width, height); }
 
 	/**
 	 * A setter method for the border radius.
@@ -149,11 +141,7 @@ public class Button {
 	public boolean isClicked() {
 		int[] mousePosition = { MouseInput.getX(), MouseInput.getY() };
 
-		if (MouseInput.isPressed(1) && rect.contains(mousePosition)) {
-			return true; 
-		} else {
-			return false;
-		}
+		return MouseInput.isPressed(1) && rect.contains(mousePosition);
 	}
 
 }
