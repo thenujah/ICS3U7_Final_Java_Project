@@ -17,10 +17,17 @@ import game.engine.util.KeyboardInput;
  */
 public class TitleScreen extends Scene {
 
+<<<<<<< HEAD
 	private final Color BLACK = new Color(40, 38, 48);
 	private final Color BLUE = new Color(75, 80, 105);
 	private final Color LIGHT_BLUE = new Color(160, 190, 200);
 	private final Color WHITE = new Color(230, 240, 238);
+=======
+	private Color BLACK = new Color(40, 38, 48);
+	private Color BLUE = new Color(27, 21, 219);
+	private Color LIGHT_BLUE = new Color(135, 220, 255);
+	private Color WHITE = new Color(230, 240, 238);
+>>>>>>> Formatting for the title scrren and main menu of buttons done. Colours also updated/changed. New classes created so scenes can be changed. One error present in program though.
 
 	private final Font titleFont;
 	private final Font subtitleFont;
@@ -42,7 +49,10 @@ public class TitleScreen extends Scene {
 		mainMenuButton.text = "Main Menu";
 		
 		// Quit Game Button
-		exitButton = new Button(625, 420, 150, 50);
+		exitButton = new Button(150, 50);
+		exitButton.setCenter(625, 420);
+		exitButton.backgroundColor = BLUE;
+		exitButton.font = subtitleFont;
 		exitButton.text = "Quit Game";
 	}
 
@@ -57,7 +67,7 @@ public class TitleScreen extends Scene {
 	}
 
 	public void render(Graphics2D g) {
-		g.setColor(WHITE);
+		g.setColor(LIGHT_BLUE);
 		g.fillRect(0, 0, 1280, 800);
 
 		// Title

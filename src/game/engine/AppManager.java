@@ -17,6 +17,11 @@ public class AppManager {
 		scenes.put("title screen", new TitleScreen(this));
 		scenes.put("main menu", new MainMenu(this));
 		scenes.put("game", new Game(this));
+		scenes.put("instructions", new Game(this));
+		scenes.put("quitting", new Game(this));
+		scenes.put("backToTitleScreen", new Game(this));
+
+
 
 		currentScene = "title screen";
 	}
