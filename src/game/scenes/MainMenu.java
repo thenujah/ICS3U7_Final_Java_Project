@@ -61,6 +61,7 @@ public class MainMenu extends Scene{
 				quitGame.backgroundColor = BLUE;
 				quitGame.font = subtitleFont;
 				quitGame.text = "Quit Game";
+		
 	}
 	
 	public void update() {
