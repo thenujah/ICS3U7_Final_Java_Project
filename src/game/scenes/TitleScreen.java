@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import game.engine.AppManager;
 import game.engine.Scene;
 import game.engine.util.Button;
-import game.engine.util.KeyboardInput;
 
 /**
  * A class which controls the title screen scene of the game.
@@ -53,18 +52,11 @@ public class TitleScreen extends Scene {
 		if (mainMenuButton.isClicked()) {
 			app.currentScene = "main menu";
 		}
-
-		if (KeyboardInput.isPressed("space")) {
-			System.out.println(true);
-		}
 		
 		if (exitButton.isClicked()) {
 			System.exit(0);
 		}
 
-		if (KeyboardInput.isPressed("space")) {
-			System.out.println(true);
-		}
 	}
 
 	public void render(Graphics2D g) {

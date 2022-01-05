@@ -5,6 +5,12 @@ import java.util.Objects;
 
 import game.engine.components.Rect;
 
+/**
+ * The TileMap class creates randomly generated rooms for each level.
+ *
+ * @version 1.0
+ * @since 1.0
+ */
 public class TileMap {
 	
 	public static final int SIZE = 16;

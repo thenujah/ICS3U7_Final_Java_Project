@@ -17,7 +17,7 @@ import game.engine.util.KeyboardInput;
  */
 public class MainMenu extends Scene{
 
-	//Colours
+	// Colours
 	private Color BLACK = new Color(40, 38, 48);
 	private Color BLUE = new Color(75, 80, 105);
 	private Color LIGHT_BLUE = new Color(160, 190, 200);
@@ -33,34 +33,34 @@ public class MainMenu extends Scene{
 	public MainMenu(AppManager app) {
 		super(app);
 		subtitleFont = new Font("DialogInput", Font.PLAIN, 20);
+
+		// Start Game Button
+		startGame = new Button(150, 50);
+		startGame.setCenter(625, 240);
+		startGame.backgroundColor = BLUE;
+		startGame.font = subtitleFont;
+		startGame.text = "Start Game";
 		
-				// Start Game Button
-				startGame = new Button(150, 50);
-				startGame.setCenter(625, 240);
-				startGame.backgroundColor = BLUE;
-				startGame.font = subtitleFont;
-				startGame.text = "Start Game";
+		// Instructions Button
+		instructions = new Button(150, 50);
+		instructions.setCenter(625, 310);
+		instructions.backgroundColor = BLUE;
+		instructions.font = subtitleFont;
+		instructions.text = "Instructions";
 				
-				// Instructions Button
-				instructions = new Button(150, 50);
-				instructions.setCenter(625, 310);
-				instructions.backgroundColor = BLUE;
-				instructions.font = subtitleFont;
-				instructions.text = "Instructions";
-						
-				// Back to Title Screen Button
-				backToTitleScreen = new Button(200, 50);
-				backToTitleScreen.setCenter(625, 380);
-				backToTitleScreen.backgroundColor = BLUE;
-				backToTitleScreen.font = subtitleFont;
-				backToTitleScreen.text = "Back to Title Screen";
-						
-				// Quit Game Button
-				quitGame = new Button(150, 50);
-				quitGame.setCenter(625, 450);
-				quitGame.backgroundColor = BLUE;
-				quitGame.font = subtitleFont;
-				quitGame.text = "Quit Game";
+		// Back to Title Screen Button
+		backToTitleScreen = new Button(200, 50);
+		backToTitleScreen.setCenter(625, 380);
+		backToTitleScreen.backgroundColor = BLUE;
+		backToTitleScreen.font = subtitleFont;
+		backToTitleScreen.text = "Back to Title Screen";
+				
+		// Quit Game Button
+		quitGame = new Button(150, 50);
+		quitGame.setCenter(625, 450);
+		quitGame.backgroundColor = BLUE;
+		quitGame.font = subtitleFont;
+		quitGame.text = "Quit Game";
 		
 	}
 	
@@ -70,27 +70,15 @@ public class MainMenu extends Scene{
 		if (startGame.isClicked()) {
 			app.currentScene = "game";
 		}
-
-		if (KeyboardInput.isPressed("space")) {
-			System.out.println(true);
-		}
 		
 		// Goes to instructions page if user presses "Instructions"
 		if (instructions.isClicked()) {
 			app.currentScene = "instructions";
 		}
-
-		if (KeyboardInput.isPressed("space")) {
-			System.out.println(true);
-		}
 		
 		// Goes back to title screen if user presses "Back to Title Screen"
 		if (backToTitleScreen.isClicked()) {
 			app.currentScene = "backToTitleScreen";
-		}
-
-		if (KeyboardInput.isPressed("space")) {
-			System.out.println(true);
 		}
 		
 		// Quits game if user presses "Quit Game"
@@ -98,19 +86,15 @@ public class MainMenu extends Scene{
 			System.exit(0);
 		}
 
-		if (KeyboardInput.isPressed("space")) {
-			System.out.println(true);
-		}
 	}
 
 	public void render(Graphics2D g) {
 		
-		//Implementing Buttons
+		// Implementing Buttons
 		startGame.render(g);
 		instructions.render(g);
 		backToTitleScreen.render(g);
 		quitGame.render(g);
-
 
 	}
 

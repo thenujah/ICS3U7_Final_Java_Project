@@ -49,7 +49,6 @@ public class KeyboardInput extends KeyAdapter {
 			keysPressed.put("w", true);
 			break;
 		}
-		System.out.println(key);
 	}
 
 	/**

@@ -6,9 +6,15 @@ import java.awt.Graphics2D;
 import game.engine.Scene;
 import game.scenes.TitleScreen;
 import game.scenes.Game;
-import game.scenes.Instructions_Page;
+import game.scenes.InstructionsPage;
 import game.scenes.MainMenu;
 
+/**
+ * A class which handles the changing of the scenes.
+ * 
+ * @version 1.0
+ * @since 1.0
+ */
 public class AppManager {
 
 	public String currentScene;
@@ -18,19 +24,22 @@ public class AppManager {
 		scenes.put("title screen", new TitleScreen(this));
 		scenes.put("main menu", new MainMenu(this));
 		scenes.put("game", new Game(this));
-		scenes.put("instructions", new Instructions_Page(this));
-		scenes.put("quitting", new Game(this));
+		scenes.put("instructions", new InstructionsPage(this));
 		scenes.put("backToTitleScreen", new TitleScreen(this));
-
-
 
 		currentScene = "title screen";
 	}
 
+	/**
+	 * Executed each frame.
+	 */
 	public void update() {
 		scenes.get(currentScene).update();
 	}
 
+	/**
+	 * Executed each frame.
+	 */
 	public void render(Graphics2D g) {
 		scenes.get(currentScene).render(g);
 	}

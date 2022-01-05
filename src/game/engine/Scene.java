@@ -1,20 +1,29 @@
 package game.engine;
 
-import java.util.ArrayList;
 import java.awt.Graphics2D;
 
-import game.engine.GameObject;
-
+/**
+ * The Scene class is an abstract class all scenes need to extend.
+ * 
+ * @version 1.0
+ * @since 1.0
+ */
 public abstract class Scene {
 
 	protected AppManager app;
-	// public ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
 
 	public Scene(AppManager app) {
 		this.app = app;
 	}
 
+	/**
+	 * Executed each frame.
+	 */
 	public void update() {};
+
+	/**
+	 * Executed each frame.
+	 */
 	public void render(Graphics2D g) {};
 
 }

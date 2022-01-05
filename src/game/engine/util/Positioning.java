@@ -1,5 +1,13 @@
 package game.engine.util;
 
+/**
+ * A class with some methods used for positioning.
+ * 
+ * Might be deleted later.
+ * 
+ * @version 1.0
+ * @since 1.0
+ */
 public class Positioning {
 
 	public static int findCenter(int pos, int length) {

@@ -9,6 +9,12 @@ import game.engine.AppManager;
 import game.engine.util.KeyboardInput;
 import game.engine.util.MouseInput;
 
+/**
+ * The class which draws stuff to the screen and contains the game loop.
+ * 
+ * @version 1.0
+ * @since 1.0
+ */
 public class Application extends Canvas {
 
 	private AppManager app;
@@ -24,12 +30,16 @@ public class Application extends Canvas {
 		
 	}
 
-	// Executed each frame.
+	/**
+	 * Executed each frame.
+	 */
 	private void update() {
 		app.update();
 	}
 
-	// Executed each frame.
+	/**
+	 * Executed each frame.
+	 */
 	private void render() {
 		BufferStrategy buffStrat = this.getBufferStrategy();
 		if (buffStrat == null) {
@@ -49,8 +59,7 @@ public class Application extends Canvas {
 	}
 
 	/**
-	 * 
-	 * 
+	 * The game loop.
 	 */
 	public void start() {
 
