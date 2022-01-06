@@ -5,3 +5,5 @@ bin/
 out/
 .idea/
 *.class
+*.pdf
+*.zip

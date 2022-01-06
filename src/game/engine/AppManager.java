@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import game.engine.Scene;
 import game.scenes.TitleScreen;
 import game.scenes.Game;
-import game.scenes.Instructions_Page;
+import game.scenes.InstructionsPage;
 import game.scenes.MainMenu;
 
 /**
@@ -18,13 +18,13 @@ import game.scenes.MainMenu;
 public class AppManager {
 
 	public String currentScene;
-	private HashMap<String, Scene> scenes = new HashMap <String, Scene>();
+	private HashMap<String, Scene> scenes = new HashMap<String, Scene>();
 
 	public AppManager() {
 		scenes.put("title screen", new TitleScreen(this));
 		scenes.put("main menu", new MainMenu(this));
 		scenes.put("game", new Game(this));
-		scenes.put("instructions", new Instructions_Page(this));
+		scenes.put("instructions", new InstructionsPage(this));
 
 		currentScene = "title screen";
 	}
