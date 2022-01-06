@@ -78,7 +78,7 @@ public class MainMenu extends Scene{
 		
 		// Goes back to title screen if user presses "Back to Title Screen"
 		if (backToTitleScreen.isClicked()) {
-			app.currentScene = "backToTitleScreen";
+			app.currentScene = "title screen";
 		}
 		
 		// Quits game if user presses "Quit Game"
@@ -95,6 +95,7 @@ public class MainMenu extends Scene{
 		instructions.render(g);
 		backToTitleScreen.render(g);
 		quitGame.render(g);
+
 
 	}
 

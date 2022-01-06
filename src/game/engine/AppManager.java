@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import game.engine.Scene;
 import game.scenes.TitleScreen;
 import game.scenes.Game;
-import game.scenes.InstructionsPage;
+import game.scenes.Instructions_Page;
 import game.scenes.MainMenu;
 
 /**
@@ -24,8 +24,7 @@ public class AppManager {
 		scenes.put("title screen", new TitleScreen(this));
 		scenes.put("main menu", new MainMenu(this));
 		scenes.put("game", new Game(this));
-		scenes.put("instructions", new InstructionsPage(this));
-		scenes.put("backToTitleScreen", new TitleScreen(this));
+		scenes.put("instructions", new Instructions_Page(this));
 
 		currentScene = "title screen";
 	}
