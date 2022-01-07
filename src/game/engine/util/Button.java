@@ -104,9 +104,9 @@ public class Button {
 		// Background
 		g.setColor(backgroundColor);
 		if (borderRadius > 0) {
-			g.fillRoundRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), 
-				borderRadius * 2, borderRadius * 2);
-		} else {
+			g.fillRoundRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), borderRadius * 2, borderRadius * 2);
+		} 
+		else {
 			g.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
 		}
 

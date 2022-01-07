@@ -19,7 +19,7 @@ public class KeyboardInput extends KeyAdapter {
 	 * key.
 	 */
 	public KeyboardInput() {
-		String[] keys = { "w", "a", "s", "d", "space" };
+		String[] keys = { "w", "a", "s", "d", "space",};
 		for (String key : keys) keysPressed.put(key, false);
 	}
 
