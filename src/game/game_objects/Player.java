@@ -1,4 +1,4 @@
-package game.gameObjects;
+package game.game_objects;
 
 import java.awt.Color;
 import java.awt.*;

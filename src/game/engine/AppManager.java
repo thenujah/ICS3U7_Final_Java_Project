@@ -4,10 +4,7 @@ import java.util.HashMap;
 import java.awt.Graphics2D;
 
 import game.engine.Scene;
-import game.scenes.TitleScreen;
-import game.scenes.Game;
-import game.scenes.InstructionsPage;
-import game.scenes.MainMenu;
+import game.scenes.*;
 
 /**
  * A class which handles the changing of the scenes.
@@ -25,8 +22,9 @@ public class AppManager {
 		scenes.put("main menu", new MainMenu(this));
 		scenes.put("game", new Game(this));
 		scenes.put("instructions", new InstructionsPage(this));
+		scenes.put("test", new Test(this));
 
-		currentScene = "title screen";
+		currentScene = "test";
 	}
 
 	/**

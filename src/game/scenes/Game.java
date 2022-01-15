@@ -4,8 +4,7 @@ import java.awt.Graphics2D;
 
 import game.engine.AppManager;
 import game.engine.Scene;
-import game.engine.util.MouseInput;
-import game.gameObjects.Player;
+import game.game_objects.Player;
 
 /**
  * A class which controls the game scene of the game.

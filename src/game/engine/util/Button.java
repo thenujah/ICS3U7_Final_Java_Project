@@ -10,7 +10,7 @@ import game.engine.components.Rect;
 /**
  * A class which creates buttons.
  * 
- * @version 1.0
+ * @version 1.1
  * @since 1.0
  */
 public class Button {
@@ -141,7 +141,7 @@ public class Button {
 	public boolean isClicked() {
 		int[] mousePosition = { MouseInput.getX(), MouseInput.getY() };
 
-		return MouseInput.isPressed(1) && rect.contains(mousePosition);
+		return MouseInput.isClicked(1) && rect.contains(mousePosition);
 	}
 
 }

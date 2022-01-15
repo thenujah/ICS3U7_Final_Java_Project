@@ -55,7 +55,7 @@ public class Rect {
 
 	public String toString() {
 		return String.format("<Rect points: (%d, %d) (%d, %d)>", 
-			topLeft[0], topLeft[1], bottomLeft[0], bottomRight[1]);
+			topLeft[0], topLeft[1], bottomRight[0], bottomRight[1]);
 	}
 
 	/**
@@ -66,8 +66,8 @@ public class Rect {
 	 * @return A boolean representing if the instance contains the point.
 	 */
 	public boolean contains(int x, int y) {
-		return bottomRight[0] >= x && x >= topLeft[0] 
-			&& bottomRight[1] >= y && y >= topLeft[1];
+		return right >= x && x >= left
+			&& bottom >= y && y >= top;
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class Rect {
 	/**
 	 * A method which checks if a rect is within another.
 	 * 
-	 * @param rect The rect which might contain the instace calling the method.
+	 * @param rect The rect which might contain the instance calling the method.
 	 * @return A boolean representing if the rect contains the instance.
 	 */
 	public boolean isWithin(Rect rect) {

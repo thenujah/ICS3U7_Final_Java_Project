@@ -19,12 +19,13 @@ public class Application extends Canvas {
 
 	private AppManager app;
 
+	private final MouseInput mouse = new MouseInput();
+	private final KeyboardInput keyboard = new KeyboardInput();
+
 	public Application() {
 		app = new AppManager();
 
-		MouseInput mouse = new MouseInput();
-
-		this.addKeyListener(new KeyboardInput());
+		this.addKeyListener(keyboard);
 		this.addMouseMotionListener(mouse);
 		this.addMouseListener(mouse);
 		
@@ -87,6 +88,8 @@ public class Application extends Canvas {
 						time += 1000;
 						frames = 0;
 				}
+
+				mouse.reset();
 			}
 		}
 	}
