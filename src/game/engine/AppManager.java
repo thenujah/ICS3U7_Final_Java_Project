@@ -4,7 +4,11 @@ import java.util.HashMap;
 import java.awt.Graphics2D;
 
 import game.engine.Scene;
-import game.scenes.*;
+import game.scenes.TitleScreen;
+import game.scenes.Game;
+import game.scenes.InstructionsPage;
+import game.scenes.MainMenu;
+import game.scenes.Test;
 
 /**
  * A class which handles the changing of the scenes.

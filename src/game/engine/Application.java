@@ -50,7 +50,7 @@ public class Application extends Canvas {
 
 		Graphics2D g = (Graphics2D) buffStrat.getDrawGraphics(); // Returns sun.java2d.SunGraphics2D
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                          RenderingHints.VALUE_ANTIALIAS_ON);
+                           RenderingHints.VALUE_ANTIALIAS_ON);
 
 		g.clearRect(0, 0, 1280, 800);
 		app.render(g);
@@ -58,6 +58,8 @@ public class Application extends Canvas {
 		g.dispose();
 		buffStrat.show();
 	}
+
+	// TODO: Simplify the game loop?
 
 	/**
 	 * The game loop.

@@ -57,14 +57,15 @@ public class Map {
 					String direction = String.valueOf(directions.keySet().toArray()[randomDirection]);
 
 					ArrayList<Object> currentRoomArray = new ArrayList<>();
-					rooms[randomRoom].addEntrance(directions.get(direction));
 					currentRoomArray.add(rooms[randomRoom]);
 					currentRoomArray.add(direction);
 
 					ArrayList<Object> connectedRoomArray = new ArrayList<>();
-					room.addEntrance(direction);
 					connectedRoomArray.add(room);
 					connectedRoomArray.add(directions.get(direction));
+
+					rooms[randomRoom].addEntrance(directions.get(direction));
+					room.addEntrance(direction);
 
 					room.connections.add(currentRoomArray);
 					rooms[randomRoom].connections.add(connectedRoomArray);

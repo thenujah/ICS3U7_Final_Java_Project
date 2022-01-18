@@ -10,6 +10,7 @@ import game.engine.AppManager;
 import game.engine.Scene;
 import game.engine.util.MouseInput;
 import game.engine.util.KeyboardInput;
+import game.engine.components.Rect;
 import game.game_objects.TileMap;
 import game.game_objects.Map;
 import game.engine.util.Button;
@@ -26,8 +27,12 @@ public class Test extends Scene {
 	private ArrayList<Button> buttons = new ArrayList<>();
 	private ArrayList<TileMap> connectedRooms = new ArrayList<>();
 
+	Player player;
+
 	public Test(AppManager app) {
 		super(app);
+
+		player = new Player();
 
 		long startTime = System.currentTimeMillis();
 		level = new Map();
@@ -71,6 +76,8 @@ public class Test extends Scene {
 				}
 			}
 		}
+
+		player.movement();
 	}
 
 	public void render(Graphics2D g) {
@@ -81,6 +88,42 @@ public class Test extends Scene {
 		for (Button button : buttons) {
 			button.render(g);
 		}
+
+		player.render(g);
+	}
+
+}
+
+class Player {
+
+	private Rect rect;
+	private int speed = 3;
+
+	public Player() {
+
+		rect = new Rect(0, 0, 36, 36);
+		rect.setCenter(100, 100);
+
+	}
+
+	public void movement() {
+		if (KeyboardInput.isPressed("w")) {
+			rect.setY(rect.getY() - speed);
+		}
+		if (KeyboardInput.isPressed("s")) {
+			rect.setY(rect.getY() + speed);
+		}
+		if (KeyboardInput.isPressed("a")) {
+			rect.setX(rect.getX() - speed);
+		}
+		if (KeyboardInput.isPressed("d")) {
+			rect.setX(rect.getX() + speed);
+		}
+	}
+
+	public void render(Graphics2D g) {
+		g.setColor(Color.red);
+		g.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
 	}
 
 }
