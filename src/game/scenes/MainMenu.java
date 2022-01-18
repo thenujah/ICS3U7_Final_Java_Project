@@ -8,6 +8,7 @@ import game.engine.AppManager;
 import game.engine.Scene;
 import game.engine.util.Button;
 import game.engine.util.KeyboardInput;
+import game.scenes.*;
 
 /**
  * A class which controls the main menu scene of the game.
@@ -29,6 +30,7 @@ public class MainMenu extends Scene{
 	private Button instructions;
 	private Button backToTitleScreen;
 	private Button quitGame;
+	private Button test;
 
 	public MainMenu(AppManager app) {
 		super(app);
@@ -62,6 +64,13 @@ public class MainMenu extends Scene{
 		quitGame.font = subtitleFont;
 		quitGame.text = "Quit Game";
 		
+		//Temporary Test
+		test = new Button(150, 50);
+		test.setCenter(625, 520);
+		test.backgroundColor = BLUE;
+		test.font = subtitleFont;
+		test.text = "test";
+		
 	}
 	
 	public void update() {
@@ -85,6 +94,11 @@ public class MainMenu extends Scene{
 		if (quitGame.isClicked()) {
 			System.exit(0);
 		}
+		
+		//Temporary Test
+		if (test.isClicked()) {
+			app.currentScene = "test";
+		}
 
 	}
 
@@ -95,6 +109,7 @@ public class MainMenu extends Scene{
 		instructions.render(g);
 		backToTitleScreen.render(g);
 		quitGame.render(g);
+		test.render(g);
 
 
 	}

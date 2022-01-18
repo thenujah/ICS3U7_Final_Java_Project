@@ -24,7 +24,7 @@ public class AppManager {
 		scenes.put("instructions", new InstructionsPage(this));
 		scenes.put("test", new Test(this));
 
-		currentScene = "test";
+		currentScene = "title screen";
 	}
 
 	/**
