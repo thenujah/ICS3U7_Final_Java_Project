@@ -10,16 +10,17 @@ public class Collider {
 		this.rect = rect;
 	}
 
-	public boolean rightCollision(Rect rect) { return this.rect.getRight() > rect.x.getLeft(); }
+	public boolean rightCollision(Rect rect) { return this.rect.getRight() > rect.getLeft(); }
 
-	public boolean leftCollision(Rect rect) { return this.rect.getLeft() < rect.x.getRight(); }
+	public boolean leftCollision(Rect rect) { return this.rect.getLeft() < rect.getRight(); }
 
-	public boolean topCollision(Rect rect) { return this.rect.getTop() < rect.x.getBottom(); }
+	public boolean topCollision(Rect rect) { return this.rect.getTop() < rect.getBottom(); }
 
-	public boolean bottomCollision(Rect rect) { return this.rect.getBottom() > rect.x.getTop(); }
+	public boolean bottomCollision(Rect rect) { return this.rect.getBottom() > rect.getTop(); }
 
 	public boolean collision(Rect rect) {
-		return rightCollision() || leftCollision() || topCollision() || bottomCollision();
+		return rightCollision(rect) || leftCollision(rect)
+				|| topCollision(rect) || bottomCollision(rect);
 	}
 
 	/**
