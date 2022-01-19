@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.Collections;
 
 import game.engine.components.Rect;
+import game.engine.components.Collider;
 
 /**
  * The TileMap class creates randomly generated rooms for each level.
@@ -22,10 +23,16 @@ public class TileMap {
 	public static final int TILE_SIZE = 32;
 	public static final int NUMBER_OF_RECTS = 3;
 
-	private final Rect[] rects;
+	private Rect[] rects;
 	private int left, top, right, bottom;
-	private int[][] map;
+	private int[][] map;  // Will be depricated.
+	private int[][] ground;
+	private int[][] background;
+	private int[][] foreground;
+	private final int scale = 1;
 	public ArrayList<ArrayList<Object>> connections = new ArrayList<>();
+	public ArrayList<Collider> walls = new ArrayList<>();
+	public ArrayList<Collider> doors = new ArrayList<>();
 
 	public TileMap() {
 		int RECT_NUMBER = (int) (Math.random() * NUMBER_OF_RECTS) + 1;
@@ -101,9 +108,9 @@ public class TileMap {
 					if (newRect.isWithin(rect) || rect.isWithin(newRect)) break;
 
 					if (rect.contains(newRect.getTopLeft())
-							|| rect.contains(newRect.getTopRight())
-							|| rect.contains(newRect.getBottomLeft())
-							|| rect.contains(newRect.getBottomRight())) {
+						|| rect.contains(newRect.getTopRight())
+						|| rect.contains(newRect.getBottomLeft())
+						|| rect.contains(newRect.getBottomRight())) {
 
 						overlaps = true;
 						break;
@@ -160,40 +167,57 @@ public class TileMap {
 			int[] row = new int[right + 2];
 
 			for (int x = 0; x < row.length; x++) {
+
+				int[] position = { x * TILE_SIZE * scale, y * TILE_SIZE * scale };
+				int width, height;
+				width = height = TILE_SIZE * scale;
+
 				if (contains(new int[]{x, y})) { // inner
 					row[x] = 0;
 				} else if (contains(new int[]{x + 1, y + 1}) && 
 					!(contains(new int[]{x + 1, y}) || contains(new int[]{x, y + 1}))) { // top left inward
 					row[x] = 1;
+					walls.add(new Collider(position[0], position[1], width, height));
 				} else if (contains(new int[]{x - 1, y - 1}) && 
 					!(contains(new int[]{x - 1, y}) || contains(new int[]{x, y - 1}))) { // bottom right inward
 					row[x] = 2;
+					walls.add(new Collider(position[0], position[1], width, height));
 				} else if (contains(new int[]{x - 1, y + 1}) && 
 					!(contains(new int[]{x - 1, y}) || contains(new int[]{x, y + 1}))) { // top tight inward
 					row[x] = 3;
+					walls.add(new Collider(position[0], position[1], width, height));
 				} else if (contains(new int[]{x + 1, y - 1}) &&
 					!(contains(new int[]{x + 1, y}) || contains(new int[]{x, y - 1}))) { // bottom left inward
 					row[x] = 4;
+					walls.add(new Collider(position[0], position[1], width, height));
 				} else if (contains(new int[]{x - 1, y - 1}) &&
 						contains(new int[]{x - 1, y}) && contains(new int[]{x, y - 1})) { // top left outward
 					row[x] = 5;
+					walls.add(new Collider(position[0], position[1] + height / 2, width, height / 2));
 				} else if (contains(new int[]{x + 1, y - 1}) &&
 						contains(new int[]{x + 1, y}) && contains(new int[]{x, y - 1})) { // top right outward
 					row[x] = 6;
+					walls.add(new Collider(position[0], position[1] + height / 2, width, height / 2));
 				} else if (contains(new int[]{x + 1, y + 1}) && 
 					contains(new int[]{x + 1, y}) && contains(new int[]{x, y + 1})) { // bottom right outward
 					row[x] = 7;
+					walls.add(new Collider(position[0], position[1], width, height / 2));
 				} else if (contains(new int[]{x - 1, y + 1}) && 
 					contains(new int[]{x - 1, y}) && contains(new int[]{x, y + 1})) { // bottom left outward
 					row[x] = 8;
+					walls.add(new Collider(position[0], position[1], width, height / 2));
 				} else if (contains(new int[]{x, y + 1})) { // top
 					row[x] = 9;
+					walls.add(new Collider(position[0], position[1], width, height / 2));
 				} else if (contains(new int[]{x - 1, y})) { // right
 					row[x] = 10;
+					walls.add(new Collider(position[0], position[1], width, height));
 				} else if (contains(new int[]{x, y - 1})) { // bottom
 					row[x] = 11;
+					walls.add(new Collider(position[0], position[1] + height / 2, width, height / 2));
 				} else if (contains(new int[]{x + 1, y})) { // left
 					row[x] = 12;
+					walls.add(new Collider(position[0], position[1], width, height));
 				} else {
 					row[x] = 13;
 				}
@@ -209,7 +233,7 @@ public class TileMap {
 			for (int x = 0; x < map[y].length; x++) {
 				int tile = map[y][x];
 
-				int scale = 1; // Set to 3 later
+				// int scale = 1; // Set to 3 later
 
 				AffineTransform transform = new AffineTransform();
 				transform.translate(x * TILE_SIZE * scale, y * TILE_SIZE * scale);
@@ -234,6 +258,10 @@ public class TileMap {
 
 				g.drawImage(image, transform, null);
 			}
+		}
+
+		for (Collider tile : walls) {
+			tile.debug(g);
 		}
 	}
 

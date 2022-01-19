@@ -86,6 +86,13 @@ public class Rect {
 		return rect.contains(topLeft) && rect.contains(bottomRight);
 	}
 
+	public boolean overlaps(Rect rect) {
+		return contains(rect.getTopLeft())
+			|| contains(rect.getTopRight())
+			|| contains(rect.getBottomLeft())
+			|| contains(rect.getBottomRight());
+	}
+
 	/**
 	 * A getter method for the top left x position of the Rect.
 	 * 

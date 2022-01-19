@@ -11,6 +11,7 @@ import game.engine.Scene;
 import game.engine.util.MouseInput;
 import game.engine.util.KeyboardInput;
 import game.engine.components.Rect;
+import game.engine.components.Collider;
 import game.game_objects.TileMap;
 import game.game_objects.Map;
 import game.engine.util.Button;
@@ -77,7 +78,7 @@ public class Test extends Scene {
 			}
 		}
 
-		player.movement();
+		player.movement(level.currentRoom);
 	}
 
 	public void render(Graphics2D g) {
@@ -94,19 +95,26 @@ public class Test extends Scene {
 
 }
 
+/**
+ * Copy of Player for testing the colliders.
+ */
 class Player {
 
 	private Rect rect;
 	private int speed = 3;
+	private Collider collider;
 
 	public Player() {
 
 		rect = new Rect(0, 0, 36, 36);
 		rect.setCenter(100, 100);
 
+		collider = new Collider(rect.getX(), rect.getY(), 36, 36);
+		collider.addSprite(rect);
+
 	}
 
-	public void movement() {
+	public void movement(TileMap tilemap) {
 		if (KeyboardInput.isPressed("w")) {
 			rect.setY(rect.getY() - speed);
 		}
@@ -119,6 +127,18 @@ class Player {
 		if (KeyboardInput.isPressed("d")) {
 			rect.setX(rect.getX() + speed);
 		}
+
+		ArrayList<Collider> collisions = new ArrayList<>();
+		for (Collider tile : tilemap.walls) {
+			if (tile.collision(collider.rect)) {
+				collisions.add(tile);
+			}
+		}
+
+		// System.out.println(tilemap.walls.toString());
+		// System.out.println(collisions.toString());
+
+		collider.xCollision(collisions);
 	}
 
 	public void render(Graphics2D g) {
