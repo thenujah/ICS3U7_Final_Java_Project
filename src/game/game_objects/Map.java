@@ -64,13 +64,24 @@ public class Map {
 					connectedRoomArray.add(room);
 					connectedRoomArray.add(directions.get(direction));
 
-					rooms[randomRoom].addEntrance(directions.get(direction));
-					room.addEntrance(direction);
+					rooms[randomRoom].addEntrance(directions.get(direction), room);
+					room.addEntrance(direction, rooms[randomRoom]);
 
 					room.connections.add(currentRoomArray);
 					rooms[randomRoom].connections.add(connectedRoomArray);
 				}
 
+			}
+		}
+
+		for (TileMap room : rooms) {
+			room.createColliders();
+
+			for (int y = 0; y < room.map.length; y++) {
+				for (int x = 0; x < room.map[y].length; x++) {
+					System.out.printf("%-3d", room.map[y][x]);
+				}
+				System.out.println();
 			}
 		}
 

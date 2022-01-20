@@ -7,7 +7,7 @@ import game.engine.util.Positioning;
  * Game objects and various other renderable things can use this to aid in positioning, collisions,
  * and anything else.
  *  
- * @version 1.0
+ * @version 2.0
  * @since 1.0
  */
 public class Rect {
@@ -15,7 +15,9 @@ public class Rect {
 	private int x, y;
 	private int width, height;
 	private int top, bottom, left, right;
-	private int[] topLeft, topRight, bottomLeft, bottomRight, center;
+	private int[] topLeft, topRight, bottomLeft, bottomRight;
+	private int[] midTop, midBottom, midLeft, midRight;
+	private int[] center;
 
 	/**
 	 * The constructor for a new Rect object.
@@ -42,14 +44,22 @@ public class Rect {
 		this.y = y;
 		this.width = width;
 		this.height = height;
+
 		top = y;
 		bottom = y + height;
 		left = x;
 		right = x + width;
-		topLeft = new int[]{x, y};
-		topRight = new int[]{x + width, y};
-		bottomLeft = new int[]{x, y + height};
-		bottomRight = new int[]{x + width, y + height};
+
+		topLeft = new int[]{left, top};
+		topRight = new int[]{right, top};
+		bottomLeft = new int[]{left, bottom};
+		bottomRight = new int[]{right, bottom};
+
+		midTop = new int[]{Positioning.findCenter(x, width), top};
+		midBottom = new int[]{Positioning.findCenter(x, width), bottom};
+		midLeft = new int[]{left, Positioning.findCenter(y, height)};
+		midRight = new int[]{right, Positioning.findCenter(y, height)};
+
 		center = Positioning.averagePos(topLeft, bottomRight);
 	}
 
@@ -66,8 +76,8 @@ public class Rect {
 	 * @return A boolean representing if the instance contains the point.
 	 */
 	public boolean contains(int x, int y) {
-		return right >= x && x >= left
-			&& bottom >= y && y >= top;
+		return right > x && x > left
+			&& bottom > y && y > top;
 	}
 
 	/**
@@ -90,7 +100,11 @@ public class Rect {
 		return contains(rect.getTopLeft())
 			|| contains(rect.getTopRight())
 			|| contains(rect.getBottomLeft())
-			|| contains(rect.getBottomRight());
+			|| contains(rect.getBottomRight())
+			|| contains(rect.getMidTop())
+			|| contains(rect.getMidBottom())
+			|| contains(rect.getMidLeft())
+			|| contains(rect.getMidRight());
 	}
 
 	/**
@@ -150,35 +164,63 @@ public class Rect {
 	public int getRight() { return right; }
 
 	/**
-	 * A getter method for the coordinates of top left corner of the Rect.
+	 * A getter method for the coordinates of the top left corner of the Rect.
 	 * 
 	 * @return The coordinates of the top left corner.
 	 */
 	public int[] getTopLeft() { return topLeft; }
 
 	/**
-	 * A getter method for the coordinates of top right corner of the Rect.
+	 * A getter method for the coordinates of the top right corner of the Rect.
 	 * 
 	 * @return The coordinates of the top right corner.
 	 */
 	public int[] getTopRight() { return topRight; }
 
 	/**
-	 * A getter method for the coordinates of bottom left corner of the Rect.
+	 * A getter method for the coordinates of the bottom left corner of the Rect.
 	 * 
 	 * @return The coordinates of the bottom left corner.
 	 */
 	public int[] getBottomLeft() { return bottomLeft; }
 
 	/**
-	 * A getter method for the coordinates of bottom right corner of the Rect.
+	 * A getter method for the coordinates of the bottom right corner of the Rect.
 	 * 
-	 * @return The coordinates of the bottom right corner.
+	 * @return The coordinates of the bottom left corner.
 	 */
 	public int[] getBottomRight() { return bottomRight; }
 
 	/**
-	 * A getter method for the coordinates of center of the Rect.
+	 * A getter method for the coordinates of the center of the top side of the Rect.
+	 * 
+	 * @return The coordinates of the bottom right corner.
+	 */
+	public int[] getMidTop() { return midTop; }
+
+	/**
+	 * A getter method for the coordinates of the center of the bottom side of the Rect.
+	 * 
+	 * @return The coordinates of the bottom right corner.
+	 */
+	public int[] getMidBottom() { return midBottom; }
+
+	/**
+	 * A getter method for the coordinates of the center of the left side of the Rect.
+	 * 
+	 * @return The coordinates of the bottom right corner.
+	 */
+	public int[] getMidLeft() { return midLeft; }
+
+	/**
+	 * A getter method for the coordinates of the center of the right side of the Rect.
+	 * 
+	 * @return The coordinates of the bottom right corner.
+	 */
+	public int[] getMidRight() { return midRight; }
+
+	/**
+	 * A getter method for the coordinates of the center of the Rect.
 	 * 
 	 * @return The coordinates of the center.
 	 */
@@ -311,6 +353,74 @@ public class Rect {
 	public void setBottomRight(int[] point) { setBottomRight(point[0], point[1]); }
 
 	/**
+	 * The setter method for the center of the top side of the Rect.
+	 * 
+	 * @param x The new x position for the point.
+	 * @param y The new y position for the point.
+	 */
+	public void setMidTop(int x, int y) {
+		int[] transform = { x - midTop[0], y - midTop[1] };
+		update(this.x + transform[0], this.y + transform[1], width, height);
+	}
+
+	/**
+	 * @see #setMidTop(int, int)
+	 * @param point The new position of the center of the top side.
+	 */
+	public void setMidTop(int[] point) { setMidTop(point[0], point[1]); }
+
+		/**
+	 * The setter method for the center of the bottom side of the Rect.
+	 * 
+	 * @param x The new x position for the point.
+	 * @param y The new y position for the point.
+	 */
+	public void setMidBottom(int x, int y) {
+		int[] transform = { x - midBottom[0], y - midBottom[1] };
+		update(this.x + transform[0], this.y + transform[1], width, height);
+	}
+
+	/**
+	 * @see #setMidBottom(int, int)
+	 * @param point The new position of the center of the bottom side.
+	 */
+	public void setMidBottom(int[] point) { setMidBottom(point[0], point[1]); }
+
+		/**
+	 * The setter method for the center of the left side of the Rect.
+	 * 
+	 * @param x The new x position for the point.
+	 * @param y The new y position for the point.
+	 */
+	public void setMidLeft(int x, int y) {
+		int[] transform = { x - midLeft[0], y - midLeft[1] };
+		update(this.x + transform[0], this.y + transform[1], width, height);
+	}
+
+	/**
+	 * @see #setMidLeft(int, int)
+	 * @param point The new position of the center of the left side.
+	 */
+	public void setMidLeft(int[] point) { setMidLeft(point[0], point[1]); }
+
+		/**
+	 * The setter method for the center of the right side of the Rect.
+	 * 
+	 * @param x The new x position for the point.
+	 * @param y The new y position for the point.
+	 */
+	public void setMidRight(int x, int y) {
+		int[] transform = { x - midRight[0], y - midRight[1] };
+		update(this.x + transform[0], this.y + transform[1], width, height);
+	}
+
+	/**
+	 * @see #setMidRight(int, int)
+	 * @param point The new position of the center of the right side.
+	 */
+	public void setMidRight(int[] point) { setMidRight(point[0], point[1]); }
+
+	/**
 	 * The setter method for the center of the Rect.
 	 * 
 	 * @param x The new x position for the center.
@@ -328,3 +438,5 @@ public class Rect {
 	public void setCenter(int[] point) { setCenter(point[0], point[1]); }
 
 }
+
+// TODO: Add a non-zero test.

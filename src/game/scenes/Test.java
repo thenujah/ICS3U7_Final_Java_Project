@@ -19,7 +19,7 @@ import game.engine.util.Button;
 /**
  * A class which controls the game scene of the game.
  *
- * @version 1.0
+ * @version 2.0
  * @since 1.0
  */
 public class Test extends Scene {
@@ -45,40 +45,40 @@ public class Test extends Scene {
 
 		// System.out.println(Arrays.toString(level.rooms));
 
-		for (int i = 0; i < level.currentRoom.connections.size(); i++) {
-			Button button = new Button(100, 50);
-			button.font = new Font("DialogInput", Font.PLAIN, 20);
-			button.text = String.valueOf(level.currentRoom.connections.get(i).get(1));
-			button.backgroundColor = Color.GRAY;
-			button.setCenter(700, 100 + i * 100);
-			buttons.add(button);
+		// for (int i = 0; i < level.currentRoom.connections.size(); i++) {
+		// 	Button button = new Button(100, 50);
+		// 	button.font = new Font("DialogInput", Font.PLAIN, 20);
+		// 	button.text = String.valueOf(level.currentRoom.connections.get(i).get(1));
+		// 	button.backgroundColor = Color.GRAY;
+		// 	button.setCenter(700, 100 + i * 100);
+		// 	buttons.add(button);
 
-			connectedRooms.add((TileMap) level.currentRoom.connections.get(i).get(0));
-		}
+		// 	connectedRooms.add((TileMap) level.currentRoom.connections.get(i).get(0));
+		// }
 
 	}
 
 	public void update() {
-		for (int i = 0; i < buttons.size(); i++) {
-			if (buttons.get(i).isClicked()) {
-				level.currentRoom = connectedRooms.get(i);
-				buttons.clear();
-				connectedRooms.clear();
+		// for (int i = 0; i < buttons.size(); i++) {
+		// 	if (buttons.get(i).isClicked()) {
+		// 		level.currentRoom = connectedRooms.get(i);
+		// 		buttons.clear();
+		// 		connectedRooms.clear();
 
-				for (int j = 0; j < level.currentRoom.connections.size(); j++) {
-					Button button = new Button(100, 50);
-					button.font = new Font("DialogInput", Font.PLAIN, 20);
-					button.text = String.valueOf(level.currentRoom.connections.get(j).get(1));
-					button.backgroundColor = Color.GRAY;
-					button.setCenter(700, 100 + j * 100);
-					buttons.add(button);
+		// 		for (int j = 0; j < level.currentRoom.connections.size(); j++) {
+		// 			Button button = new Button(100, 50);
+		// 			button.font = new Font("DialogInput", Font.PLAIN, 20);
+		// 			button.text = String.valueOf(level.currentRoom.connections.get(j).get(1));
+		// 			button.backgroundColor = Color.GRAY;
+		// 			button.setCenter(700, 100 + j * 100);
+		// 			buttons.add(button);
 
-					connectedRooms.add((TileMap) level.currentRoom.connections.get(j).get(0));
-				}
-			}
-		}
+		// 			connectedRooms.add((TileMap) level.currentRoom.connections.get(j).get(0));
+		// 		}
+		// 	}
+		// }
 
-		player.movement(level.currentRoom);
+		player.movement(level.currentRoom, level);
 	}
 
 	public void render(Graphics2D g) {
@@ -106,39 +106,86 @@ class Player {
 
 	public Player() {
 
-		rect = new Rect(0, 0, 36, 36);
+		rect = new Rect(0, 0, 24, 24);
 		rect.setCenter(100, 100);
 
-		collider = new Collider(rect.getX(), rect.getY(), 36, 36);
+		collider = new Collider(rect.getX(), rect.getY(), 24, 24);
 		collider.addSprite(rect);
 
 	}
 
-	public void movement(TileMap tilemap) {
-		if (KeyboardInput.isPressed("w")) {
-			rect.setY(rect.getY() - speed);
-		}
-		if (KeyboardInput.isPressed("s")) {
-			rect.setY(rect.getY() + speed);
-		}
+	public void movement(TileMap tilemap, Map level) {
 		if (KeyboardInput.isPressed("a")) {
-			rect.setX(rect.getX() - speed);
+			updateXPosition(-speed);
 		}
 		if (KeyboardInput.isPressed("d")) {
-			rect.setX(rect.getX() + speed);
+			updateXPosition(speed);
 		}
 
-		ArrayList<Collider> collisions = new ArrayList<>();
-		for (Collider tile : tilemap.walls) {
-			if (tile.collision(collider.rect)) {
-				collisions.add(tile);
+		collider.xCollision(collider.getCollisions(tilemap.walls));
+		
+		if (KeyboardInput.isPressed("w")) {
+			updateYPosition(-speed);
+		}
+		if (KeyboardInput.isPressed("s")) {
+			updateYPosition(speed);
+		}
+		
+		collider.yCollision(collider.getCollisions(tilemap.walls));
+		doorCollisions(tilemap, level);
+	}
+
+	public void doorCollisions(TileMap tilemap, Map level) {
+		for (Object[] entranceInfo : tilemap.doors) {
+			Collider collider = (Collider) entranceInfo[0];
+			TileMap connectedRoom = (TileMap) entranceInfo[1];
+
+			if (this.collider.collision(collider.rect)) {
+				level.currentRoom = connectedRoom;
+
+				Collider otherDoor = null;
+				int direction = 0;
+
+				for (Object[] info : connectedRoom.doors) {
+					TileMap newTileMap = (TileMap) info[1];
+					if (newTileMap.equals(tilemap))
+						otherDoor = (Collider) info[0];
+						direction = (int) info[2];
+				}
+
+				System.out.println(otherDoor);
+				System.out.println(direction);
+
+				switch (direction) {
+				case 14:
+					this.rect.setMidTop(otherDoor.rect.getMidBottom());
+					this.collider.rect.setMidTop(otherDoor.rect.getMidBottom());
+					break;
+				case 15:
+					this.rect.setMidBottom(otherDoor.rect.getMidTop());
+					this.collider.rect.setMidBottom(otherDoor.rect.getMidTop());
+					break;
+				case 16:
+					this.rect.setMidRight(otherDoor.rect.getMidLeft());
+					this.collider.rect.setMidRight(otherDoor.rect.getMidLeft());
+					break;
+				case 17:
+					this.rect.setMidLeft(otherDoor.rect.getMidRight());
+					this.collider.rect.setMidLeft(otherDoor.rect.getMidRight());
+					break;
+				}
 			}
 		}
-
-		// System.out.println(tilemap.walls.toString());
-		// System.out.println(collisions.toString());
-
-		collider.xCollision(collisions);
+	}
+	
+	public void updateXPosition(int diff) {
+		rect.setX(rect.getX() + diff);
+		collider.rect.setX(collider.rect.getX() + diff);
+	}
+	
+	public void updateYPosition(int diff) {
+		rect.setY(rect.getY() + diff);
+		collider.rect.setY(collider.rect.getY() + diff);
 	}
 
 	public void render(Graphics2D g) {

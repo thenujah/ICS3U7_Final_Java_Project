@@ -6,6 +6,10 @@ import java.awt.Color;
 
 import game.engine.components.Rect;
 
+/**
+ * @version 2.0
+ * @since 2.0
+ */
 public class Collider {
 
 	public Rect rect;
@@ -22,23 +26,42 @@ public class Collider {
 
 	public void addSprite(Rect rect) { sprite = rect; }
 
-	public boolean rightCollision(Rect rect) { return this.rect.getRight() > rect.getLeft(); }
+	public boolean rightCollision(Rect rect) { 
+		return this.rect.getRight() > rect.getLeft() && this.rect.getRight() < rect.getRight(); 
+	}
 
-	public boolean leftCollision(Rect rect) { return this.rect.getLeft() < rect.getRight(); }
+	public boolean leftCollision(Rect rect) {
+		return this.rect.getLeft() < rect.getRight() && this.rect.getLeft() > rect.getLeft(); 
+	}
 
-	public boolean topCollision(Rect rect) { return this.rect.getTop() < rect.getBottom(); }
+	public boolean topCollision(Rect rect) {
+		return this.rect.getTop() < rect.getBottom() && this.rect.getTop() > rect.getTop(); 
+	}
 
-	public boolean bottomCollision(Rect rect) { return this.rect.getBottom() > rect.getTop(); }
+	public boolean bottomCollision(Rect rect) {
+		return this.rect.getBottom() > rect.getTop() && this.rect.getBottom() < rect.getBottom(); 
+	}
 
 	public boolean collision(Rect rect) {
 		return this.rect.overlaps(rect) || rect.overlaps(this.rect);
+	}
+	
+	public ArrayList<Collider> getCollisions(ArrayList<Collider> colliders) {
+		ArrayList<Collider> collisions = new ArrayList<>();
+		for (Collider collider : colliders) {
+			if (collision(collider.rect)) {
+				collisions.add(collider);
+			}
+		}
+		
+		return collisions;
 	}
 
 	/**
 	 * For barriers.
 	 */
-	public void xCollision(ArrayList<Collider> collisionGroup) {
-		for (Collider instance : collisionGroup) {
+	public void xCollision(ArrayList<Collider> hits) {
+		for (Collider instance : hits) {
 			Rect rect = instance.rect;
 
 			if (rightCollision(rect)) { 
@@ -48,22 +71,23 @@ public class Collider {
 				this.rect.setLeft(rect.getRight());
 				this.sprite.setLeft(rect.getRight());
 			}
-
 		}
 	}
 
 	/**
 	 * For barriers.
 	 */
-	public void yCollision(ArrayList<Collider> collisionGroup) {
-		for (Collider instance : collisionGroup) {
+	public void yCollision(ArrayList<Collider> hits) {
+		for (Collider instance : hits) {
 			Rect rect = instance.rect;
 
-			if (topCollision(rect)) 
+			if (topCollision(rect)) {
 				this.rect.setTop(rect.getBottom());
-			else if (bottomCollision(rect)) 
+				this.sprite.setTop(rect.getBottom());
+			} else if (bottomCollision(rect)) {
 				this.rect.setBottom(rect.getTop());
-
+				this.sprite.setBottom(rect.getTop());
+			}
 		}
 	}
 

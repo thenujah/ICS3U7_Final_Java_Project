@@ -24,15 +24,16 @@ public class TileMap {
 	public static final int NUMBER_OF_RECTS = 3;
 
 	private Rect[] rects;
-	private int left, top, right, bottom;
-	private int[][] map;  // Will be depricated.
-	private int[][] ground;
-	private int[][] background;
-	private int[][] foreground;
 	private final int scale = 1;
-	public ArrayList<ArrayList<Object>> connections = new ArrayList<>();
+
+	public int[][] map;  // Will be depricated.
+
+	// private int[][][] map;  // Add the map as layers.
+
 	public ArrayList<Collider> walls = new ArrayList<>();
-	public ArrayList<Collider> doors = new ArrayList<>();
+
+	public ArrayList<ArrayList<Object>> connections = new ArrayList<>(); // Unnest
+	public ArrayList<Object[]> doors = new ArrayList<>();
 
 	public TileMap() {
 		int RECT_NUMBER = (int) (Math.random() * NUMBER_OF_RECTS) + 1;
@@ -43,29 +44,37 @@ public class TileMap {
 			rects[i] = generateRect();
 		}
 
+		// Finding the bounds of the entire tilemap.
 		Integer[] lowestXCoordinates = new Integer[rects.length];
 		for (int i = 0; i < rects.length; i++)
 			lowestXCoordinates[i] = rects[i].getLeft();
-		left = Collections.min(Arrays.asList(lowestXCoordinates));
+		int left = Collections.min(Arrays.asList(lowestXCoordinates));
 
 		Integer[] lowestYCoordinates = new Integer[rects.length];
 		for (int i = 0; i < rects.length; i++)
 			lowestYCoordinates[i] = rects[i].getTop();
-		top = Collections.min(Arrays.asList(lowestYCoordinates));
+		int top = Collections.min(Arrays.asList(lowestYCoordinates));
 
 		Integer[] highestXCoordinates = new Integer[rects.length];
 		for (int i = 0; i < rects.length; i++)
 			highestXCoordinates[i] = rects[i].getRight();
-		right = Collections.max(Arrays.asList(highestXCoordinates));
+		int right = Collections.max(Arrays.asList(highestXCoordinates));
 
 		Integer[] highestYCoordinates = new Integer[rects.length];
 		for (int i = 0; i < rects.length; i++)
 			highestYCoordinates[i] = rects[i].getBottom();
-		bottom = Collections.max(Arrays.asList(highestYCoordinates));
+		int bottom = Collections.max(Arrays.asList(highestYCoordinates));
 
-		removeWhiteSpace();
+		// Moving the room to the top right corner to remove any whitespace.
+		for (Rect rect : rects) {
+			rect.setTopLeft(rect.getX() - left + 1, rect.getY() - top + 1);
+		}
 
-		map = generateBorders();
+		right -= left - 1;
+		bottom -= top - 1;
+		left = top = 1;
+
+		map = generateBorders(right, bottom);
 
 		// for (int y = 0; y < map.length; y++) {
 		// 	for (int x = 0; x < map[y].length; x++) {
@@ -81,8 +90,8 @@ public class TileMap {
 	 * @return A randomly generated Rect object
 	 */
 	private Rect randomRect() {
-		final int MIN_SIZE = 3;
-		final int MAX_SIZE = TileMap.SIZE - 5;
+		final int MIN_SIZE = 4;
+		final int MAX_SIZE = TileMap.SIZE - 4;
 
 		int width = (int) (Math.random() * (MAX_SIZE - MIN_SIZE)) + MIN_SIZE;
 		int height = (int) (Math.random() * (MAX_SIZE - MIN_SIZE)) + MIN_SIZE;
@@ -125,16 +134,6 @@ public class TileMap {
 		}
 	}
 
-	private void removeWhiteSpace() {
-		for (Rect rect : rects) {
-			rect.setTopLeft(rect.getX() - left + 1, rect.getY() - top + 1);
-		}
-
-		right -= left - 1;
-		bottom -= top - 1;
-		left = top = 1;
-	}
-
 	/**
 	 * A method which checks if a position is within the tile map.
 	 *
@@ -160,11 +159,11 @@ public class TileMap {
 		return false;
 	}
 
-	public int[][] generateBorders() {
-		map = new int[bottom + 2][right + 2];
+	public int[][] generateBorders(int rightBound, int bottomBound) {
+		map = new int[bottomBound + 2][rightBound + 2];
 
 		for (int y = 0; y < map.length; y++) {
-			int[] row = new int[right + 2];
+			int[] row = new int[rightBound + 2];
 
 			for (int x = 0; x < row.length; x++) {
 
@@ -177,47 +176,35 @@ public class TileMap {
 				} else if (contains(new int[]{x + 1, y + 1}) && 
 					!(contains(new int[]{x + 1, y}) || contains(new int[]{x, y + 1}))) { // top left inward
 					row[x] = 1;
-					walls.add(new Collider(position[0], position[1], width, height));
 				} else if (contains(new int[]{x - 1, y - 1}) && 
 					!(contains(new int[]{x - 1, y}) || contains(new int[]{x, y - 1}))) { // bottom right inward
 					row[x] = 2;
-					walls.add(new Collider(position[0], position[1], width, height));
 				} else if (contains(new int[]{x - 1, y + 1}) && 
 					!(contains(new int[]{x - 1, y}) || contains(new int[]{x, y + 1}))) { // top tight inward
 					row[x] = 3;
-					walls.add(new Collider(position[0], position[1], width, height));
 				} else if (contains(new int[]{x + 1, y - 1}) &&
 					!(contains(new int[]{x + 1, y}) || contains(new int[]{x, y - 1}))) { // bottom left inward
 					row[x] = 4;
-					walls.add(new Collider(position[0], position[1], width, height));
 				} else if (contains(new int[]{x - 1, y - 1}) &&
 						contains(new int[]{x - 1, y}) && contains(new int[]{x, y - 1})) { // top left outward
 					row[x] = 5;
-					walls.add(new Collider(position[0], position[1] + height / 2, width, height / 2));
 				} else if (contains(new int[]{x + 1, y - 1}) &&
 						contains(new int[]{x + 1, y}) && contains(new int[]{x, y - 1})) { // top right outward
 					row[x] = 6;
-					walls.add(new Collider(position[0], position[1] + height / 2, width, height / 2));
 				} else if (contains(new int[]{x + 1, y + 1}) && 
 					contains(new int[]{x + 1, y}) && contains(new int[]{x, y + 1})) { // bottom right outward
 					row[x] = 7;
-					walls.add(new Collider(position[0], position[1], width, height / 2));
 				} else if (contains(new int[]{x - 1, y + 1}) && 
 					contains(new int[]{x - 1, y}) && contains(new int[]{x, y + 1})) { // bottom left outward
 					row[x] = 8;
-					walls.add(new Collider(position[0], position[1], width, height / 2));
 				} else if (contains(new int[]{x, y + 1})) { // top
 					row[x] = 9;
-					walls.add(new Collider(position[0], position[1], width, height / 2));
 				} else if (contains(new int[]{x - 1, y})) { // right
 					row[x] = 10;
-					walls.add(new Collider(position[0], position[1], width, height));
 				} else if (contains(new int[]{x, y - 1})) { // bottom
 					row[x] = 11;
-					walls.add(new Collider(position[0], position[1] + height / 2, width, height / 2));
 				} else if (contains(new int[]{x + 1, y})) { // left
 					row[x] = 12;
-					walls.add(new Collider(position[0], position[1], width, height));
 				} else {
 					row[x] = 13;
 				}
@@ -228,12 +215,101 @@ public class TileMap {
 		return map;
 	}
 
+	public void addEntrance(String direction, TileMap connectingRoom) {
+		int maxPosition;
+		boolean positionSet = false;
+
+		if (direction.equals("up") || direction.equals("down")) maxPosition = map[0].length - 2;
+		else maxPosition = map.length - 2;
+
+		// TODO: Store the locations of the entrances so that special colliders can be added to them.
+		do {
+			int position = (int) (Math.random() * maxPosition) + 1;
+
+			int xPos, yPos, id;
+			xPos = yPos = id = 0;
+
+			switch (direction) {
+				case "up":
+					xPos = position;
+					for (int y = 0; y < map.length; y++) {
+						if (map[y][position] == 9) {
+							map[y][position] = id = 14;
+							positionSet = true;
+							yPos = y;
+							break;
+						}
+					}
+					break;
+				case "down":
+					xPos = position;
+					for (int y = 0; y < map.length; y++) {
+						if (map[y][position] == 11) {
+							map[y][position] = id = 15;
+							positionSet = true;
+							yPos = y;
+							break;
+						}
+					}
+					break;
+				case "right":
+					yPos = position;
+					for (int x = 0; x < map[position].length; x++) {
+						if (map[position][x] == 10) {
+							map[position][x] = id = 16;
+							positionSet = true;
+							xPos = x;
+							break;
+						}
+					}
+					break;
+				case "left":
+					yPos = position;
+					for (int x = 0; x < map[position].length; x++) {
+						if (map[position][x] == 12) {
+							map[position][x] = id = 17;
+							positionSet = true;
+							xPos = x;
+							break;
+						}
+					}
+					break;
+			}
+
+			int[] coordinates = { xPos * TILE_SIZE * scale, yPos * TILE_SIZE * scale };
+			int width, height;
+			width = height = TILE_SIZE * scale;
+
+			if (positionSet)
+				doors.add(new Object[]{ new Collider(coordinates[0], coordinates[1], width, height), connectingRoom, id });
+
+		} while (!positionSet);
+	}
+
+	public void createColliders() {
+		for (int y = 0; y < map.length; y++) {
+			for (int x = 0; x < map[y].length; x++) {
+
+				int tile = map[y][x];
+
+				int[] position = { x * TILE_SIZE * scale, y * TILE_SIZE * scale };
+				int width, height;
+				width = height = TILE_SIZE * scale;
+
+				switch (tile) {
+					case 1, 2, 3, 4, 10, 12 -> walls.add(new Collider(position[0], position[1], width, height));
+					case 5, 6, 11 -> walls.add(new Collider(position[0], position[1] + height / 2, width, height / 2));
+					case 7, 8, 9 -> walls.add(new Collider(position[0], position[1], width, height / 2));
+				}
+			}
+		}
+
+	}
+
 	public void render(Graphics2D g) {
 		for (int y = 0; y < map.length; y++) {
 			for (int x = 0; x < map[y].length; x++) {
 				int tile = map[y][x];
-
-				// int scale = 1; // Set to 3 later
 
 				AffineTransform transform = new AffineTransform();
 				transform.translate(x * TILE_SIZE * scale, y * TILE_SIZE * scale);
@@ -263,61 +339,12 @@ public class TileMap {
 		for (Collider tile : walls) {
 			tile.debug(g);
 		}
+
+		for (Object[] entranceInfo : doors) {
+			Collider collider = (Collider) entranceInfo[0];
+			collider.debug(g);
+		}
 	}
 
-	public void addEntrance(String direction) {
-		int maxPosition;
-		boolean positionSet = false;
-
-		if (direction.equals("up") || direction.equals("down")) maxPosition = map[0].length - 2;
-		else maxPosition = map.length - 2;
-
-		// System.out.println("DIRECTION " + direction);
-		// System.out.println("MAX POSITION " + maxPosition);
-		// System.out.println("VERTICAL MAX POSITION " + map.length);
-		// System.out.println("HORIZONAL MAX POSITION " + map[0].length);
-
-		// TODO: Store the locations of the entrances so that special colliders can be added to them.
-		do {
-			int position = (int) (Math.random() * maxPosition) + 1;
-			// System.out.println(position);
-
-			switch (direction) {
-				case "up":
-					for (int y = 0; y < map.length; y++) {
-						if (map[y][position] == 9) {
-							map[y][position] = 13;
-							positionSet = true;
-						}
-					}
-					break;
-				case "down":
-					for (int y = 0; y < map.length; y++) {
-						if (map[y][position] == 11) {
-							map[y][position] = 14;
-							positionSet = true;
-						}
-					}
-					break;
-				case "right":
-					for (int x = 0; x < map[position].length; x++) {
-						if (map[position][x] == 10) {
-							map[position][x] = 15;
-							positionSet = true;
-						}
-					}
-					break;
-				case "left":
-					for (int x = 0; x < map[position].length; x++) {
-						if (map[position][x] == 12) {
-							map[position][x] = 16;
-							positionSet = true;
-						}
-					}
-					break;
-			}
-
-		} while (!positionSet);
-	}
 
 }
