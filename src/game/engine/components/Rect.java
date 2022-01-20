@@ -75,9 +75,27 @@ public class Rect {
 	 * @param y The y position of the point.
 	 * @return A boolean representing if the instance contains the point.
 	 */
-	public boolean contains(int x, int y) {
+	public boolean containsExclusive(int x, int y) {
 		return right > x && x > left
 			&& bottom > y && y > top;
+	}
+
+	/**
+	 * @see #containsExclusive(int, int)
+	 * @param point The point represented by an array.
+	 */
+	public boolean containsExclusive(int[] point) { return containsExclusive(point[0], point[1]); }
+
+	/**
+	 * A method which checks if a point lies on the Rect.
+	 * 
+	 * @param x The x position of the point.
+	 * @param y The y position of the point.
+	 * @return A boolean representing if the instance contains the point.
+	 */
+	public boolean contains(int x, int y) {
+		return right >= x && x >= left
+			&& bottom >= y && y >= top;
 	}
 
 	/**
@@ -85,7 +103,7 @@ public class Rect {
 	 * @param point The point represented by an array.
 	 */
 	public boolean contains(int[] point) { return contains(point[0], point[1]); }
-
+	
 	/**
 	 * A method which checks if a rect is within another.
 	 * 
@@ -97,14 +115,14 @@ public class Rect {
 	}
 
 	public boolean overlaps(Rect rect) {
-		return contains(rect.getTopLeft())
-			|| contains(rect.getTopRight())
-			|| contains(rect.getBottomLeft())
-			|| contains(rect.getBottomRight())
-			|| contains(rect.getMidTop())
-			|| contains(rect.getMidBottom())
-			|| contains(rect.getMidLeft())
-			|| contains(rect.getMidRight());
+		return containsExclusive(rect.getTopLeft())
+			|| containsExclusive(rect.getTopRight())
+			|| containsExclusive(rect.getBottomLeft())
+			|| containsExclusive(rect.getBottomRight())
+			|| containsExclusive(rect.getMidTop())
+			|| containsExclusive(rect.getMidBottom())
+			|| containsExclusive(rect.getMidLeft())
+			|| containsExclusive(rect.getMidRight());
 	}
 
 	/**

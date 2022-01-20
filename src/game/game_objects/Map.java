@@ -1,6 +1,5 @@
 package game.game_objects;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import game.game_objects.TileMap;
@@ -33,17 +32,18 @@ public class Map {
 		directions.put("left", "right");
 		directions.put("right", "left");
 
+		// Connect the rooms with each other.
 		for (int i = 0; i < rooms.length; i++) {
 			TileMap room = rooms[i];
 
-			if (room.connections.size() < MAX_CONNECTIONS) {
+			if (room.entrances.size() < MAX_CONNECTIONS) {
 				boolean makeConnection = false;
 				int randomRoom = 0;
 
-				for (int j = 0; j < 10; j++) {
+				for (int j = 0; j < 10; j++)  {
 					randomRoom = (int) (Math.random() * rooms.length);
 
-					if (rooms[randomRoom].connections.size() < MAX_CONNECTIONS
+					if (rooms[randomRoom].entrances.size() < MAX_CONNECTIONS
 						&& randomRoom != i
 						&& !room.has(rooms[randomRoom])) {
 
@@ -53,22 +53,13 @@ public class Map {
 				}
 
 				if (makeConnection) {
-					int randomDirection = (int) (Math.random() * directions.size());
-					String direction = String.valueOf(directions.keySet().toArray()[randomDirection]);
+					int randomDirectionIndex = (int) (Math.random() * directions.size());
+					String direction = String.valueOf(directions.keySet().toArray()[randomDirectionIndex]);
 
-					ArrayList<Object> currentRoomArray = new ArrayList<>();
-					currentRoomArray.add(rooms[randomRoom]);
-					currentRoomArray.add(direction);
-
-					ArrayList<Object> connectedRoomArray = new ArrayList<>();
-					connectedRoomArray.add(room);
-					connectedRoomArray.add(directions.get(direction));
-
-					rooms[randomRoom].addEntrance(directions.get(direction), room);
+					System.out.println("Initial side: " + direction);
+					System.out.println("Final side: " + directions.get(direction));
 					room.addEntrance(direction, rooms[randomRoom]);
-
-					room.connections.add(currentRoomArray);
-					rooms[randomRoom].connections.add(connectedRoomArray);
+					rooms[randomRoom].addEntrance(directions.get(direction), room);
 				}
 
 			}
@@ -77,12 +68,12 @@ public class Map {
 		for (TileMap room : rooms) {
 			room.createColliders();
 
-			for (int y = 0; y < room.map.length; y++) {
-				for (int x = 0; x < room.map[y].length; x++) {
-					System.out.printf("%-3d", room.map[y][x]);
-				}
-				System.out.println();
-			}
+			// for (int y = 0; y < room.map.length; y++) {
+			// 	for (int x = 0; x < room.map[y].length; x++) {
+			// 		System.out.printf("%-3d", room.map[y][x]);
+			// 	}
+			// 	System.out.println();
+			// }
 		}
 
 		currentRoom = rooms[0];

@@ -86,7 +86,7 @@ public class Application extends Canvas {
 				frames++;
 
 				if (System.currentTimeMillis() - time >= 1000) {
-						System.out.println("FPS: " + frames + " | Current scene: " + app.currentScene);
+						// System.out.println("FPS: " + frames + " | Current scene: " + app.currentScene);
 						time += 1000;
 						frames = 0;
 				}

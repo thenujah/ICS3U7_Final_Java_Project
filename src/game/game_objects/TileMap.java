@@ -26,14 +26,10 @@ public class TileMap {
 	private Rect[] rects;
 	private final int scale = 1;
 
-	public int[][] map;  // Will be depricated.
-
-	// private int[][][] map;  // Add the map as layers.
+	public int[][] map;
 
 	public ArrayList<Collider> walls = new ArrayList<>();
-
-	public ArrayList<ArrayList<Object>> connections = new ArrayList<>(); // Unnest
-	public ArrayList<Object[]> doors = new ArrayList<>();
+	public ArrayList<Object[]> entrances = new ArrayList<>();
 
 	public TileMap() {
 		int RECT_NUMBER = (int) (Math.random() * NUMBER_OF_RECTS) + 1;
@@ -150,8 +146,8 @@ public class TileMap {
 	}
 
 	public boolean has(TileMap tilemap) {
-		for (ArrayList<Object> list : connections) {
-			if (tilemap == list.get(0)) {
+		for (Object[] list : entrances) {
+			if (tilemap == list[1]) {
 				return true;
 			}
 		}
@@ -166,10 +162,6 @@ public class TileMap {
 			int[] row = new int[rightBound + 2];
 
 			for (int x = 0; x < row.length; x++) {
-
-				int[] position = { x * TILE_SIZE * scale, y * TILE_SIZE * scale };
-				int width, height;
-				width = height = TILE_SIZE * scale;
 
 				if (contains(new int[]{x, y})) { // inner
 					row[x] = 0;
@@ -216,25 +208,26 @@ public class TileMap {
 	}
 
 	public void addEntrance(String direction, TileMap connectingRoom) {
-		int maxPosition;
+		System.out.println(direction);
+
+		int maxPosition, xPos, yPos;
 		boolean positionSet = false;
+		xPos = yPos = 0;
 
 		if (direction.equals("up") || direction.equals("down")) maxPosition = map[0].length - 2;
 		else maxPosition = map.length - 2;
 
-		// TODO: Store the locations of the entrances so that special colliders can be added to them.
 		do {
 			int position = (int) (Math.random() * maxPosition) + 1;
 
-			int xPos, yPos, id;
-			xPos = yPos = id = 0;
+			xPos = yPos = 0;
 
 			switch (direction) {
 				case "up":
 					xPos = position;
 					for (int y = 0; y < map.length; y++) {
 						if (map[y][position] == 9) {
-							map[y][position] = id = 14;
+							map[y][position] = 14;
 							positionSet = true;
 							yPos = y;
 							break;
@@ -245,7 +238,7 @@ public class TileMap {
 					xPos = position;
 					for (int y = 0; y < map.length; y++) {
 						if (map[y][position] == 11) {
-							map[y][position] = id = 15;
+							map[y][position] = 15;
 							positionSet = true;
 							yPos = y;
 							break;
@@ -256,7 +249,7 @@ public class TileMap {
 					yPos = position;
 					for (int x = 0; x < map[position].length; x++) {
 						if (map[position][x] == 10) {
-							map[position][x] = id = 16;
+							map[position][x] = 16;
 							positionSet = true;
 							xPos = x;
 							break;
@@ -267,7 +260,7 @@ public class TileMap {
 					yPos = position;
 					for (int x = 0; x < map[position].length; x++) {
 						if (map[position][x] == 12) {
-							map[position][x] = id = 17;
+							map[position][x] = 17;
 							positionSet = true;
 							xPos = x;
 							break;
@@ -281,7 +274,10 @@ public class TileMap {
 			width = height = TILE_SIZE * scale;
 
 			if (positionSet)
-				doors.add(new Object[]{ new Collider(coordinates[0], coordinates[1], width, height), connectingRoom, id });
+				entrances.add(new Object[]{
+						new Collider(coordinates[0], coordinates[1], width, height),
+						connectingRoom,
+						direction });
 
 		} while (!positionSet);
 	}
@@ -331,7 +327,7 @@ public class TileMap {
 					case 12 -> Tiles.LEFT_WALL.getImage();
 					default -> null;
 				};
-
+			
 				g.drawImage(image, transform, null);
 			}
 		}
@@ -340,11 +336,10 @@ public class TileMap {
 			tile.debug(g);
 		}
 
-		for (Object[] entranceInfo : doors) {
+		for (Object[] entranceInfo : entrances) {
 			Collider collider = (Collider) entranceInfo[0];
 			collider.debug(g);
 		}
 	}
-
 
 }
