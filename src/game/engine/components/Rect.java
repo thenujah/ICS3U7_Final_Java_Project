@@ -27,7 +27,15 @@ public class Rect {
 	 * @param width The width of the Rect.
 	 * @param height The height of the Rect.
 	 */
-	public Rect(int x, int y, int width, int height) { this.update(x, y, width, height); }
+	public Rect(int x, int y, int width, int height) { update(x, y, width, height); }
+
+	/**
+	 * The constructor for a new Rect object.
+	 *
+	 * @param width The width of the Rect.
+	 * @param height The height of the Rect.
+	 */
+	public Rect(int width, int height) { update(0, 0, width, height); }
 
 	/**
 	 * A method which updates the positions of all the points on the rect as well as other 

@@ -1,5 +1,6 @@
 package game.game_objects;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -10,21 +11,21 @@ import java.util.Collections;
 
 import game.engine.components.Rect;
 import game.engine.components.Collider;
+import game.engine.util.Positioning;
 
 /**
  * The TileMap class creates randomly generated rooms for each level.
  *
- * @version 1.1
+ * @version 3.0
  * @since 1.0
  */
 public class TileMap {
 
 	public static final int SIZE = 16;
 	public static final int TILE_SIZE = 32;
-	public static final int NUMBER_OF_RECTS = 3;
+	public static final int MAX_NUMBER_OF_RECTS = 3;
 
 	private Rect[] rects;
-	private final int scale = 1;
 
 	public int[][] map;
 
@@ -32,7 +33,7 @@ public class TileMap {
 	public ArrayList<Object[]> entrances = new ArrayList<>();
 
 	public TileMap() {
-		int RECT_NUMBER = (int) (Math.random() * NUMBER_OF_RECTS) + 1;
+		int RECT_NUMBER = (int) (Math.random() * MAX_NUMBER_OF_RECTS) + 1;
 
 		rects = new Rect[RECT_NUMBER];
 
@@ -164,41 +165,41 @@ public class TileMap {
 			for (int x = 0; x < row.length; x++) {
 
 				if (contains(new int[]{x, y})) { // inner
-					row[x] = 0;
+					row[x] = 1;
 				} else if (contains(new int[]{x + 1, y + 1}) && 
 					!(contains(new int[]{x + 1, y}) || contains(new int[]{x, y + 1}))) { // top left inward
-					row[x] = 1;
+					row[x] = 2;
 				} else if (contains(new int[]{x - 1, y - 1}) && 
 					!(contains(new int[]{x - 1, y}) || contains(new int[]{x, y - 1}))) { // bottom right inward
-					row[x] = 2;
+					row[x] = 3;
 				} else if (contains(new int[]{x - 1, y + 1}) && 
 					!(contains(new int[]{x - 1, y}) || contains(new int[]{x, y + 1}))) { // top tight inward
-					row[x] = 3;
+					row[x] = 4;
 				} else if (contains(new int[]{x + 1, y - 1}) &&
 					!(contains(new int[]{x + 1, y}) || contains(new int[]{x, y - 1}))) { // bottom left inward
-					row[x] = 4;
+					row[x] = 5;
 				} else if (contains(new int[]{x - 1, y - 1}) &&
 						contains(new int[]{x - 1, y}) && contains(new int[]{x, y - 1})) { // top left outward
-					row[x] = 5;
+					row[x] = 6;
 				} else if (contains(new int[]{x + 1, y - 1}) &&
 						contains(new int[]{x + 1, y}) && contains(new int[]{x, y - 1})) { // top right outward
-					row[x] = 6;
+					row[x] = 7;
 				} else if (contains(new int[]{x + 1, y + 1}) && 
 					contains(new int[]{x + 1, y}) && contains(new int[]{x, y + 1})) { // bottom right outward
-					row[x] = 7;
+					row[x] = 8;
 				} else if (contains(new int[]{x - 1, y + 1}) && 
 					contains(new int[]{x - 1, y}) && contains(new int[]{x, y + 1})) { // bottom left outward
-					row[x] = 8;
-				} else if (contains(new int[]{x, y + 1})) { // top
 					row[x] = 9;
-				} else if (contains(new int[]{x - 1, y})) { // right
+				} else if (contains(new int[]{x, y + 1})) { // up
 					row[x] = 10;
-				} else if (contains(new int[]{x, y - 1})) { // bottom
+				} else if (contains(new int[]{x - 1, y})) { // right
 					row[x] = 11;
-				} else if (contains(new int[]{x + 1, y})) { // left
+				} else if (contains(new int[]{x, y - 1})) { // down
 					row[x] = 12;
-				} else {
+				} else if (contains(new int[]{x + 1, y})) { // left
 					row[x] = 13;
+				} else {
+					row[x] = 0;
 				}
 			}
 			map[y] = row;
@@ -208,8 +209,6 @@ public class TileMap {
 	}
 
 	public void addEntrance(String direction, TileMap connectingRoom) {
-		System.out.println(direction);
-
 		int maxPosition, xPos, yPos;
 		boolean positionSet = false;
 		xPos = yPos = 0;
@@ -220,62 +219,63 @@ public class TileMap {
 		do {
 			int position = (int) (Math.random() * maxPosition) + 1;
 
-			xPos = yPos = 0;
+			int width, height;
+			width = height = TILE_SIZE;
 
 			switch (direction) {
 				case "up":
-					xPos = position;
+					xPos = position * TILE_SIZE;
 					for (int y = 0; y < map.length; y++) {
-						if (map[y][position] == 9) {
+						if (map[y][position] == 10) {
 							map[y][position] = 14;
 							positionSet = true;
-							yPos = y;
+							yPos = y * TILE_SIZE;
+							height /= 2;
 							break;
 						}
 					}
 					break;
 				case "down":
-					xPos = position;
+					xPos = position * TILE_SIZE;
 					for (int y = 0; y < map.length; y++) {
-						if (map[y][position] == 11) {
+						if (map[y][position] == 12) {
 							map[y][position] = 15;
 							positionSet = true;
-							yPos = y;
+							yPos = y * TILE_SIZE + height / 2;
+							height /= 2;
 							break;
 						}
 					}
 					break;
 				case "right":
-					yPos = position;
+					yPos = position * TILE_SIZE;
 					for (int x = 0; x < map[position].length; x++) {
-						if (map[position][x] == 10) {
+						if (map[position][x] == 11) {
 							map[position][x] = 16;
 							positionSet = true;
-							xPos = x;
+							xPos = x * TILE_SIZE;
 							break;
 						}
 					}
 					break;
 				case "left":
-					yPos = position;
+					yPos = position * TILE_SIZE;
 					for (int x = 0; x < map[position].length; x++) {
-						if (map[position][x] == 12) {
+						if (map[position][x] == 13) {
 							map[position][x] = 17;
 							positionSet = true;
-							xPos = x;
+							xPos = x * TILE_SIZE;
 							break;
 						}
 					}
 					break;
 			}
 
-			int[] coordinates = { xPos * TILE_SIZE * scale, yPos * TILE_SIZE * scale };
-			int width, height;
-			width = height = TILE_SIZE * scale;
+			// int[] coordinates = { xPos * TILE_SIZE, yPos * TILE_SIZE };
 
 			if (positionSet)
 				entrances.add(new Object[]{
-						new Collider(coordinates[0], coordinates[1], width, height),
+						new Collider(xPos, yPos, width, height),
 						connectingRoom,
 						direction });
 
@@ -288,50 +288,99 @@ public class TileMap {
 
 				int tile = map[y][x];
 
-				int[] position = { x * TILE_SIZE * scale, y * TILE_SIZE * scale };
+				int[] position = { x * TILE_SIZE, y * TILE_SIZE };
 				int width, height;
-				width = height = TILE_SIZE * scale;
+				width = height = TILE_SIZE;
 
 				switch (tile) {
-					case 1, 2, 3, 4, 10, 12 -> walls.add(new Collider(position[0], position[1], width, height));
-					case 5, 6, 11 -> walls.add(new Collider(position[0], position[1] + height / 2, width, height / 2));
-					case 7, 8, 9 -> walls.add(new Collider(position[0], position[1], width, height / 2));
+					case 2, 3, 4, 5, 11, 13 -> walls.add(new Collider(position[0], position[1], width, height));
+					case 6, 7, 12 -> walls.add(new Collider(position[0], position[1] + height / 2, width, height / 2));
+					case 8, 9, 10 -> walls.add(new Collider(position[0], position[1], width, height / 2));
 				}
 			}
 		}
 
 	}
 
-	public void render(Graphics2D g) {
+	public void renderGround(Graphics2D g, int[] translation, double scale) {
 		for (int y = 0; y < map.length; y++) {
 			for (int x = 0; x < map[y].length; x++) {
 				int tile = map[y][x];
-
-				AffineTransform transform = new AffineTransform();
-				transform.translate(x * TILE_SIZE * scale, y * TILE_SIZE * scale);
-				transform.scale(scale, scale);
-
+				
 				BufferedImage image = switch (tile) {
-					case 0 -> Tiles.GROUND.getImage();
-					case 1 -> Tiles.LARGE_TOP_LEFT_CORNER.getImage();
-					case 2 -> Tiles.LARGE_BOTTOM_RIGHT_CORNER.getImage();
-					case 3 -> Tiles.LARGE_TOP_RIGHT_CORNER.getImage();
-					case 4 -> Tiles.LARGE_BOTTOM_LEFT_CORNER.getImage();
-					case 5 -> Tiles.SMALL_BOTTOM_RIGHT_CORNER.getImage();
-					case 6 -> Tiles.SMALL_BOTTOM_LEFT_CORNER.getImage();
-					case 7 -> Tiles.SMALL_TOP_LEFT_CORNER.getImage();
-					case 8 -> Tiles.SMALL_TOP_RIGHT_CORNER.getImage();
-					case 9 -> Tiles.TOP_WALL.getImage();
-					case 10 -> Tiles.RIGHT_WALL.getImage();
-					case 11 -> Tiles.BOTTOM_WALL.getImage();
-					case 12 -> Tiles.LEFT_WALL.getImage();
-					default -> null;
+					case 0 -> null;
+					default -> Tiles.GROUND.getImage();
 				};
 			
-				g.drawImage(image, transform, null);
+				if (image != null) {
+					AffineTransform transform = new AffineTransform();
+					transform.translate(x * TILE_SIZE * scale - translation[0],
+										y * TILE_SIZE * scale - translation[1]);
+					transform.scale(scale, scale);
+					g.drawImage(image, transform, null);
+				}
+
 			}
 		}
+	}
 
+	public void renderBackground(Graphics2D g, int[] translation, double scale) {
+		for (int y = 0; y < map.length; y++) {
+			for (int x = 0; x < map[y].length; x++) {
+				int tile = map[y][x];
+				
+				BufferedImage image = switch (tile) {
+					case 2 -> Tiles.LARGE_TOP_LEFT_CORNER.getImage();
+					case 4 -> Tiles.LARGE_TOP_RIGHT_CORNER.getImage();
+					case 8 -> Tiles.SMALL_TOP_RIGHT_CORNER.getImage();
+					case 9 -> Tiles.SMALL_TOP_LEFT_CORNER.getImage();
+					case 10 -> Tiles.TOP_WALL.getImage();
+					case 11 -> Tiles.RIGHT_WALL.getImage();
+					case 13 -> Tiles.LEFT_WALL.getImage();
+					case 14 -> Tiles.TOP_DOOR.getImage();
+					case 16 -> Tiles.RIGHT_DOOR.getImage();
+					case 17 -> Tiles.LEFT_DOOR.getImage();
+					default -> null;
+				};
+				
+				if (image != null) {
+					AffineTransform transform = new AffineTransform();
+					transform.translate(x * TILE_SIZE * scale - translation[0],
+										y * TILE_SIZE * scale - translation[1]);
+					transform.scale(scale, scale);
+					g.drawImage(image, transform, null);
+				}
+			}
+		}
+	}
+
+	public void renderForeground(Graphics2D g, int[] translation, double scale) {
+		for (int y = 0; y < map.length; y++) {
+			for (int x = 0; x < map[y].length; x++) {
+				int tile = map[y][x];
+				
+				BufferedImage image = switch (tile) {
+					case 3 -> Tiles.LARGE_BOTTOM_RIGHT_CORNER.getImage();
+					case 5 -> Tiles.LARGE_BOTTOM_LEFT_CORNER.getImage();
+					case 6 -> Tiles.SMALL_BOTTOM_LEFT_CORNER.getImage();
+					case 7 -> Tiles.SMALL_BOTTOM_RIGHT_CORNER.getImage();
+					case 12 -> Tiles.BOTTOM_WALL.getImage();
+					case 15 -> Tiles.BOTTOM_DOOR.getImage();
+					default -> null;
+				};
+				
+				if (image != null) {
+					AffineTransform transform = new AffineTransform();
+					transform.translate(x * TILE_SIZE * scale - translation[0],
+										y * TILE_SIZE * scale - translation[1]);
+					transform.scale(scale, scale);
+					g.drawImage(image, transform, null);
+				}
+			}
+		}
+	}
+
+	public void debug(Graphics2D g) {
 		for (Collider tile : walls) {
 			tile.debug(g);
 		}

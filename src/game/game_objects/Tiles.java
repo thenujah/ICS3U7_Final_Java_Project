@@ -6,19 +6,23 @@ import java.io.File;
 import java.io.IOException;
 
 public enum Tiles {
-    GROUND ("./assets/ground.png"),
-    TOP_WALL ("./assets/top_wall.png"),
-    BOTTOM_WALL ("./assets/bottom_wall.png"),
-    LEFT_WALL ("./assets/left_wall.png"),
-    RIGHT_WALL ("./assets/right_wall.png"),
-    LARGE_TOP_LEFT_CORNER ("./assets/large_top_left_corner.png"),
-    LARGE_TOP_RIGHT_CORNER ("./assets/large_top_right_corner.png"),
-    LARGE_BOTTOM_LEFT_CORNER ("./assets/large_bottom_left_corner.png"),
-    LARGE_BOTTOM_RIGHT_CORNER ("./assets/large_bottom_right_corner.png"),
-    SMALL_TOP_LEFT_CORNER ("./assets/small_top_left_corner.png"),
-    SMALL_TOP_RIGHT_CORNER ("./assets/small_top_right_corner.png"),
-    SMALL_BOTTOM_LEFT_CORNER ("./assets/small_bottom_left_corner.png"),
-    SMALL_BOTTOM_RIGHT_CORNER ("./assets/small_bottom_right_corner.png");
+    GROUND ("./assets/Ground.png"),
+    TOP_WALL ("./assets/Top.png"),
+    BOTTOM_WALL ("./assets/Bottom.png"),
+    LEFT_WALL ("./assets/LeftSide.png"),
+    RIGHT_WALL ("./assets/RightSide.png"),
+    LARGE_TOP_LEFT_CORNER ("./assets/TopLeftOuterCorner.png"),
+    LARGE_TOP_RIGHT_CORNER ("./assets/TopRightOuterCorner.png"),
+    LARGE_BOTTOM_LEFT_CORNER ("./assets/BottomLeftOuterCorner.png"),
+    LARGE_BOTTOM_RIGHT_CORNER ("./assets/BottomRightOuterCorner.png"),
+    SMALL_TOP_LEFT_CORNER ("./assets/TopLeftInnerCorner.png"),
+    SMALL_TOP_RIGHT_CORNER ("./assets/TopRightInnerCorner.png"),
+    SMALL_BOTTOM_LEFT_CORNER ("./assets/BottomLeftInnerCorner.png"),
+    SMALL_BOTTOM_RIGHT_CORNER ("./assets/BottomRightInnerCorner.png"),
+    TOP_DOOR ("./assets/TopDoor.png"),
+    BOTTOM_DOOR ("./assets/BottomDoor.png"),
+    RIGHT_DOOR ("./assets/RightDoor.png"),
+    LEFT_DOOR ("./assets/LeftDoor.png");
 
     private BufferedImage image;
 
@@ -33,3 +37,18 @@ public enum Tiles {
     public BufferedImage getImage() { return image; }
 
 }
+
+
+    // GROUND ("./assets/Ground.png"),
+    // TOP_WALL ("./assets/Top.png"),
+    // BOTTOM_WALL ("./assets/Bottom.png"),
+    // LEFT_WALL ("./assets/SideLeft.png"),
+    // RIGHT_WALL ("./assets/SideRight.png"),
+    // LARGE_TOP_LEFT_CORNER ("./assets/TopLeftOuterCorner.png"),
+    // LARGE_TOP_RIGHT_CORNER ("./assets/TopRightOuterCorner.png"),
+    // LARGE_BOTTOM_LEFT_CORNER ("./assets/BottomLeftOuterCorner.png"),
+    // LARGE_BOTTOM_RIGHT_CORNER ("./assets/BottomRightOuterCorner.png"),
+    // SMALL_TOP_LEFT_CORNER ("./assets/TopLeftInnerCorner.png"),
+    // SMALL_TOP_RIGHT_CORNER ("./assets/TopRightInnerCorner.png"),
+    // SMALL_BOTTOM_LEFT_CORNER ("./assets/BottomLeftInnerCorner.png"),
+    // SMALL_BOTTOM_RIGHT_CORNER ("./assets/BottomRightInnerCorner.png");

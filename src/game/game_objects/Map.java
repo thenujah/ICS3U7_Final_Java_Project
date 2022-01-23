@@ -3,6 +3,7 @@ package game.game_objects;
 import java.util.HashMap;
 
 import game.game_objects.TileMap;
+import game.engine.util.Positioning;
 
 /**
  * The TileMap class creates randomly generated rooms for each level.
@@ -26,12 +27,6 @@ public class Map {
 			rooms[i] = new TileMap();
 		}
 
-		HashMap<String, String> directions = new HashMap<>();
-		directions.put("up", "down");
-		directions.put("down", "up");
-		directions.put("left", "right");
-		directions.put("right", "left");
-
 		// Connect the rooms with each other.
 		for (int i = 0; i < rooms.length; i++) {
 			TileMap room = rooms[i];
@@ -53,13 +48,14 @@ public class Map {
 				}
 
 				if (makeConnection) {
-					int randomDirectionIndex = (int) (Math.random() * directions.size());
-					String direction = String.valueOf(directions.keySet().toArray()[randomDirectionIndex]);
+					int randomDirectionIndex = (int) (Math.random() 
+						* Positioning.directions.size());
 
-					System.out.println("Initial side: " + direction);
-					System.out.println("Final side: " + directions.get(direction));
+					String direction = Positioning.directions.get(randomDirectionIndex);
+
 					room.addEntrance(direction, rooms[randomRoom]);
-					rooms[randomRoom].addEntrance(directions.get(direction), room);
+					rooms[randomRoom].addEntrance(
+						Positioning.oppositeDirections.get(direction), room);
 				}
 
 			}
@@ -67,13 +63,6 @@ public class Map {
 
 		for (TileMap room : rooms) {
 			room.createColliders();
-
-			// for (int y = 0; y < room.map.length; y++) {
-			// 	for (int x = 0; x < room.map[y].length; x++) {
-			// 		System.out.printf("%-3d", room.map[y][x]);
-			// 	}
-			// 	System.out.println();
-			// }
 		}
 
 		currentRoom = rooms[0];
