@@ -93,7 +93,10 @@ public class MouseInput extends MouseAdapter {
 	}
 
 	/**
+	 * A method which checks if a specified button of the mouse was pressed.
 	 * 
+	 * @param button A number representing one of three buttons on a mouse.
+	 * @return A boolean representing if the button is pressed.
 	 */
 	public static boolean isPressed(int button) {
 		switch (button) {
@@ -108,7 +111,10 @@ public class MouseInput extends MouseAdapter {
 	}
 
 	/**
-	 *
+	 * A method which checks if a mouse button was pressed in the last frame.
+	 * 
+	 * @param button A numbet representing one of three buttons on a mouse.
+	 * @return A boolean representing if a button is pressed.
 	 */
 	public static boolean isClicked(int button) {
 		switch (button) {
@@ -122,7 +128,14 @@ public class MouseInput extends MouseAdapter {
 		return false;
 	}
 
+    /**
+	 * The getter method for the x positon of the mouse.
+	 */
 	public static int getX() { return x; }
+
+	/**
+	 * The getter method for the y position of the mouse.
+	 */
 	public static int getY() { return y; }
 
 }

@@ -20,6 +20,8 @@ public class Camera {
 
 	/**
 	 * A method which updates the offset of the camera.
+	 * 
+	 * @param rect The rect which will be the followed by the camera.
 	 */
 	public void update(Rect rect) {
 		offsets[0] += (rect.getCenter()[0] * scale - offsets[0] - Positioning.SCREEN_CENTER_X) / lag;
