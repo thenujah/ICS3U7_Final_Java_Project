@@ -28,13 +28,11 @@ public class Attack {
 			isAttacking = true;
 			animation.play();
 		}
-		// System.out.println(x);
 
 		rect.setTopLeft(x - 10, y - 15); // TODO: Remove the magic values.
 	}
 
 	public void render(Graphics2D g, int[] translation, double scale) {
-		// System.out.println(rect.getY());
 		animation.render(g, translation, scale);
 	}
 

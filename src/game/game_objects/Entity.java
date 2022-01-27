@@ -12,6 +12,9 @@ import javax.imageio.ImageIO;
 import game.engine.components.Collider;
 import game.engine.components.Rect;
 
+/**
+ * A class which all Entities inherit.
+ */
 public abstract class Entity {
 
 	protected BufferedImage image;
@@ -22,6 +25,11 @@ public abstract class Entity {
 	protected int width;
 	protected int height;
 
+    /**
+	 * The constructor for the Entity class.
+	 * 
+	 * @param imagePath The path to the image of the Entity.
+	 */
 	public Entity(String imagePath) {
 		try {
             image = ImageIO.read(new File(imagePath));

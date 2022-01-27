@@ -12,6 +12,9 @@ public abstract class Scene {
 
 	protected AppManager app;
 
+    /**
+	 * The constructor for the Scene class.
+	 */
 	public Scene(AppManager app) {
 		this.app = app;
 	}

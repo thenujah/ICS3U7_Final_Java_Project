@@ -33,7 +33,7 @@ public class Player extends Entity {
 
 		swipe = new Attack(this.sprite);
 		System.out.println("here");
-		swipe.addAnimation(new Animation("./assets/swipe", 10));
+		swipe.addAnimation(new Animation("./assets/swipe", 12));
 	}
 
 	public void update(TileMap tilemap, Map level) {

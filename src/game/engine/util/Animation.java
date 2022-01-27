@@ -15,6 +15,9 @@ import javax.imageio.ImageIO;
 
 import game.engine.components.Rect;
 
+/**
+ * A class which stores frames of an animation.
+ */
 public class Animation {
 
 	public static int FPS = 60;
@@ -29,6 +32,12 @@ public class Animation {
 
 	private Rect rect;
 
+    /**
+	 * The constructor for the Animation class.
+	 * 
+	 * @param path The path to the folder with the frames of the animation.
+	 * @param fps The frames per second the animation plays at.
+	 */
 	public Animation(String path, int fps) {
 		this.fps = fps;
 		interval = FPS / fps;
@@ -37,6 +46,7 @@ public class Animation {
 		File[] files = folder.listFiles();
 		Arrays.sort(files, Comparator.comparingLong(File::lastModified));
 
+        // Getting all the frames from the folder and putting them in an ArrayList.
 		for (int i = 0; i < files.length; i++) {
 			if (files[i].getName().endsWith(".png")) {
 				try {
@@ -48,13 +58,24 @@ public class Animation {
 				}
 			}
 		}
+
+		// Generate a Rect of the same size as the images.
 		rect = new Rect(frames.get(0).getWidth(), frames.get(0).getHeight());
 	}
 
+    /**
+	 * A method used to allow the animation to play.
+	 */
 	public void play() { isPlaying = true; }
 
+    /**
+	 * A getter method for the Rect of the animation.
+	 */
 	public Rect getRect() { return rect; }
 
+    /**
+	 * A method which determines which frame of the animation gets shown.
+	 */
 	private void updateFrame() {
 		currentFrame = (int) Math.round((double) duration / interval);
 
@@ -66,6 +87,9 @@ public class Animation {
 		}
 	}
 
+    /**
+	 * A method which renders the current frame of the animation.
+	 */
 	public void render(Graphics2D g, int[] translation, double scale) {
 		if (isPlaying) {
 			updateFrame();

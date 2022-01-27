@@ -15,15 +15,26 @@ public class Collider {
 	public Rect rect;
 	public Rect sprite;
 
+    /**
+	 * The constructor for the Collider.
+	 *
+	 * @param rect The rect of the Entity that this Collider belongs to.
+	 */
 	public Collider(Rect rect) {
 		sprite = rect;
 		this.rect = new Rect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
 	}
 
+    /**
+	 * @see #Collider(Rect)
+	 */
 	public Collider(int x, int y, int width, int height) {
 		rect = new Rect(x, y, width, height);
 	}
 
+    /**
+	 * A method which specifies the sprite the Collider belongs to.
+	 */
 	public void addSprite(Rect rect) { sprite = rect; }
 
 	public boolean rightCollision(Rect rect) { 
