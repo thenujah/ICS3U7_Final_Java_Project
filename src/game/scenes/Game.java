@@ -21,11 +21,9 @@ import game.engine.util.KeyboardInput;
 public class Game extends Scene {
 
 	public Player play;
-	public Enemy attack;
 	private int numberOfEnemies;
 	private Enemy[] enemies;
 	private Button backButton;
-	Player player;
 
 	public Game(AppManager app) {
 		super(app);
@@ -49,18 +47,18 @@ public class Game extends Scene {
 
 		enemies = new Enemy [numberOfEnemies];
 		
-		for (int i = 0 ; i < numberOfEnemies; i++) {
-			enemies[i] = new Enemy();
-		}
+		// for (int i = 0 ; i < numberOfEnemies; i++) {
+		// 	// enemies[i] = new Enemy();
+		// }
 
 		}
 
 	public void update() {
-		play.movement();
+		// play.movement();
 		
-		for (int i = 0 ; i <= numberOfEnemies; i++) {
-			enemies[i].movement(play.rect.getTopLeft());
-		}
+		// for (int i = 0 ; i <= numberOfEnemies; i++) {
+		// 	enemies[i].movement(play.sprite.getTopLeft());
+		// }
 		
 		if (backButton.isClicked()) {
 			app.currentScene = "main menu";
@@ -69,11 +67,11 @@ public class Game extends Scene {
 	}
 
 	public void render(Graphics2D g) {
-		play.render(g);
+		// play.render(g);
 		
-		for (int i = 0 ; i <= numberOfEnemies; i++) {
-			enemies[i].render(g);
-		}
+		// for (int i = 0 ; i <= numberOfEnemies; i++) {
+		// 	enemies[i].render(g);
+		// }
 		
 		backButton.render(g);
 	}

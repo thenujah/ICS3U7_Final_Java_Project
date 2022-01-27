@@ -37,18 +37,3 @@ public enum Tiles {
     public BufferedImage getImage() { return image; }
 
 }
-
-
-    // GROUND ("./assets/Ground.png"),
-    // TOP_WALL ("./assets/Top.png"),
-    // BOTTOM_WALL ("./assets/Bottom.png"),
-    // LEFT_WALL ("./assets/SideLeft.png"),
-    // RIGHT_WALL ("./assets/SideRight.png"),
-    // LARGE_TOP_LEFT_CORNER ("./assets/TopLeftOuterCorner.png"),
-    // LARGE_TOP_RIGHT_CORNER ("./assets/TopRightOuterCorner.png"),
-    // LARGE_BOTTOM_LEFT_CORNER ("./assets/BottomLeftOuterCorner.png"),
-    // LARGE_BOTTOM_RIGHT_CORNER ("./assets/BottomRightOuterCorner.png"),
-    // SMALL_TOP_LEFT_CORNER ("./assets/TopLeftInnerCorner.png"),
-    // SMALL_TOP_RIGHT_CORNER ("./assets/TopRightInnerCorner.png"),
-    // SMALL_BOTTOM_LEFT_CORNER ("./assets/BottomLeftInnerCorner.png"),
-    // SMALL_BOTTOM_RIGHT_CORNER ("./assets/BottomRightInnerCorner.png");

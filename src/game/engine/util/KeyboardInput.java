@@ -19,7 +19,7 @@ public class KeyboardInput extends KeyAdapter {
 	 * key.
 	 */
 	public KeyboardInput() {
-		String[] keys = { "w", "a", "s", "d", "space",};
+		String[] keys = { "w", "a", "s", "d", "space", "esc" };
 		for (String key : keys) keysPressed.put(key, false);
 	}
 
@@ -33,21 +33,12 @@ public class KeyboardInput extends KeyAdapter {
 		int key = e.getKeyCode();
 
 		switch (key) {
-		case 32: 
-			keysPressed.put("space", true);
-			break;
-		case 65:
-			keysPressed.put("a", true);
-			break;
-		case 68:
-			keysPressed.put("d", true);
-			break;
-		case 83:
-			keysPressed.put("s", true);
-			break;
-		case 87:
-			keysPressed.put("w", true);
-			break;
+			case 27 -> keysPressed.put("esc", true);
+			case 32 -> keysPressed.put("space", true);
+			case 65 -> keysPressed.put("a", true);
+			case 68 -> keysPressed.put("d", true);
+			case 83 -> keysPressed.put("s", true);
+			case 87 -> keysPressed.put("w", true);
 		}
 	}
 
@@ -61,21 +52,12 @@ public class KeyboardInput extends KeyAdapter {
 		int key = e.getKeyCode();
 
 		switch (key) {
-		case 32: 
-			keysPressed.put("space", false);
-			break;
-		case 65:
-			keysPressed.put("a", false);
-			break;
-		case 68:
-			keysPressed.put("d", false);
-			break;
-		case 83:
-			keysPressed.put("s", false);
-			break;
-		case 87:
-			keysPressed.put("w", false);
-			break;
+			case 27 -> keysPressed.put("esc", true);
+			case 32 -> keysPressed.put("space", false);
+			case 65 -> keysPressed.put("a", false);
+			case 68 -> keysPressed.put("d", false);
+			case 83 -> keysPressed.put("s", false);
+			case 87 -> keysPressed.put("w", false);
 		}
 	}
 

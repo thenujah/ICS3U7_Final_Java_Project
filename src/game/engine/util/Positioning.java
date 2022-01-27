@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.List;
 
+import game.game_objects.TileMap;
+
 /**
  * A class with some methods and variables used for positioning.
  * 
@@ -54,6 +56,26 @@ public class Positioning {
 	 */
 	public static int[] averagePos(int[] firstPos, int[] secondPos) {
 		return new int[]{(firstPos[0] + secondPos[0]) / 2, (firstPos[1] + secondPos[1]) / 2};
+	}
+
+		/**
+	 * A method to generate a random position that is within a tilemap.
+	 * 
+	 * @param tilemap The TileMap that the position must be within.
+	 * 
+	 * @return The position generated.
+	 */
+	public static int[] generateRandomPositionWithin(TileMap tilemap) {
+		int[] position = new int[2];
+
+		while (true) {
+			position[0] = (int) (Math.random() * tilemap.rect.getRight()) + tilemap.rect.getLeft();
+			position[1] = (int) (Math.random() * tilemap.rect.getBottom()) + tilemap.rect.getTop();
+
+			if (tilemap.contains(new int[] { position[0] / TILE_SIZE, position[1] / TILE_SIZE })) {
+				return position;
+			}
+		}
 	}
 	
 }

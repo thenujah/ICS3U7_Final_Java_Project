@@ -12,32 +12,32 @@ public class Camera {
 	private final int lag = 25;
 	
 	private double[] offsets = new double[2];
-	private int xTranslation = 0;
-	private int yTranslation = 0;
 	private double scale = 1;
-	private Map level;
 
 	public Camera(double scale) {
 		this.scale = scale;
 	}
 
+	/**
+	 * A method which updates the offset of the camera.
+	 */
 	public void update(Rect rect) {
-		offsets[0] += (rect.getX() * scale - offsets[0] - Positioning.SCREEN_CENTER_X + rect.getWidth() * scale)
-					  / lag;
-
-		offsets[1] += (rect.getY() * scale - offsets[1] - Positioning.SCREEN_CENTER_Y + rect.getHeight() * scale)
-					  / lag;
+		offsets[0] += (rect.getCenter()[0] * scale - offsets[0] - Positioning.SCREEN_CENTER_X) / lag;
+		offsets[1] += (rect.getCenter()[1] * scale - offsets[1] - Positioning.SCREEN_CENTER_Y) / lag;
 	}
 
+	/**
+	 * A getter method for the scale.
+	 * 
+	 * @return The amount the graphics need to be offset.
+	 */
 	public int[] getTranslation() { return new int[]{ (int) offsets[0], (int) offsets[1] }; }
 
-	public double getScale() { return scale; }
-
 	/**
-	 * A setter method for the current map of the game.
+	 * A getter method for the scale.
 	 * 
-	 * @param level The map which contains the tilemaps.
+	 * @return The scale of the camera.
 	 */
-	public void setMap(Map level) { this.level = level; }
+	public double getScale() { return scale; }
 
 }

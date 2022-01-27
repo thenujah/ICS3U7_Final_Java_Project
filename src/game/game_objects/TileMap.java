@@ -21,16 +21,17 @@ import game.engine.util.Positioning;
  */
 public class TileMap {
 
-	public static final int SIZE = 16;
-	public static final int TILE_SIZE = 32;
-	public static final int MAX_NUMBER_OF_RECTS = 3;
+	private static final int MAX_NUMBER_OF_RECTS = 3;
 
 	private Rect[] rects;
+	public Rect rect;
 
 	public int[][] map;
 
 	public ArrayList<Collider> walls = new ArrayList<>();
 	public ArrayList<Object[]> entrances = new ArrayList<>();
+
+	public Enemy[] enemies;
 
 	public TileMap() {
 		int RECT_NUMBER = (int) (Math.random() * MAX_NUMBER_OF_RECTS) + 1;
@@ -71,14 +72,10 @@ public class TileMap {
 		bottom -= top - 1;
 		left = top = 1;
 
-		map = generateBorders(right, bottom);
+		rect = new Rect(top * Positioning.TILE_SIZE, left * Positioning.TILE_SIZE,
+			(right - left) * Positioning.TILE_SIZE, (bottom - top) * Positioning.TILE_SIZE);
 
-		// for (int y = 0; y < map.length; y++) {
-		// 	for (int x = 0; x < map[y].length; x++) {
-		// 		System.out.printf("%-3d", map[y][x]);
-		// 	}
-		// 	System.out.println();
-		// }
+		map = generateBorders(right, bottom);
 	}
 
 	/**
@@ -88,7 +85,7 @@ public class TileMap {
 	 */
 	private Rect randomRect() {
 		final int MIN_SIZE = 4;
-		final int MAX_SIZE = TileMap.SIZE - 4;
+		final int MAX_SIZE = 12;
 
 		int width = (int) (Math.random() * (MAX_SIZE - MIN_SIZE)) + MIN_SIZE;
 		int height = (int) (Math.random() * (MAX_SIZE - MIN_SIZE)) + MIN_SIZE;
@@ -131,6 +128,9 @@ public class TileMap {
 		}
 	}
 
+	// TODO: Fix the bug which causes a 1 by X row/column to form in the tilemap and mess up the 
+	// 	 border generation.
+
 	/**
 	 * A method which checks if a position is within the tile map.
 	 *
@@ -146,7 +146,7 @@ public class TileMap {
 		return false;
 	}
 
-	public boolean has(TileMap tilemap) {
+	public boolean connectedTo(TileMap tilemap) { // TODO: Refactor to 'connectedTo'
 		for (Object[] list : entrances) {
 			if (tilemap == list[1]) {
 				return true;
@@ -220,58 +220,56 @@ public class TileMap {
 			int position = (int) (Math.random() * maxPosition) + 1;
 
 			int width, height;
-			width = height = TILE_SIZE;
+			width = height = Positioning.TILE_SIZE;
 
 			switch (direction) {
 				case "up":
-					xPos = position * TILE_SIZE;
+					xPos = position * Positioning.TILE_SIZE;
 					for (int y = 0; y < map.length; y++) {
 						if (map[y][position] == 10) {
 							map[y][position] = 14;
 							positionSet = true;
-							yPos = y * TILE_SIZE;
+							yPos = y * Positioning.TILE_SIZE;
 							height /= 2;
 							break;
 						}
 					}
 					break;
 				case "down":
-					xPos = position * TILE_SIZE;
+					xPos = position * Positioning.TILE_SIZE;
 					for (int y = 0; y < map.length; y++) {
 						if (map[y][position] == 12) {
 							map[y][position] = 15;
 							positionSet = true;
-							yPos = y * TILE_SIZE + height / 2;
+							yPos = y * Positioning.TILE_SIZE + height / 2;
 							height /= 2;
 							break;
 						}
 					}
 					break;
 				case "right":
-					yPos = position * TILE_SIZE;
+					yPos = position * Positioning.TILE_SIZE;
 					for (int x = 0; x < map[position].length; x++) {
 						if (map[position][x] == 11) {
 							map[position][x] = 16;
 							positionSet = true;
-							xPos = x * TILE_SIZE;
+							xPos = x * Positioning.TILE_SIZE;
 							break;
 						}
 					}
 					break;
 				case "left":
-					yPos = position * TILE_SIZE;
+					yPos = position * Positioning.TILE_SIZE;
 					for (int x = 0; x < map[position].length; x++) {
 						if (map[position][x] == 13) {
 							map[position][x] = 17;
 							positionSet = true;
-							xPos = x * TILE_SIZE;
+							xPos = x * Positioning.TILE_SIZE;
 							break;
 						}
 					}
 					break;
 			}
-
-			// int[] coordinates = { xPos * TILE_SIZE, yPos * TILE_SIZE };
 
 			if (positionSet)
 				entrances.add(new Object[]{
@@ -288,9 +286,9 @@ public class TileMap {
 
 				int tile = map[y][x];
 
-				int[] position = { x * TILE_SIZE, y * TILE_SIZE };
+				int[] position = { x * Positioning.TILE_SIZE, y * Positioning.TILE_SIZE };
 				int width, height;
-				width = height = TILE_SIZE;
+				width = height = Positioning.TILE_SIZE;
 
 				switch (tile) {
 					case 2, 3, 4, 5, 11, 13 -> walls.add(new Collider(position[0], position[1], width, height));
@@ -301,6 +299,8 @@ public class TileMap {
 		}
 
 	}
+
+	// TODO: Convert the switch cases to a HashMap or something similar.
 
 	public void renderGround(Graphics2D g, int[] translation, double scale) {
 		for (int y = 0; y < map.length; y++) {
@@ -314,8 +314,8 @@ public class TileMap {
 			
 				if (image != null) {
 					AffineTransform transform = new AffineTransform();
-					transform.translate(x * TILE_SIZE * scale - translation[0],
-										y * TILE_SIZE * scale - translation[1]);
+					transform.translate(x * Positioning.TILE_SIZE * scale - translation[0],
+										y * Positioning.TILE_SIZE * scale - translation[1]);
 					transform.scale(scale, scale);
 					g.drawImage(image, transform, null);
 				}
@@ -342,11 +342,12 @@ public class TileMap {
 					case 17 -> Tiles.LEFT_DOOR.getImage();
 					default -> null;
 				};
+
 				
 				if (image != null) {
 					AffineTransform transform = new AffineTransform();
-					transform.translate(x * TILE_SIZE * scale - translation[0],
-										y * TILE_SIZE * scale - translation[1]);
+					transform.translate(x * Positioning.TILE_SIZE * scale - translation[0],
+										y * Positioning.TILE_SIZE * scale - translation[1]);
 					transform.scale(scale, scale);
 					g.drawImage(image, transform, null);
 				}
@@ -371,8 +372,8 @@ public class TileMap {
 				
 				if (image != null) {
 					AffineTransform transform = new AffineTransform();
-					transform.translate(x * TILE_SIZE * scale - translation[0],
-										y * TILE_SIZE * scale - translation[1]);
+					transform.translate(x * Positioning.TILE_SIZE * scale - translation[0],
+										y * Positioning.TILE_SIZE * scale - translation[1]);
 					transform.scale(scale, scale);
 					g.drawImage(image, transform, null);
 				}
@@ -389,6 +390,11 @@ public class TileMap {
 			Collider collider = (Collider) entranceInfo[0];
 			collider.debug(g);
 		}
+
+		g.drawRect(rect.getX(), 
+				   rect.getY(),
+				   rect.getWidth(), 
+				   rect.getHeight());
 	}
 
 }

@@ -9,6 +9,7 @@ import game.scenes.Game;
 import game.scenes.InstructionsPage;
 import game.scenes.MainMenu;
 import game.scenes.Test;
+import game.scenes.AnimationTest;
 
 /**
  * A class which handles the changing of the scenes.
@@ -22,11 +23,12 @@ public class AppManager {
 	private HashMap<String, Scene> scenes = new HashMap<String, Scene>();
 
 	public AppManager() {
-		scenes.put("title screen", new TitleScreen(this));
-		scenes.put("main menu", new MainMenu(this));
-		scenes.put("game", new Game(this));
-		scenes.put("instructions", new InstructionsPage(this));
+		// scenes.put("title screen", new TitleScreen(this));
+		// scenes.put("main menu", new MainMenu(this));
+		// scenes.put("game", new Game(this));
+		// scenes.put("instructions", new InstructionsPage(this));
 		scenes.put("test", new Test(this));
+		// scenes.put("a test", new AnimationTest(this));
 
 		currentScene = "test";
 	}

@@ -62,6 +62,7 @@ public class Collider {
 	 */
 	public void xCollision(ArrayList<Collider> hits) {
 		for (Collider instance : hits) {
+			if (instance == this) continue;
 			Rect rect = instance.rect;
 
 			if (rightCollision(rect)) { 
@@ -79,6 +80,7 @@ public class Collider {
 	 */
 	public void yCollision(ArrayList<Collider> hits) {
 		for (Collider instance : hits) {
+			if (instance == this) continue;
 			Rect rect = instance.rect;
 
 			if (topCollision(rect)) {
@@ -90,6 +92,8 @@ public class Collider {
 			}
 		}
 	}
+
+	// TODO: Have the collider linked to the sprite by an offset.
 
 	public void debug(Graphics2D g) {
 		g.setColor(Color.blue);

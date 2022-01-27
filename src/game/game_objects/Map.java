@@ -40,7 +40,7 @@ public class Map {
 
 					if (rooms[randomRoom].entrances.size() < MAX_CONNECTIONS
 						&& randomRoom != i
-						&& !room.has(rooms[randomRoom])) {
+						&& !room.connectedTo(rooms[randomRoom])) {
 
 						makeConnection = true;
 						break;
