@@ -8,6 +8,7 @@ import game.engine.Scene;
 import game.engine.util.KeyboardInput;
 import game.engine.util.MouseInput;
 import game.engine.util.Positioning;
+import game.engine.util.Positioning.Direction;
 import game.engine.util.Camera;
 import game.engine.util.Animation;
 import game.engine.components.Rect;
@@ -26,6 +27,8 @@ public class Player extends Entity {
 
 		speed = 3;
 		height = width = 24;
+
+		totalHealth = currentHealth = 1000;
 		
 		sprite = new Rect(width, height);
 		sprite.setCenter(200, 200); // TODO: Set the player at the center of the tilemap.
@@ -33,8 +36,7 @@ public class Player extends Entity {
 		collider = new Collider(sprite.getX(), sprite.getY(), width, height);
 		collider.addSprite(sprite);
 
-		swipe = new Attack(sprite);
-		swipe.addAnimation(new Animation("./assets/swipe", 15));
+		swipe = new Attack(10, sprite);
 	}
 
 	public void update(TileMap tilemap, Map level) {
@@ -52,16 +54,14 @@ public class Player extends Entity {
 		double down = mouseY - (sprite.getBottom() * scale - translation[1]);
 
 		if (mouseX < sprite.getLeft() * scale - translation[0] && left > up && left > down) {
-			facing = "left";
+			facing = Direction.LEFT;
 		} else if (mouseX > sprite.getRight() * scale - translation[0] && right > up && right > down) {
-			facing = "right";
+			facing = Direction.RIGHT;
 		} else if (mouseY < sprite.getTop() * scale - translation[1] && up > left && up > right) {
-			facing = "up";
+			facing = Direction.UP;
 		} else if (mouseY > sprite.getBottom() * scale - translation[1] && down > left && down > right) {
-			facing = "down";
+			facing = Direction.DOWN;
 		}
-
-		// System.out.println(facing);
 
 		swipe.update(facing);
 	}
@@ -90,18 +90,18 @@ public class Player extends Entity {
 		for (Object[] entrance : tilemap.entrances) {
 			Collider entranceCollider = (Collider) entrance[0];
 			TileMap connectedRoom = (TileMap) entrance[1];
-			String entranceDirection = (String) entrance[2];
+			Direction entranceDirection = (Direction) entrance[2];
 
 			if (collider.collision(entranceCollider.rect)) {
 				level.currentRoom = connectedRoom;
 
 				Collider connectedRoomEntranceCollider = null;
-				String connectedRoomEntranceDirection = "";
+				Direction connectedRoomEntranceDirection = Direction.UP;
 
 				for (Object[] connectedRoomEntrance : connectedRoom.entrances) {
 
 					TileMap maybeTheCurrentRoom = (TileMap) connectedRoomEntrance[1];
-					connectedRoomEntranceDirection = (String) connectedRoomEntrance[2];
+					connectedRoomEntranceDirection = (Direction) connectedRoomEntrance[2];
 
 					if (maybeTheCurrentRoom == tilemap && connectedRoomEntranceDirection.equals(
 							Positioning.oppositeDirections.get(entranceDirection))) {
@@ -113,19 +113,19 @@ public class Player extends Entity {
 				}
 
 				switch (connectedRoomEntranceDirection) {
-				case "up":
+				case UP:
 					sprite.setMidTop(connectedRoomEntranceCollider.rect.getMidBottom());
 					collider.rect.setMidTop(connectedRoomEntranceCollider.rect.getMidBottom());
 					break;
-				case "down":
+				case DOWN:
 					sprite.setMidBottom(connectedRoomEntranceCollider.rect.getMidTop());
 					collider.rect.setMidBottom(connectedRoomEntranceCollider.rect.getMidTop());
 					break;
-				case "right":
+				case RIGHT:
 					sprite.setMidRight(connectedRoomEntranceCollider.rect.getMidLeft());
 					collider.rect.setMidRight(connectedRoomEntranceCollider.rect.getMidLeft());
 					break;
-				case "left":
+				case LEFT:
 					sprite.setMidLeft(connectedRoomEntranceCollider.rect.getMidRight());
 					collider.rect.setMidLeft(connectedRoomEntranceCollider.rect.getMidRight());
 					break;
@@ -138,7 +138,6 @@ public class Player extends Entity {
 	public void render(Graphics2D g, int[] translation, double scale) {
 		super.render(g, translation, scale);
 		swipe.render(g, translation, scale);
-		swipe.debug(g, translation, scale);
 	}
 
 }

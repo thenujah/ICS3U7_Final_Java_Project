@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import game.game_objects.TileMap;
 import game.engine.util.Positioning;
+import game.engine.util.Positioning.Direction;
 
 /**
  * The TileMap class creates randomly generated rooms for each level.
@@ -49,9 +50,9 @@ public class Map {
 
 				if (makeConnection) {
 					int randomDirectionIndex = (int) (Math.random() 
-						* Positioning.directions.size());
+						* Positioning.directions.length);
 
-					String direction = Positioning.directions.get(randomDirectionIndex);
+					Direction direction = Positioning.directions[randomDirectionIndex];
 
 					room.addEntrance(direction, rooms[randomRoom]);
 					rooms[randomRoom].addEntrance(

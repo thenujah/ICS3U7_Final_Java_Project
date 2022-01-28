@@ -1,67 +1,72 @@
 package game.game_objects;
 
+import java.util.ArrayList;
 import java.awt.Graphics2D;
 import java.awt.Color;
 
 import game.engine.components.Rect;
+import game.engine.components.Collider;
 import game.engine.util.Animation;
 import game.engine.util.MouseInput;
+import game.engine.util.Positioning;
+import game.engine.util.Positioning.Direction;
 
 public class Attack {
 
-	Animation animation;
-	Rect rect;
-	Rect owner;
-	String direction = "down";
-	boolean isAttacking = false;
-	
-	public Attack(Rect owner) {
-		this.owner = owner;
-	}
-	
-	public void addAnimation(Animation animation) { 
-		this.animation = animation;
-		rect = animation.getRect();
-	}
+    private Animation animation;
+    private Rect rect;
+    private Rect owner;
+    public Collider collider;
+    private Direction direction = Direction.DOWN;
+    private boolean isAttacking = false;
+    private double rotation;
+    private int damage;
+    
+    public Attack(int damage, Rect owner) {
+        this.damage = damage;
+        this.owner = owner;
+        this.animation = new Animation("./assets/swipe", 15);
+        rect = animation.getRect();
+        collider = new Collider(rect);
+    }
 
-	public void update(String direction) {
-		if (this.direction.equals("right") || this.direction.equals("left")) {
-			rect.rotate();
-		}
+    public void update(Direction direction) {
+        if (MouseInput.isClicked(1)) {
+            isAttacking = true;
+            animation.play();
+        } else if (!animation.isPlaying()) {
+            isAttacking = false;
+        }
 
-		this.direction = direction;
+        animation.updateFrame();
+        animation.updatePosition(direction, owner);
+        this.direction = direction;
 
-		if (MouseInput.isClicked(1)) {
-			isAttacking = true;
-			animation.play();
-		}
+        collider.rect.update(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+    }
 
-		int OFFSET = 5;
+    // TODO: Move the rotations to the Animaiton class.
 
-		switch (this.direction) {
-			case "up" -> rect.setCenter(owner.getCenter()[0], owner.getTop() - OFFSET);
-			case "down" -> rect.setCenter(owner.getCenter()[0], owner.getBottom() + OFFSET);
-			case "left" -> {
-				rect.rotate();
-				rect.setCenter(owner.getLeft() - OFFSET, owner.getCenter()[1]);
-			}
-			case "right" -> {
-				rect.rotate();
-				rect.setCenter(owner.getRight() + OFFSET, owner.getCenter()[1]);
-			}
-		}
-	}
+    public void attack(ArrayList<Entity> hits) {
+        if (isAttacking) {
+            for (Entity entity : hits) {
+                entity.damage(damage);
+            }
+        }
+    }
 
-	public void render(Graphics2D g, int[] translation, double scale) {
-		animation.render(g, translation, scale);
-	}
+    public void render(Graphics2D g, int[] translation, double scale) {
+        if (animation.isPlaying()) {
+            animation.render(g, translation, scale);
+        }
+    }
 
-	public void debug(Graphics2D g, int[] translation, double scale) {
-		g.setColor(Color.green);
-		g.drawRect((int) (rect.getX() * scale - translation[0]), 
-				   (int) (rect.getY() * scale - translation[1]),
-				   (int) (rect.getWidth() * scale),
-				   (int) (rect.getHeight() * scale));
-	}
+    public void debug(Graphics2D g) {
+        g.setColor(Color.green);
+        g.drawRect((int)(rect.getX()),
+                   (int)(rect.getY()),
+                   (int)(rect.getWidth()),
+                   (int)(rect.getHeight()));
+    }
 
 }

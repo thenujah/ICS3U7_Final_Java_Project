@@ -7,7 +7,7 @@ import java.awt.Color;
 
 import game.engine.AppManager;
 import game.engine.Scene;
-import game.engine.util.KeyboardInput;
+import game.engine.util.MouseInput;
 import game.engine.util.Positioning;
 import game.engine.util.Animation;
 import game.engine.util.Camera;
@@ -20,22 +20,26 @@ import game.engine.util.Camera;
  */
 public class AnimationTest extends Scene {
 
-	private Animation animation;
-	private Camera camera;
+    private Animation animation;
+    private Camera camera;
 
-	public AnimationTest(AppManager app) {
-		super(app);
+    public AnimationTest(AppManager app) {
+        super(app);
 
-		animation = new Animation("./assets/swipe", 12);
-		camera = new Camera(5);
-	}
+        animation = new Animation("./assets/swipe", 15);
+        camera = new Camera(2);
+    }
 
-	public void update() {
-		camera.update(animation.getRect());
-	}
+    public void update() {
+        camera.update(animation.getRect());
 
-	public void render(Graphics2D g) {
-		animation.render(g, camera.getTranslation(), camera.getScale());
-	}
+        if (MouseInput.isClicked(1)) {
+            animation.play();
+        }
+    }
+
+    public void render(Graphics2D g) {
+        animation.render(g, new int[]{0, 0}, 1);
+    }
 
 }

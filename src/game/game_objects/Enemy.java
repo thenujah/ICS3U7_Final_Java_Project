@@ -17,6 +17,8 @@ public class Enemy extends Entity {
 
 	private int range = 100;
 	private int[] targetPosition = new int[2];
+
+	private int damage = 2;
 	
 	/**
 	 * The constructor for the Enemy class. 
@@ -25,10 +27,10 @@ public class Enemy extends Entity {
 	 * @param y The y position of the enemy.
 	 */
 	public Enemy(int x, int y) {
-		super("./assets/Enemy.png");
-
+s
 		speed = 1;
 		height = width = 16;
+		totalHealth = currentHealth = 500;
 
 		sprite = new Rect(x, y, width, height);
 
@@ -36,6 +38,8 @@ public class Enemy extends Entity {
 		collider.addSprite(sprite);
 	}
 	
+	public int getDamage() { return damage; }
+
 	/**
 	 * The method which handles the movement of the enemy.
 	 * 

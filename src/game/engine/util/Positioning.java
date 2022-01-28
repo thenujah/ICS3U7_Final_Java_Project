@@ -3,7 +3,6 @@ package game.engine.util;
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.List;
 
 import game.game_objects.TileMap;
 
@@ -23,15 +22,24 @@ public class Positioning {
 
 	public static final int TILE_SIZE = 32;
 
-	public static List<String> directions = Collections.unmodifiableList(
-		Arrays.asList("up", "down", "left", "right")
-	);
+	public enum Direction { 
+		UP(0), DOWN(180), RIGHT(90), LEFT(270); 
 
-	public static final Map<String, String> oppositeDirections = Map.of(
-		"up", "down", 
-		"down", "up",
-		"left", "right",
-		"right", "left"
+		private int rotation;
+
+		Direction(int rotation) {
+			this.rotation = rotation;
+		}
+
+		public int rotation() { return rotation; }
+	}
+	
+	public static Direction[] directions = Direction.values();
+	public static final Map<Direction, Direction> oppositeDirections = Map.of(
+		Direction.UP, Direction.DOWN, 
+		Direction.DOWN, Direction.UP,
+		Direction.LEFT, Direction.RIGHT,
+		Direction.RIGHT, Direction.LEFT
 	);
 
 	/**
@@ -56,6 +64,16 @@ public class Positioning {
 	 */
 	public static int[] averagePos(int[] firstPos, int[] secondPos) {
 		return new int[]{(firstPos[0] + secondPos[0]) / 2, (firstPos[1] + secondPos[1]) / 2};
+	}
+
+	public static int clamp(int value, int upperBound, int lowerBound) {
+		if (value > upperBound) {
+			return upperBound;
+		} else if (value < lowerBound) {
+			return lowerBound;
+		} else {
+			return value;
+		}
 	}
 
 		/**

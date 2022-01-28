@@ -17,6 +17,7 @@ import game.game_objects.TileMap;
 import game.game_objects.Map;
 import game.game_objects.Player;
 import game.game_objects.Enemy;
+import game.game_objects.Entity;
 
 /**
  * A class which controls the game scene of the game.
@@ -29,9 +30,7 @@ public class Test extends Scene {
 	private Map level;
 	private Camera camera;
 	private Player player;
-	private Animation animation;
-	// private Enemy[] enemies;
-	// private ArrayList<Collider> entityColliders = new ArrayList<>();
+	private int totalEnemies = 0;
 
 	public Test(AppManager app) {
 		super(app);
@@ -40,23 +39,20 @@ public class Test extends Scene {
 		player = new Player();
 		level = new Map();
 
-		// entityColliders.add(player.getCollider());
+		// Generate a random number of enemies in each room.
+		for (TileMap room : level.rooms) {
+			int numberOfEnemies = (int) (Math.random() * 6) + 3;
+			totalEnemies += numberOfEnemies;
 
-		// // Generate a random number of enemies in each room.
-		// for (TileMap room : level.rooms) {
-		// 	int numberOfEnemies = (int) (Math.random() * 6) + 3;
-		// 	room.enemies = new Enemy[numberOfEnemies];
+			for (int i = 0; i < numberOfEnemies; i++) {
+				int[] position = Positioning.generateRandomPositionWithin(room);
 
-		// 	for (int i = 0; i < numberOfEnemies; i++) {
-		// 		int[] position = Positioning.generateRandomPositionWithin(room);
+				int x = position[0];
+				int y = position[1];
 
-		// 		int x = position[0];
-		// 		int y = position[1];
-
-		// 		room.enemies[i] = new Enemy(position[0], position[1]);
-		// 		// entityColliders.add(room.enemies[i].getCollider());
-		// 	}
-		// }
+				room.enemies.add(new Enemy(position[0], position[1]));
+			}
+		}
 	}
 
 	public void update() {
@@ -64,9 +60,37 @@ public class Test extends Scene {
 		camera.update(player.getSprite());
 		player.updateDirection(camera.getTranslation(), camera.getScale());
 
-		// for (Enemy enemy : level.currentRoom.enemies) {
-		// 	enemy.movement(player, level.currentRoom);
-		// }
+		for (Entity entity : level.currentRoom.enemies) {
+			Enemy enemy = (Enemy) entity;
+			enemy.movement(player, level.currentRoom);
+		}
+
+		ArrayList<Entity> attackHits = player.swipe.collider.getEntityCollisions(level.currentRoom.enemies);
+		player.swipe.attack(attackHits);
+
+		for (Entity enemy : attackHits) {
+			if (enemy.getHealth() == 0) {
+				level.currentRoom.enemies.remove(enemy);
+				totalEnemies--;
+			}
+		}
+
+		ArrayList<Entity> playerHits = player.getCollider().getEntityCollisions(level.currentRoom.enemies);
+		for (Entity entity : playerHits) {
+			Enemy enemy = (Enemy) entity;
+			player.damage(enemy.getDamage());
+			System.out.println("owie");
+
+			if (player.getHealth() == 0) {
+				System.out.println("ded");
+				System.exit(0);
+			}
+		}
+
+		if (totalEnemies == 0) {
+			System.out.println("u win");
+			System.exit(0);
+		}
 	}
 
 	public void render(Graphics2D g) {
@@ -75,9 +99,9 @@ public class Test extends Scene {
 		level.currentRoom.renderGround(g, camera.getTranslation(), camera.getScale());
 		level.currentRoom.renderBackground(g, camera.getTranslation(), camera.getScale());
 
-		// for (Enemy enemy : level.currentRoom.enemies) {
-		// 	enemy.render(g, camera.getTranslation(), camera.getScale());
-		// }
+		for (Entity enemy : level.currentRoom.enemies) {
+			enemy.render(g, camera.getTranslation(), camera.getScale());
+		}
 
 		player.render(g, camera.getTranslation(), camera.getScale());
 

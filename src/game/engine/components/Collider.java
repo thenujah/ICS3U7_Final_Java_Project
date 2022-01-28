@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 
 import game.engine.components.Rect;
+import game.game_objects.Entity;
 
 /**
  * @version 2.0
@@ -62,6 +63,17 @@ public class Collider {
 		for (Collider collider : colliders) {
 			if (collision(collider.rect)) {
 				collisions.add(collider);
+			}
+		}
+		
+		return collisions;
+	}
+
+	public ArrayList<Entity> getEntityCollisions(ArrayList<Entity> colliders) {
+		ArrayList<Entity> collisions = new ArrayList<>();
+		for (Entity entity : colliders) {
+			if (collision(entity.getCollider().rect)) {
+				collisions.add(entity);
 			}
 		}
 		

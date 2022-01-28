@@ -12,6 +12,8 @@ import java.util.Collections;
 import game.engine.components.Rect;
 import game.engine.components.Collider;
 import game.engine.util.Positioning;
+import game.engine.util.Positioning.Direction;
+import game.game_objects.Entity;
 
 /**
  * The TileMap class creates randomly generated rooms for each level.
@@ -31,7 +33,7 @@ public class TileMap {
 	public ArrayList<Collider> walls = new ArrayList<>();
 	public ArrayList<Object[]> entrances = new ArrayList<>();
 
-	public Enemy[] enemies;
+	public ArrayList<Entity> enemies = new ArrayList<>();
 
 	public TileMap() {
 		int RECT_NUMBER = (int) (Math.random() * MAX_NUMBER_OF_RECTS) + 1;
@@ -208,12 +210,12 @@ public class TileMap {
 		return map;
 	}
 
-	public void addEntrance(String direction, TileMap connectingRoom) {
+	public void addEntrance(Direction direction, TileMap connectingRoom) {
 		int maxPosition, xPos, yPos;
 		boolean positionSet = false;
 		xPos = yPos = 0;
 
-		if (direction.equals("up") || direction.equals("down")) maxPosition = map[0].length - 2;
+		if (direction == Direction.UP || direction == Direction.DOWN) maxPosition = map[0].length - 2;
 		else maxPosition = map.length - 2;
 
 		do {
@@ -223,7 +225,7 @@ public class TileMap {
 			width = height = Positioning.TILE_SIZE;
 
 			switch (direction) {
-				case "up":
+				case UP:
 					xPos = position * Positioning.TILE_SIZE;
 					for (int y = 0; y < map.length; y++) {
 						if (map[y][position] == 10) {
@@ -235,7 +237,7 @@ public class TileMap {
 						}
 					}
 					break;
-				case "down":
+				case DOWN:
 					xPos = position * Positioning.TILE_SIZE;
 					for (int y = 0; y < map.length; y++) {
 						if (map[y][position] == 12) {
@@ -247,7 +249,7 @@ public class TileMap {
 						}
 					}
 					break;
-				case "right":
+				case RIGHT:
 					yPos = position * Positioning.TILE_SIZE;
 					for (int x = 0; x < map[position].length; x++) {
 						if (map[position][x] == 11) {
@@ -258,7 +260,7 @@ public class TileMap {
 						}
 					}
 					break;
-				case "left":
+				case LEFT:
 					yPos = position * Positioning.TILE_SIZE;
 					for (int x = 0; x < map[position].length; x++) {
 						if (map[position][x] == 13) {
