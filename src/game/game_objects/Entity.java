@@ -25,7 +25,7 @@ public abstract class Entity {
 	protected int width;
 	protected int height;
 
-	protected String facing = "right";
+	protected String facing = "down";
 
     /**
 	 * The constructor for the Entity class.

@@ -51,15 +51,17 @@ public class Player extends Entity {
 		double up = (sprite.getTop() * scale - translation[1]) - mouseY;
 		double down = mouseY - (sprite.getBottom() * scale - translation[1]);
 
-		if (mouseX < sprite.getLeft() * scale - translation[0] && left > up & left > down) {
+		if (mouseX < sprite.getLeft() * scale - translation[0] && left > up && left > down) {
 			facing = "left";
-		} else if (mouseX > sprite.getRight() * scale - translation[0] && right > up & right > down) {
+		} else if (mouseX > sprite.getRight() * scale - translation[0] && right > up && right > down) {
 			facing = "right";
-		} else if (mouseY < sprite.getTop() * scale - translation[1] && up > left & up > right) {
+		} else if (mouseY < sprite.getTop() * scale - translation[1] && up > left && up > right) {
 			facing = "up";
-		} else if (mouseY > sprite.getBottom() * scale - translation[1] && down > left & down > right) {
+		} else if (mouseY > sprite.getBottom() * scale - translation[1] && down > left && down > right) {
 			facing = "down";
 		}
+
+		// System.out.println(facing);
 
 		swipe.update(facing);
 	}

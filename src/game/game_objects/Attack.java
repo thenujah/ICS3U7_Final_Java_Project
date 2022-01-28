@@ -12,7 +12,7 @@ public class Attack {
 	Animation animation;
 	Rect rect;
 	Rect owner;
-	String direction = "right";
+	String direction = "down";
 	boolean isAttacking = false;
 	
 	public Attack(Rect owner) {
@@ -25,6 +25,10 @@ public class Attack {
 	}
 
 	public void update(String direction) {
+		if (this.direction.equals("right") || this.direction.equals("left")) {
+			rect.rotate();
+		}
+
 		this.direction = direction;
 
 		if (MouseInput.isClicked(1)) {
@@ -58,10 +62,6 @@ public class Attack {
 				   (int) (rect.getY() * scale - translation[1]),
 				   (int) (rect.getWidth() * scale),
 				   (int) (rect.getHeight() * scale));
-
-		if (direction.equals("left") || direction.equals("right")) {
-			rect.rotate();
-		}
 	}
 
 }
