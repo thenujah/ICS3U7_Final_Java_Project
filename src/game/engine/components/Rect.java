@@ -76,6 +76,13 @@ public class Rect {
 			topLeft[0], topLeft[1], bottomRight[0], bottomRight[1]);
 	}
 
+	public void rotate() {
+		int[] center = getCenter();
+
+		update(x, y, height, width);
+		setCenter(center);
+	}
+
 	/**
 	 * A method which checks if a point lies on the Rect.
 	 * 

@@ -12,7 +12,7 @@ public class Camera {
 	private final int lag = 25;
 	
 	private double[] offsets = new double[2];
-	private double scale = 1;
+	private double scale;
 
 	public Camera(double scale) {
 		this.scale = scale;
@@ -21,11 +21,11 @@ public class Camera {
 	/**
 	 * A method which updates the offset of the camera.
 	 * 
-	 * @param rect The rect which will be the followed by the camera.
+	 * @param focus The rect which will be the followed by the camera.
 	 */
-	public void update(Rect rect) {
-		offsets[0] += (rect.getCenter()[0] * scale - offsets[0] - Positioning.SCREEN_CENTER_X) / lag;
-		offsets[1] += (rect.getCenter()[1] * scale - offsets[1] - Positioning.SCREEN_CENTER_Y) / lag;
+	public void update(Rect focus) {
+		offsets[0] += (focus.getCenter()[0] * scale - offsets[0] - Positioning.SCREEN_CENTER_X) / lag;
+		offsets[1] += (focus.getCenter()[1] * scale - offsets[1] - Positioning.SCREEN_CENTER_Y) / lag;
 	}
 
 	/**

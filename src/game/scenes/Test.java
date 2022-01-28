@@ -30,8 +30,8 @@ public class Test extends Scene {
 	private Camera camera;
 	private Player player;
 	private Animation animation;
-	private Enemy[] enemies;
-	private ArrayList<Collider> entityColliders = new ArrayList<>();
+	// private Enemy[] enemies;
+	// private ArrayList<Collider> entityColliders = new ArrayList<>();
 
 	public Test(AppManager app) {
 		super(app);
@@ -40,32 +40,33 @@ public class Test extends Scene {
 		player = new Player();
 		level = new Map();
 
-		entityColliders.add(player.getCollider());
+		// entityColliders.add(player.getCollider());
 
-		// Generate a random number of enemies in each room.
-		for (TileMap room : level.rooms) {
-			int numberOfEnemies = (int) (Math.random() * 6) + 3;
-			room.enemies = new Enemy[numberOfEnemies];
+		// // Generate a random number of enemies in each room.
+		// for (TileMap room : level.rooms) {
+		// 	int numberOfEnemies = (int) (Math.random() * 6) + 3;
+		// 	room.enemies = new Enemy[numberOfEnemies];
 
-			for (int i = 0; i < numberOfEnemies; i++) {
-				int[] position = Positioning.generateRandomPositionWithin(room);
+		// 	for (int i = 0; i < numberOfEnemies; i++) {
+		// 		int[] position = Positioning.generateRandomPositionWithin(room);
 
-				int x = position[0];
-				int y = position[1];
+		// 		int x = position[0];
+		// 		int y = position[1];
 
-				room.enemies[i] = new Enemy(position[0], position[1]);
-				entityColliders.add(room.enemies[i].getCollider());
-			}
-		}
+		// 		room.enemies[i] = new Enemy(position[0], position[1]);
+		// 		// entityColliders.add(room.enemies[i].getCollider());
+		// 	}
+		// }
 	}
 
 	public void update() {
 		player.update(level.currentRoom, level);
 		camera.update(player.getSprite());
+		player.updateDirection(camera.getTranslation(), camera.getScale());
 
-		for (Enemy enemy : level.currentRoom.enemies) {
-			enemy.movement(player, level.currentRoom, entityColliders);
-		}
+		// for (Enemy enemy : level.currentRoom.enemies) {
+		// 	enemy.movement(player, level.currentRoom);
+		// }
 	}
 
 	public void render(Graphics2D g) {
@@ -74,9 +75,9 @@ public class Test extends Scene {
 		level.currentRoom.renderGround(g, camera.getTranslation(), camera.getScale());
 		level.currentRoom.renderBackground(g, camera.getTranslation(), camera.getScale());
 
-		for (Enemy enemy : level.currentRoom.enemies) {
-			enemy.render(g, camera.getTranslation(), camera.getScale());
-		}
+		// for (Enemy enemy : level.currentRoom.enemies) {
+		// 	enemy.render(g, camera.getTranslation(), camera.getScale());
+		// }
 
 		player.render(g, camera.getTranslation(), camera.getScale());
 

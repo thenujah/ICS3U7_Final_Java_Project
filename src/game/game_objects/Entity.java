@@ -25,6 +25,8 @@ public abstract class Entity {
 	protected int width;
 	protected int height;
 
+	protected String facing = "right";
+
     /**
 	 * The constructor for the Entity class.
 	 * 
@@ -41,12 +43,12 @@ public abstract class Entity {
 	public Rect getSprite() { return sprite; }
 	public Collider getCollider() { return collider; }
 
-	public void updateXPosition(int diff) {
+	protected void updateXPosition(int diff) {
 		sprite.setX(sprite.getX() + diff);
 		collider.rect.setX(collider.rect.getX() + diff);
 	}
 	
-	public void updateYPosition(int diff) {
+	protected void updateYPosition(int diff) {
 		sprite.setY(sprite.getY() + diff);
 		collider.rect.setY(collider.rect.getY() + diff);
 	}

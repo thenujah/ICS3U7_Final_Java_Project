@@ -51,7 +51,6 @@ public class Animation {
 			if (files[i].getName().endsWith(".png")) {
 				try {
 					String imagePath = files[i].getPath();
-					System.out.println(imagePath);
 				    frames.add(ImageIO.read(new File(imagePath)));
 				} catch (IOException e) {
 				    e.printStackTrace();
@@ -64,9 +63,13 @@ public class Animation {
 	}
 
     /**
-	 * A method used to allow the animation to play.
+	 * A method which restarts the animation.
 	 */
-	public void play() { isPlaying = true; }
+	public void play() { 
+		isPlaying = true;
+		duration = 0;
+		currentFrame = 0;
+	}
 
     /**
 	 * A getter method for the Rect of the animation.

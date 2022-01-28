@@ -1,10 +1,12 @@
 package game.game_objects;
 
+import java.util.ArrayList;
 import java.awt.Graphics2D;
 
 import game.engine.AppManager;
 import game.engine.Scene;
 import game.engine.util.KeyboardInput;
+import game.engine.util.MouseInput;
 import game.engine.util.Positioning;
 import game.engine.util.Camera;
 import game.engine.util.Animation;
@@ -17,7 +19,7 @@ import game.game_objects.Attack;
 
 public class Player extends Entity {
 
-	Attack swipe;
+	public Attack swipe;
 
 	public Player() {
 		super("./assets/Player.png");
@@ -31,17 +33,38 @@ public class Player extends Entity {
 		collider = new Collider(sprite.getX(), sprite.getY(), width, height);
 		collider.addSprite(sprite);
 
-		swipe = new Attack(this.sprite);
-		System.out.println("here");
-		swipe.addAnimation(new Animation("./assets/swipe", 12));
+		swipe = new Attack(sprite);
+		swipe.addAnimation(new Animation("./assets/swipe", 15));
 	}
 
 	public void update(TileMap tilemap, Map level) {
-		movement(tilemap, level);
-		swipe.update(sprite.getX(), sprite.getY());
+		movement(tilemap.walls);
+		doorCollisions(tilemap, level);
+	}
+
+	public void updateDirection(int[] translation, double scale) {
+		double mouseX = MouseInput.getX();
+		double mouseY = MouseInput.getY();
+
+		double left = (sprite.getLeft() * scale - translation[0]) - mouseX;
+		double right = mouseX - (sprite.getRight() * scale - translation[0]);
+		double up = (sprite.getTop() * scale - translation[1]) - mouseY;
+		double down = mouseY - (sprite.getBottom() * scale - translation[1]);
+
+		if (mouseX < sprite.getLeft() * scale - translation[0] && left > up & left > down) {
+			facing = "left";
+		} else if (mouseX > sprite.getRight() * scale - translation[0] && right > up & right > down) {
+			facing = "right";
+		} else if (mouseY < sprite.getTop() * scale - translation[1] && up > left & up > right) {
+			facing = "up";
+		} else if (mouseY > sprite.getBottom() * scale - translation[1] && down > left & down > right) {
+			facing = "down";
+		}
+
+		swipe.update(facing);
 	}
 	
-	public void movement(TileMap tilemap, Map level) {
+	public void movement(ArrayList<Collider> walls) {
 		if (KeyboardInput.isPressed("a")) {
 			updateXPosition(-speed);
 		}
@@ -49,7 +72,7 @@ public class Player extends Entity {
 			updateXPosition(speed);
 		}
 
-		collider.xCollision(collider.getCollisions(tilemap.walls));
+		collider.xCollision(collider.getCollisions(walls));
 		
 		if (KeyboardInput.isPressed("w")) {
 			updateYPosition(-speed);
@@ -58,19 +81,16 @@ public class Player extends Entity {
 			updateYPosition(speed);
 		}
 		
-		collider.yCollision(collider.getCollisions(tilemap.walls));
-
-		doorCollisions(tilemap, level);
+		collider.yCollision(collider.getCollisions(walls));
 	}
 	
-	// Large :/
 	public void doorCollisions(TileMap tilemap, Map level) {
 		for (Object[] entrance : tilemap.entrances) {
 			Collider entranceCollider = (Collider) entrance[0];
 			TileMap connectedRoom = (TileMap) entrance[1];
 			String entranceDirection = (String) entrance[2];
 
-			if (this.collider.collision(entranceCollider.rect)) {
+			if (collider.collision(entranceCollider.rect)) {
 				level.currentRoom = connectedRoom;
 
 				Collider connectedRoomEntranceCollider = null;
@@ -92,20 +112,20 @@ public class Player extends Entity {
 
 				switch (connectedRoomEntranceDirection) {
 				case "up":
-					this.sprite.setMidTop(connectedRoomEntranceCollider.rect.getMidBottom());
-					this.collider.rect.setMidTop(connectedRoomEntranceCollider.rect.getMidBottom());
+					sprite.setMidTop(connectedRoomEntranceCollider.rect.getMidBottom());
+					collider.rect.setMidTop(connectedRoomEntranceCollider.rect.getMidBottom());
 					break;
 				case "down":
-					this.sprite.setMidBottom(connectedRoomEntranceCollider.rect.getMidTop());
-					this.collider.rect.setMidBottom(connectedRoomEntranceCollider.rect.getMidTop());
+					sprite.setMidBottom(connectedRoomEntranceCollider.rect.getMidTop());
+					collider.rect.setMidBottom(connectedRoomEntranceCollider.rect.getMidTop());
 					break;
 				case "right":
-					this.sprite.setMidRight(connectedRoomEntranceCollider.rect.getMidLeft());
-					this.collider.rect.setMidRight(connectedRoomEntranceCollider.rect.getMidLeft());
+					sprite.setMidRight(connectedRoomEntranceCollider.rect.getMidLeft());
+					collider.rect.setMidRight(connectedRoomEntranceCollider.rect.getMidLeft());
 					break;
 				case "left":
-					this.sprite.setMidLeft(connectedRoomEntranceCollider.rect.getMidRight());
-					this.collider.rect.setMidLeft(connectedRoomEntranceCollider.rect.getMidRight());
+					sprite.setMidLeft(connectedRoomEntranceCollider.rect.getMidRight());
+					collider.rect.setMidLeft(connectedRoomEntranceCollider.rect.getMidRight());
 					break;
 				}
 
@@ -116,6 +136,7 @@ public class Player extends Entity {
 	public void render(Graphics2D g, int[] translation, double scale) {
 		super.render(g, translation, scale);
 		swipe.render(g, translation, scale);
+		swipe.debug(g, translation, scale);
 	}
 
 }
