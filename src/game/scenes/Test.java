@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.Font;
 
 import game.engine.AppManager;
 import game.engine.Scene;
 import game.engine.util.KeyboardInput;
 import game.engine.util.Positioning;
+import game.engine.util.Positioning.Direction;
 import game.engine.util.Camera;
 import game.engine.util.Animation;
 import game.engine.components.Rect;
@@ -27,6 +29,8 @@ import game.game_objects.Entity;
  */
 public class Test extends Scene {
 
+	private final Font font;
+
 	private Map level;
 	private Camera camera;
 	private Player player;
@@ -35,13 +39,15 @@ public class Test extends Scene {
 	public Test(AppManager app) {
 		super(app);
 
+		font = new Font("DialogInput", Font.PLAIN, 20);
+
 		camera = new Camera(2);
 		player = new Player();
 		level = new Map();
 
 		// Generate a random number of enemies in each room.
 		for (TileMap room : level.rooms) {
-			int numberOfEnemies = (int) (Math.random() * 6) + 3;
+			int numberOfEnemies = (int) (Math.random() * 3) + 3;
 			totalEnemies += numberOfEnemies;
 
 			for (int i = 0; i < numberOfEnemies; i++) {
@@ -57,7 +63,6 @@ public class Test extends Scene {
 
 	public void update() {
 		player.update(level.currentRoom, level);
-		camera.update(player.getSprite());
 		player.updateDirection(camera.getTranslation(), camera.getScale());
 
 		for (Entity entity : level.currentRoom.enemies) {
@@ -69,20 +74,26 @@ public class Test extends Scene {
 		player.swipe.attack(attackHits);
 
 		for (Entity enemy : attackHits) {
+
+			if (player.isAttacking() && !enemy.getCollider().collision(player.getSprite())) {
+				enemy.push(player.getDirectionFacing(), 15);
+			}
+
 			if (enemy.getHealth() == 0) {
 				level.currentRoom.enemies.remove(enemy);
 				totalEnemies--;
 			}
+
 		}
 
 		ArrayList<Entity> playerHits = player.getCollider().getEntityCollisions(level.currentRoom.enemies);
 		for (Entity entity : playerHits) {
 			Enemy enemy = (Enemy) entity;
 			player.damage(enemy.getDamage());
-			System.out.println("owie");
+			// System.out.println("owie");
 
 			if (player.getHealth() == 0) {
-				System.out.println("ded");
+				System.out.println("u ded");
 				System.exit(0);
 			}
 		}
@@ -91,6 +102,12 @@ public class Test extends Scene {
 			System.out.println("u win");
 			System.exit(0);
 		}
+
+		if (playerHits.size() > 0) {
+			camera.shake();
+		}
+
+		camera.update(player.getSprite());
 	}
 
 	public void render(Graphics2D g) {
@@ -106,6 +123,10 @@ public class Test extends Scene {
 		player.render(g, camera.getTranslation(), camera.getScale());
 
 		level.currentRoom.renderForeground(g, camera.getTranslation(), camera.getScale());
+
+		g.setColor(Color.WHITE);
+		g.setFont(font);
+		g.drawString("HP: " + player.getHealth(), 50, 50);
 	}
 
 }

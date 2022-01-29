@@ -33,6 +33,12 @@ public abstract class Entity {
     protected int currentHealth;
     protected int damage;
 
+    protected final int FRICTION = 1;
+    protected double xFriction = 0;
+    protected double yFriction = 0;
+    protected int[] force = new int[2];
+    protected int knockbackTimer;
+
     /**
      * The constructor for the Entity class.
      * 
@@ -51,18 +57,68 @@ public abstract class Entity {
     }
 
     public int getHealth() { return currentHealth; }
-
     public Rect getSprite() { return sprite; }
     public Collider getCollider() { return collider; }
+    public Direction getDirectionFacing() { return facing; }
 
     protected void updateXPosition(int diff) {
-        sprite.setX(sprite.getX() + diff);
-        collider.rect.setX(collider.rect.getX() + diff);
+
+        if (force[0] != 0) {
+            xFriction += 1;
+
+            if (force[0] > 1) {
+                force[0] = Positioning.clamp(force[0] - (int) xFriction, force[0], 0);
+            } else if (force[0] < 1) {
+                force[0] = Positioning.clamp(force[0] + (int) xFriction, 0, force[0]);
+            }
+        } else {
+            force[0] = force[1] = 0;
+            xFriction = 0;
+        }
+
+        sprite.setX(sprite.getX() + diff + force[0]);
+        collider.rect.setX(collider.rect.getX() + diff + force[0]);
     }
     
     protected void updateYPosition(int diff) {
-        sprite.setY(sprite.getY() + diff);
-        collider.rect.setY(collider.rect.getY() + diff);
+        if (force[1] != 0) {
+            yFriction += 1;
+
+            if (force[1] > 1) {
+                force[1] = Positioning.clamp(force[1] - (int) yFriction, force[1], 0);
+            } else if (force[1] < 1) {
+                force[1] = Positioning.clamp(force[1] + (int) yFriction, 0, force[1]);
+            }
+        } else {
+            force[0] = force[1] = 0;
+            yFriction = 0;
+        }
+
+        sprite.setY(sprite.getY() + diff + this.force[1]);
+        collider.rect.setY(collider.rect.getY() + diff + this.force[1]);
+    }
+
+    public void push(Direction direction, int force) {
+        int randomDeviation = (int) (Math.random() * 30) - 15;
+
+        switch (direction) {
+            case UP -> {
+                this.force[1] = -force;
+                this.force[0] = randomDeviation;
+            }
+            case DOWN -> {
+                this.force[1] = force;
+                this.force[0] = randomDeviation;
+            }
+            case LEFT -> {
+                this.force[0] = -force;
+                this.force[1] = randomDeviation;
+            }
+            case RIGHT -> {
+                this.force[0] = force;
+                this.force[1] = randomDeviation;
+            }
+        }
     }
 
     public void render(Graphics2D g, int[] translation, double scale) {

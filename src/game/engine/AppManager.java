@@ -23,14 +23,14 @@ public class AppManager {
     private HashMap<String, Scene> scenes = new HashMap<String, Scene>();
 
     public AppManager() {
-        // scenes.put("title screen", new TitleScreen(this));
-        // scenes.put("main menu", new MainMenu(this));
-        // scenes.put("game", new Game(this));
-        // scenes.put("instructions", new InstructionsPage(this));
+        scenes.put("title screen", new TitleScreen(this));
+        scenes.put("main menu", new MainMenu(this));
+        scenes.put("game", new Game(this));
+        scenes.put("instructions", new InstructionsPage(this));
         scenes.put("test", new Test(this));
         // scenes.put("test", new AnimationTest(this));
 
-        currentScene = "test";
+        currentScene = "title screen";
     }
 
     /**

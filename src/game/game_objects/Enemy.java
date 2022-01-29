@@ -27,7 +27,8 @@ public class Enemy extends Entity {
 	 * @param y The y position of the enemy.
 	 */
 	public Enemy(int x, int y) {
-s
+		super("./assets/Enemy.png");
+
 		speed = 1;
 		height = width = 16;
 		totalHealth = currentHealth = 500;

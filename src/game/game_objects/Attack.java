@@ -45,7 +45,7 @@ public class Attack {
         collider.rect.update(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
 
-    // TODO: Move the rotations to the Animaiton class.
+    public boolean isAttacking() { return isAttacking; }
 
     public void attack(ArrayList<Entity> hits) {
         if (isAttacking) {

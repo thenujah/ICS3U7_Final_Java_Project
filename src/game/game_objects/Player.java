@@ -27,6 +27,7 @@ public class Player extends Entity {
 
 		speed = 3;
 		height = width = 24;
+		damage = 10;
 
 		totalHealth = currentHealth = 1000;
 		
@@ -36,8 +37,10 @@ public class Player extends Entity {
 		collider = new Collider(sprite.getX(), sprite.getY(), width, height);
 		collider.addSprite(sprite);
 
-		swipe = new Attack(10, sprite);
+		swipe = new Attack(damage, sprite);
 	}
+
+	public boolean isAttacking() { return swipe.isAttacking(); }
 
 	public void update(TileMap tilemap, Map level) {
 		movement(tilemap.walls);
