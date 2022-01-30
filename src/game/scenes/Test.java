@@ -1,22 +1,17 @@
 package game.scenes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Font;
 
 import game.engine.AppManager;
 import game.engine.Scene;
-import game.engine.util.KeyboardInput;
 import game.engine.util.Positioning;
-import game.engine.util.Positioning.Direction;
+import game.engine.util.KeyboardInput;
 import game.engine.util.Camera;
-import game.engine.util.Animation;
-import game.engine.components.Rect;
-import game.engine.components.Collider;
 import game.game_objects.TileMap;
-import game.game_objects.Map;
+import game.game_objects.Level;
 import game.game_objects.Player;
 import game.game_objects.Enemy;
 import game.game_objects.Entity;
@@ -29,82 +24,74 @@ import game.game_objects.Entity;
  */
 public class Test extends Scene {
 
-	private final Font font;
+	private final Font font = new Font("DialogInput", Font.PLAIN, 20);
 
-	private Map level;
+	private Level level;
 	private Camera camera;
 	private Player player;
-	private int totalEnemies = 0;
+
+	private int counter = 0;
+
+	private boolean paused = false;
 
 	public Test(AppManager app) {
 		super(app);
 
-		font = new Font("DialogInput", Font.PLAIN, 20);
-
 		camera = new Camera(2);
 		player = new Player();
-		level = new Map();
-
-		// Generate a random number of enemies in each room.
-		for (TileMap room : level.rooms) {
-			int numberOfEnemies = (int) (Math.random() * 3) + 3;
-			totalEnemies += numberOfEnemies;
-
-			for (int i = 0; i < numberOfEnemies; i++) {
-				int[] position = Positioning.generateRandomPositionWithin(room);
-
-				int x = position[0];
-				int y = position[1];
-
-				room.enemies.add(new Enemy(position[0], position[1]));
-			}
-		}
+		level = new Level();
 	}
 
 	public void update() {
-		player.update(level.currentRoom, level);
-		player.updateDirection(camera.getTranslation(), camera.getScale());
-
-		for (Entity entity : level.currentRoom.enemies) {
-			Enemy enemy = (Enemy) entity;
-			enemy.movement(player, level.currentRoom);
+		if (KeyboardInput.wasPressed("esc")) {
+			paused = !paused;
+			counter++;
+			System.out.println("paused " + counter);
 		}
 
-		ArrayList<Entity> attackHits = player.swipe.collider.getEntityCollisions(level.currentRoom.enemies);
-		player.swipe.attack(attackHits);
+		if (!paused) {
+			player.updatePosition(level.currentRoom, level);
+			player.updateDirection(camera.getTranslation(), camera.getScale());
 
-		for (Entity enemy : attackHits) {
-
-			if (player.isAttacking() && !enemy.getCollider().collision(player.getSprite())) {
-				enemy.push(player.getDirectionFacing(), 15);
+			for (Entity entity : level.currentRoom.enemies) {
+				Enemy enemy = (Enemy) entity;
+				enemy.movement(player, level.currentRoom);
 			}
 
-			if (enemy.getHealth() == 0) {
-				level.currentRoom.enemies.remove(enemy);
-				totalEnemies--;
+			ArrayList<Entity> enemiesHit = player.attack(level.currentRoom.enemies);
+
+			for (Entity enemy : enemiesHit) {
+
+				if (player.isAttacking() && !enemy.collidedWith(player)) {
+					enemy.push(player.getDirectionFacing(), 12);
+				}
+
+				if (enemy.getHealth() == 0) {
+					level.killEntity(enemy);
+				}
+
 			}
 
-		}
+			ArrayList<Entity> playerHits = player.getEntityCollisions(level.currentRoom.enemies);
+			for (Entity entity : playerHits) {
+				Enemy enemy = (Enemy) entity;
 
-		ArrayList<Entity> playerHits = player.getCollider().getEntityCollisions(level.currentRoom.enemies);
-		for (Entity entity : playerHits) {
-			Enemy enemy = (Enemy) entity;
-			player.damage(enemy.getDamage());
-			// System.out.println("owie");
+				enemy.attack(player);
 
-			if (player.getHealth() == 0) {
-				System.out.println("u ded");
+				if (player.getHealth() == 0) {
+					System.out.println("u ded");
+					System.exit(0);
+				}
+			}
+
+			if (level.getTotalEnemies() == 0) {
+				System.out.println("u win");
 				System.exit(0);
 			}
-		}
 
-		if (totalEnemies == 0) {
-			System.out.println("u win");
-			System.exit(0);
-		}
-
-		if (playerHits.size() > 0) {
-			camera.shake();
+			if (playerHits.size() > 0) {
+				camera.shake();
+			}
 		}
 
 		camera.update(player.getSprite());

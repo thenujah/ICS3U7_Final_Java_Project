@@ -3,46 +3,40 @@ package game.game_objects;
 import java.util.ArrayList;
 import java.awt.Graphics2D;
 
-import game.engine.AppManager;
-import game.engine.Scene;
 import game.engine.util.KeyboardInput;
 import game.engine.util.MouseInput;
 import game.engine.util.Positioning;
 import game.engine.util.Positioning.Direction;
-import game.engine.util.Camera;
-import game.engine.util.Animation;
 import game.engine.components.Rect;
 import game.engine.components.Collider;
-import game.game_objects.TileMap;
-import game.game_objects.Map;
-import game.game_objects.Entity;
-import game.game_objects.Attack;
+import game.game_objects.attacks.Swipe;
 
 public class Player extends Entity {
 
-	public Attack swipe;
+	public Swipe swipe;
 
 	public Player() {
 		super("./assets/Player.png");
 
 		speed = 3;
 		height = width = 24;
-		damage = 10;
+		damage = 15;
 
 		totalHealth = currentHealth = 1000;
 		
 		sprite = new Rect(width, height);
-		sprite.setCenter(200, 200); // TODO: Set the player at the center of the tilemap.
+		sprite.setCenter(200, 200);
 
 		collider = new Collider(sprite.getX(), sprite.getY(), width, height);
 		collider.addSprite(sprite);
 
-		swipe = new Attack(damage, sprite);
+		swipe = new Swipe(damage, sprite);
 	}
 
 	public boolean isAttacking() { return swipe.isAttacking(); }
+	public ArrayList<Entity> attack(ArrayList<Entity> entities) { return swipe.attack(entities); }
 
-	public void update(TileMap tilemap, Map level) {
+	public void updatePosition(TileMap tilemap, Level level) {
 		movement(tilemap.walls);
 		doorCollisions(tilemap, level);
 	}
@@ -69,7 +63,7 @@ public class Player extends Entity {
 		swipe.update(facing);
 	}
 	
-	public void movement(ArrayList<Collider> walls) {
+	private void movement(ArrayList<Collider> walls) {
 		if (KeyboardInput.isPressed("a")) {
 			updateXPosition(-speed);
 		}
@@ -89,13 +83,13 @@ public class Player extends Entity {
 		collider.yCollision(collider.getCollisions(walls));
 	}
 	
-	public void doorCollisions(TileMap tilemap, Map level) {
+	public void doorCollisions(TileMap tilemap, Level level) {
 		for (Object[] entrance : tilemap.entrances) {
 			Collider entranceCollider = (Collider) entrance[0];
 			TileMap connectedRoom = (TileMap) entrance[1];
 			Direction entranceDirection = (Direction) entrance[2];
 
-			if (collider.collision(entranceCollider.rect)) {
+			if (collider.collision(entranceCollider)) {
 				level.currentRoom = connectedRoom;
 
 				Collider connectedRoomEntranceCollider = null;

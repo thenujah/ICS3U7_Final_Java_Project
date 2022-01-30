@@ -1,8 +1,6 @@
 package game.engine.util;
 
-import game.engine.util.Positioning;
 import game.engine.components.Rect;
-import game.game_objects.Map;
 
 /**
  * A class which handles scaling and translating the visuals of the game.

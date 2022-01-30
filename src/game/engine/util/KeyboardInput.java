@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 public class KeyboardInput extends KeyAdapter {
 
 	private static HashMap<String, Boolean> keysPressed = new HashMap<String, Boolean>();
+	private static HashMap<String, Boolean> keysPressedAndReleased = new HashMap<String, Boolean>();
 
 	/**
 	 * The constructor is only used to initalize the HashMap which will store the states of each 
@@ -20,7 +21,10 @@ public class KeyboardInput extends KeyAdapter {
 	 */
 	public KeyboardInput() {
 		String[] keys = { "w", "a", "s", "d", "space", "esc" };
-		for (String key : keys) keysPressed.put(key, false);
+		for (String key : keys) {
+			keysPressed.put(key, false);
+			keysPressedAndReleased.put(key, false);
+		}
 	}
 
 	/**
@@ -33,7 +37,10 @@ public class KeyboardInput extends KeyAdapter {
 		int key = e.getKeyCode();
 
 		switch (key) {
-			case 27 -> keysPressed.put("esc", true);
+			case 27 -> {
+				keysPressedAndReleased.put("esc", true);
+				keysPressed.put("esc", true);
+			}
 			case 32 -> keysPressed.put("space", true);
 			case 65 -> keysPressed.put("a", true);
 			case 68 -> keysPressed.put("d", true);
@@ -52,13 +59,17 @@ public class KeyboardInput extends KeyAdapter {
 		int key = e.getKeyCode();
 
 		switch (key) {
-			case 27 -> keysPressed.put("esc", true);
+			case 27 -> keysPressed.put("esc", false);
 			case 32 -> keysPressed.put("space", false);
 			case 65 -> keysPressed.put("a", false);
 			case 68 -> keysPressed.put("d", false);
 			case 83 -> keysPressed.put("s", false);
 			case 87 -> keysPressed.put("w", false);
 		}
+	}
+
+	public void reset() {
+		keysPressedAndReleased.replaceAll( (key, value) -> value = false );
 	}
 
 	/**
@@ -69,6 +80,16 @@ public class KeyboardInput extends KeyAdapter {
 	 */
 	public static boolean isPressed(String key) {
 		return keysPressed.get(key);
+	}
+
+	/**
+	 * A method which returns if a key was pressed.
+	 * 
+	 * @param key The specified key.
+	 * @return A boolean representing if the specified key was pressed.
+	 */
+	public static boolean wasPressed(String key) {
+		return keysPressedAndReleased.get(key);
 	}
 
 }

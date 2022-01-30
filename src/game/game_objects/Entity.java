@@ -33,7 +33,7 @@ public abstract class Entity {
     protected int currentHealth;
     protected int damage;
 
-    protected final int FRICTION = 1;
+    protected final double FRICTION = 0.5;
     protected double xFriction = 0;
     protected double yFriction = 0;
     protected int[] force = new int[2];
@@ -58,13 +58,25 @@ public abstract class Entity {
 
     public int getHealth() { return currentHealth; }
     public Rect getSprite() { return sprite; }
-    public Collider getCollider() { return collider; }
     public Direction getDirectionFacing() { return facing; }
+    public Collider getCollider() { return collider; }
+
+    public ArrayList<Collider> getCollisions(ArrayList<Collider> colliders) { 
+        return collider.getCollisions(colliders);
+    }
+
+    public ArrayList<Entity> getEntityCollisions(ArrayList<Entity> colliders) { 
+        return collider.getEntityCollisions(colliders);
+    }
+
+    public boolean collidedWith(Entity entity) { 
+        return collider.collision(entity.getCollider());
+    }
 
     protected void updateXPosition(int diff) {
 
         if (force[0] != 0) {
-            xFriction += 1;
+            xFriction += FRICTION;
 
             if (force[0] > 1) {
                 force[0] = Positioning.clamp(force[0] - (int) xFriction, force[0], 0);
@@ -82,7 +94,7 @@ public abstract class Entity {
     
     protected void updateYPosition(int diff) {
         if (force[1] != 0) {
-            yFriction += 1;
+            yFriction += FRICTION;
 
             if (force[1] > 1) {
                 force[1] = Positioning.clamp(force[1] - (int) yFriction, force[1], 0);

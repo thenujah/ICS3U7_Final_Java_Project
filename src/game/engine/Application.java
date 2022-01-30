@@ -92,6 +92,7 @@ public class Application extends Canvas {
 				}
 
 				mouse.reset();
+				keyboard.reset();
 			}
 		}
 	}

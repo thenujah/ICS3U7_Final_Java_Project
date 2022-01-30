@@ -57,6 +57,10 @@ public class Collider {
 	public boolean collision(Rect rect) {
 		return this.rect.overlaps(rect) || rect.overlaps(this.rect);
 	}
+
+	public boolean collision(Collider collider) {
+		return rect.overlaps(collider.rect) || collider.rect.overlaps(rect);
+	}
 	
 	public ArrayList<Collider> getCollisions(ArrayList<Collider> colliders) {
 		ArrayList<Collider> collisions = new ArrayList<>();
