@@ -14,7 +14,6 @@ import game.engine.util.Positioning.Direction;
  */
 public class Level {
     
-    public static final int NUMBER_OF_ROOMS = 5;
     public static final int MAX_CONNECTIONS = 2;
 
     public TileMap[] rooms;
@@ -22,8 +21,8 @@ public class Level {
 
     private int totalEnemies = 0;
 
-    public Level() {
-        int ROOM_COUNT = (int) (Math.random() * NUMBER_OF_ROOMS) + 1;
+    public Level(int difficulty) {
+        int ROOM_COUNT = (int) (Math.random() * difficulty) + 1;
         rooms = new TileMap[ROOM_COUNT];
 
         for (int i = 0; i < ROOM_COUNT; i++) {
@@ -68,7 +67,7 @@ public class Level {
             room.createColliders();
 
             // Generate a random number of enemies in each room.
-            int numberOfEnemies = (int) (Math.random() * 3) + 3;
+            int numberOfEnemies = (int) (Math.random() * difficulty) + difficulty / 5 + 1;
             totalEnemies += numberOfEnemies;
 
             for (int i = 0; i < numberOfEnemies; i++) {
@@ -84,11 +83,20 @@ public class Level {
         currentRoom = rooms[0];
     }
 
+    /**
+     * A method which removes an enemy from the list of enemies in a tilemap and thus decrements 
+     * the total number of enemies.
+     * 
+     * @param entity The enemy which was killed.
+     */
     public void killEntity(Entity entity) {
         currentRoom.enemies.remove(entity);
         totalEnemies--;
     }
 
+    /**
+     * A getter method for the total number of enemies in the level.
+     */
     public int getTotalEnemies() { return totalEnemies; }
 
 }

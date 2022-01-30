@@ -21,9 +21,6 @@ public class Enemy extends Entity {
     private int range = 100;
     private int[] targetPosition = new int[2];
 
-    private int damage = 2;
-    private int coolDown = 0;
-
     public Push push;
     
     /**
@@ -37,7 +34,8 @@ public class Enemy extends Entity {
 
         speed = 1;
         height = width = 16;
-        totalHealth = currentHealth = 100;
+        totalHealth = currentHealth = 50;
+        damage = 2;
 
         sprite = new Rect(x, y, width, height);
 

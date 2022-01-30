@@ -1,6 +1,4 @@
-package game.engine.util;
-
-// TODO: Move to components.
+package game.engine.components;
 
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -9,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
@@ -137,8 +134,9 @@ public class Animation {
      */
     public void render(Graphics2D g, int[] translation, double scale) {
         if (isPlaying) {
-            int[] rotationOffset = new int[2];
 
+            // Calculating the offset needed to be applied for the animation be rotated properly.
+            int[] rotationOffset = new int[2];
             switch (direction) {
                 case UP -> rotationOffset = new int[]{ 0, 0 };
                 case DOWN -> rotationOffset = new int[]{ (int)(rect.getWidth() * scale), 

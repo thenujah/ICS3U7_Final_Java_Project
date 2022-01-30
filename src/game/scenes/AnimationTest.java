@@ -1,15 +1,11 @@
 package game.scenes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.awt.Graphics2D;
-import java.awt.Color;
 
 import game.engine.AppManager;
 import game.engine.Scene;
 import game.engine.util.MouseInput;
-import game.engine.util.Positioning;
-import game.engine.util.Animation;
+import game.engine.components.Animation;
 import game.engine.util.Camera;
 
 /**

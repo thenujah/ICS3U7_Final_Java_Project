@@ -66,6 +66,14 @@ public class Positioning {
 		return new int[]{(firstPos[0] + secondPos[0]) / 2, (firstPos[1] + secondPos[1]) / 2};
 	}
 
+	/**
+	 * A method which clamps a value between two bounds.
+	 * 
+	 * @param value The value to be clamped.
+	 * @param upperBound The highest value the specified value should have.
+	 * @param lowerBound The lowest value the specified value should have.
+	 * @return A value between the two specified bounds.
+	 */
 	public static int clamp(int value, int upperBound, int lowerBound) {
 		if (value > upperBound) {
 			return upperBound;
@@ -76,7 +84,20 @@ public class Positioning {
 		}
 	}
 
-		/**
+	/**
+	 * @see #clamp(int, int, int)
+	 */
+	public static double clamp(double value, double upperBound, double lowerBound) {
+		if (value > upperBound) {
+			return upperBound;
+		} else if (value < lowerBound) {
+			return lowerBound;
+		} else {
+			return value;
+		}
+	}
+
+	/**
 	 * A method to generate a random position that is within a tilemap.
 	 * 
 	 * @param tilemap The TileMap that the position must be within.

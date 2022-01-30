@@ -1,7 +1,6 @@
 package game.game_objects;
 
 import java.util.ArrayList;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -15,7 +14,7 @@ import game.engine.util.Positioning;
 import game.engine.util.Positioning.Direction;
 
 /**
- * A class which all Entities inherit.
+ * A class which all Entities inherit. It includes support for attacks, colliders and movement.
  */
 public abstract class Entity {
 
@@ -52,7 +51,12 @@ public abstract class Entity {
         }
     }
 
-    public void damage(int damage) { 
+    /**
+     * A method which applies damage to the entity.
+     * 
+     * @param damage The damage dealt to the entity.
+     */
+    public void damage(int damage) {
         currentHealth = Positioning.clamp(currentHealth - damage, totalHealth, 0);
     }
 
@@ -69,10 +73,20 @@ public abstract class Entity {
         return collider.getEntityCollisions(colliders);
     }
 
+    /**
+     * A method which checks if an entity collided with another entity.
+     * 
+     * @param entity The entity which might have been collided with.
+     */
     public boolean collidedWith(Entity entity) { 
-        return collider.collision(entity.getCollider());
+        return collider.collidedWith(entity.getCollider());
     }
 
+    /**
+     * A method which updates the x position of the entity.
+     * 
+     * @param diff The change in the x axis.
+     */
     protected void updateXPosition(int diff) {
 
         if (force[0] != 0) {
@@ -92,6 +106,11 @@ public abstract class Entity {
         collider.rect.setX(collider.rect.getX() + diff + force[0]);
     }
     
+    /**
+     * A method which updates the y position of the entity.
+     * 
+     * @param diff The change in the y axis.
+     */
     protected void updateYPosition(int diff) {
         if (force[1] != 0) {
             yFriction += FRICTION;
@@ -110,6 +129,12 @@ public abstract class Entity {
         collider.rect.setY(collider.rect.getY() + diff + this.force[1]);
     }
 
+    /**
+     * A method which applies a force to the entity, pushing it in the specified direction.
+     * 
+     * @param direction The direction the entity will be pushed in.
+     * @param force The amount of force applied to the entity.
+     */
     public void push(Direction direction, int force) {
         int randomDeviation = (int) (Math.random() * 30) - 15;
 
@@ -133,6 +158,13 @@ public abstract class Entity {
         }
     }
 
+     /**
+     * A method which renders the image of the entity.
+     * 
+     * @param g The Graphics2D object used to draw images to the screen.
+     * @param translation How much the image needs to be translated.
+     * @param scale How much the image should be scaled.
+     */
     public void render(Graphics2D g, int[] translation, double scale) {
         AffineTransform transform = new AffineTransform();
         transform.translate(sprite.getX() * scale - translation[0],
@@ -140,11 +172,6 @@ public abstract class Entity {
         transform.scale(scale, scale);
 
         g.drawImage(image, transform, null);
-    }
-
-    public void debug(Graphics2D g) {
-        g.setColor(Color.green);
-        g.drawRect(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
     }
 
 }

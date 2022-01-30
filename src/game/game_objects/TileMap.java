@@ -32,7 +32,6 @@ public class TileMap {
 
 	public ArrayList<Collider> walls = new ArrayList<>();
 	public ArrayList<Object[]> entrances = new ArrayList<>();
-
 	public ArrayList<Entity> enemies = new ArrayList<>();
 
 	public TileMap() {
