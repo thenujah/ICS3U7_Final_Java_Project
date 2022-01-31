@@ -1,6 +1,6 @@
 package game.scenes;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Font;
@@ -141,7 +141,7 @@ public class Game extends Scene {
 
                 if (player.getHealth() == 0) {
                     System.out.println("u ded");
-                    if (app.getHighScore() < currentLevel) app.setHighScore(currentLevel);
+                    if (app.getHighscore() < currentLevel) app.setHighscore(currentLevel);
                     currentLevel = 0;
                     difficulty = 1;
                     levelCompleted = true;

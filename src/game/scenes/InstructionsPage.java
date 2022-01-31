@@ -78,10 +78,15 @@ public void update() {
 			
 			g.drawString("Then you will be able to play again and again if you choose to beat your high score or save it for another time.", 50, 425);
 			
-			g.drawString("You will start off by having your character with no weapons whatsoever to fight the enemy, but as you move on to the higher", 50, 475);
-			g.drawString("levels you will be upgraded. Your main objective is to fight and battle as many enemies as you can and move on to the", 50, 500);
-			g.drawString("the next level.", 50, 525);
-		
+			g.drawString("You will the 'a' key to move left, 's' key to move down, 'w' to move up, and 'd' to move right. You click the mouse to ", 50, 475);
+			g.drawString("attack, and to aim where your attacking to. In some levels, once you've defeated the enemies, you'll realize there's nothing coming to attack you, ", 50, 500);
+			g.drawString("once you get to that stage, you will need to go into a space you'll see anywhere along the perimeter of the map, to enter a ", 50, 525);
+			g.drawString("new map where enemeies are waiting to attack.", 50, 550);
+			
+			g.drawString("If at anytime, you would like to pause the game to resume later, press the 'esc' key to get to the", 50, 600);
+			g.drawString("pause screen.", 50, 625);
+			
+			g.drawString("Have Fun!!", 50, 675);
 			//Button
 			backButton.render(g);
 		

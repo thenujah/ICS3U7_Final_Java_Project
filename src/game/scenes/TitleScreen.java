@@ -3,10 +3,17 @@ package game.scenes;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import game.engine.AppManager;
 import game.engine.Scene;
 import game.engine.util.Button;
+import game.engine.util.Positioning;
 
 /**
  * A class which controls the title screen scene of the game.
@@ -26,6 +33,7 @@ public class TitleScreen extends Scene {
 
 	private final Button mainMenuButton;
 	private final Button exitButton;
+    private BufferedImage titleScreenBackground;
 
 	public TitleScreen(AppManager app) {
 		super(app);
@@ -35,17 +43,27 @@ public class TitleScreen extends Scene {
 		
 		// Main Menu Button
 		mainMenuButton = new Button(150, 50);
-		mainMenuButton.setCenter(625, 350);
-		mainMenuButton.backgroundColor = BLUE;
+		mainMenuButton.setCenter(650, 250);
+		mainMenuButton.backgroundColor = LIGHT_BLUE;
 		mainMenuButton.font = subtitleFont;
 		mainMenuButton.text = "Main Menu";
 		
 		// Quit Game Button
 		exitButton = new Button(150, 50);
-		exitButton.setCenter(625, 420);
-		exitButton.backgroundColor = BLUE;
+		exitButton.setCenter(650, 320);
+		exitButton.backgroundColor = LIGHT_BLUE;
 		exitButton.font = subtitleFont;
 		exitButton.text = "Quit Game";
+		
+
+		try {
+			
+            titleScreenBackground = ImageIO.read(new File("./assets/TitleScreen_Background.png"));
+            
+        } catch (IOException e) {
+        	
+            e.printStackTrace();
+        }
 	}
 
 	public void update() {
@@ -60,23 +78,28 @@ public class TitleScreen extends Scene {
 	}
 
 	public void render(Graphics2D g) {
-		g.setColor(LIGHT_BLUE);
-		g.fillRect(0, 0, 1280, 800);
+		
+		 AffineTransform titleTransform = new AffineTransform();
+	        titleTransform.translate(-115, -15);
+	        titleTransform.scale(1.2, 1.2);
+	        
+		g.drawImage(titleScreenBackground, titleTransform, null);
 
 		// Title
 	    g.setFont(titleFont);
-	    g.setColor(BLACK);
-		g.drawString("Winter Wonderland", 410, 300);
+	    g.setColor(WHITE);
+		g.drawString("Winter Wonderland", 390, 200);
 		
 		// Formatting of names, date and class
 	    g.setFont(subtitleFont);
 
-		g.drawString("By: Monica and Thenujah", 900, 500);
-		g.drawString("Ms.Xie - ICS3U7", 900, 540);
-		g.drawString("January 4, 2022", 900, 580);
+		g.drawString("By: Monica and Thenujah", 1000, 500);
+		g.drawString("Ms.Xie - ICS3U7", 1000, 540);
+		g.drawString("January 4, 2022", 1000, 580);
 
 		mainMenuButton.render(g);
-		exitButton.render(g);
+		exitButton.render(g);		
+		
 	}
 
 }

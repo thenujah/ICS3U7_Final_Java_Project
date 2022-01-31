@@ -1,8 +1,14 @@
 package game.scenes;
 
-import java.awt.Color;
+import java.awt.Color; 
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import game.engine.AppManager;
 import game.engine.Scene;
@@ -29,12 +35,13 @@ public class MainMenu extends Scene{
     private Button instructions;
     private Button backToTitleScreen;
     private Button quitGame;
-    // private Button test;
+    
+    private BufferedImage mainMenu_Background;
 
     public MainMenu(AppManager app) {
         super(app);
         subtitleFont = new Font("DialogInput", Font.PLAIN, 20);
-
+        
         // Start Game Button
         startGame = new Button(250, 50);
         startGame.setCenter(Positioning.SCREEN_CENTER_X, 240);
@@ -63,12 +70,14 @@ public class MainMenu extends Scene{
         quitGame.font = subtitleFont;
         quitGame.text = "Quit Game";
         
-        //Temporary Test
-        // test = new Button(150, 50);
-        // test.setCenter(625, 520);
-        // test.backgroundColor = BLUE;
-        // test.font = subtitleFont;
-        // test.text = "test";
+        try {
+			
+            mainMenu_Background = ImageIO.read(new File("./assets/MainMenu_Background.jpeg"));
+            
+        } catch (IOException e) {
+        	
+            e.printStackTrace();
+        }
         
     }
     
@@ -88,12 +97,25 @@ public class MainMenu extends Scene{
     }
 
     public void render(Graphics2D g) {
+    	
+    	g.setColor(Color.black);
+        g.fillRect(0,0, Positioning.SCREEN_WIDTH, Positioning.SCREEN_HEIGHT);
+        
+    	AffineTransform titleTransform = new AffineTransform();
+        titleTransform.translate(20, -15);
+        titleTransform.scale(1.2, 1.2);
+        
+        g.drawImage(mainMenu_Background, titleTransform, null);
+    	
         startGame.render(g);
         instructions.render(g);
         backToTitleScreen.render(g);
         quitGame.render(g);
 
-        g.drawString("Highscore - " + app.getHighScore(), 50, 60);
+
+
+        g.drawString("Highscore: Level " + app.getHighscore(), 170, 120);
+
     }
 
 }
