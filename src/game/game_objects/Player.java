@@ -13,11 +13,17 @@ import game.game_objects.attacks.Swipe;
 
 /**
  * A class which creates players. Players are entities controlled by the user.
+ *
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public class Player extends Entity {
 
     public Swipe swipe;
 
+    /**
+     * The constructor for the Player.
+     */
     public Player() {
         super("./assets/Player.png");
 
@@ -36,15 +42,43 @@ public class Player extends Entity {
         swipe = new Swipe(damage, sprite);
     }
 
+    /**
+     * A method used to reset the health of the player.
+     */
     public void resetHealth() { currentHealth = totalHealth; }
 
+    /**
+     * A method which returns true if the player is attacking.
+     *
+     * @return A boolean stating if the player is attacking.
+     */
     public boolean isAttacking() { return swipe.isAttacking(); }
+
+    /**
+     * A method which deals damage to multiple entities if it hits them.
+     *
+     * @param entities The entities to be attacked.
+     * @return The Entities hit by the attack.
+     */
     public ArrayList<Entity> attack(ArrayList<Entity> entities) { return swipe.attack(entities); }
+
+    /**
+     * A method which sets the center of the Player.
+     *
+     * @param x The new x position of the Player's center.
+     * @param y The new y position of the Player's center.
+     */
     public void setCenter(int x, int y) {
         sprite.setCenter(x, y);
         collider.setCenter(x, y);
     }
 
+    /**
+     * A method used to update the position of the Player.
+     *
+     * @param tilemap The current tilemap the Player is on.
+     * @param level The current level the Player is in.
+     */
     public void updatePosition(TileMap tilemap, Level level) {
         movement(tilemap.walls);
         doorCollisions(tilemap, level);
@@ -167,6 +201,13 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * A method which renders the Player and its attack.
+     *
+     * @param g The Graphics2D object used to draw images to the screen.
+     * @param translation How much the image needs to be translated.
+     * @param scale How much the image should be scaled.
+     */
     public void render(Graphics2D g, int[] translation, double scale) {
         super.render(g, translation, scale);
         swipe.render(g, translation, scale);

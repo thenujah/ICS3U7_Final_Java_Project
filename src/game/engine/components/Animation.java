@@ -10,8 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-import game.engine.components.Rect;
-import game.engine.util.Positioning;
 import game.engine.util.Positioning.Direction;
 
 
@@ -144,12 +142,12 @@ public class Animation {
                 case RIGHT -> rotationOffset = new int[]{ (int)(rect.getWidth() * scale), 0 };
                 case LEFT -> rotationOffset = new int[]{ 0, (int)(rect.getHeight() * scale) };
             };
-        
+
             AffineTransform transform = new AffineTransform();
             transform.translate(rect.getX() * scale - translation[0] + rotationOffset[0],
                                 rect.getY() * scale - translation[1] + rotationOffset[1]);
             transform.scale(scale, scale);
-            transform.rotate(direction.rotation() * (Math.PI / 180));
+            transform.rotate(direction.getRotation() * (Math.PI / 180));
     
             g.drawImage(frames.get(currentFrame), transform, null);
         }

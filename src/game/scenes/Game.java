@@ -16,7 +16,6 @@ import game.engine.util.Button;
 import game.engine.util.Camera;
 import game.engine.util.Positioning;
 import game.engine.util.KeyboardInput;
-import game.game_objects.TileMap;
 import game.game_objects.Level;
 import game.game_objects.Player;
 import game.game_objects.Enemy;
@@ -25,8 +24,8 @@ import game.game_objects.Entity;
 /**
  * A class which controls the game scene of the game.
  *
- * @version 1.0
- * @since 1.0
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public class Game extends Scene {
 
@@ -56,6 +55,11 @@ public class Game extends Scene {
     private boolean fadeIn = false;
     private double titleVelocity = 0;
 
+    /**
+     * The constructor for the Game.
+     *
+     * @param app The AppManager controlling the app.
+     */
     public Game(AppManager app) {
         super(app);
 
@@ -137,7 +141,7 @@ public class Game extends Scene {
 
                 if (player.getHealth() == 0) {
                     System.out.println("u ded");
-                    if (app.getHighscore() < currentLevel) app.setHighscore(currentLevel);
+                    if (app.getHighScore() < currentLevel) app.setHighScore(currentLevel);
                     currentLevel = 0;
                     difficulty = 1;
                     levelCompleted = true;

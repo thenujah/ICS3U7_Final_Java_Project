@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import game.engine.AppManager;
 import game.engine.Scene;
 import game.engine.util.Button;
-import game.engine.util.KeyboardInput;
 import game.engine.util.Positioning;
 
 /**
@@ -94,7 +93,7 @@ public class MainMenu extends Scene{
         backToTitleScreen.render(g);
         quitGame.render(g);
 
-        g.drawString("Highscore - " + app.getHighscore(), 50, 60);
+        g.drawString("Highscore - " + app.getHighScore(), 50, 60);
     }
 
 }

@@ -5,6 +5,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * An enum which stores all the images of the tiles that can be found in the levels.
+ *
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
+ */
 public enum Tiles {
     GROUND ("./assets/Ground.png"),
     TOP_WALL ("./assets/Top.png"),
@@ -26,6 +32,11 @@ public enum Tiles {
 
     private BufferedImage image;
 
+    /**
+     * The constructor for the constants.
+     *
+     * @param pathName The paths to the images of the tiles.
+     */
     Tiles(String pathName) {
         try {
             image = ImageIO.read(new File(pathName));
@@ -34,6 +45,11 @@ public enum Tiles {
         }
     }
 
+    /**
+     * A getter method for the image of the tile.
+     *
+     * @return The image of the tile.
+     */
     public BufferedImage getImage() { return image; }
 
 }

@@ -6,17 +6,17 @@ import java.awt.event.KeyEvent;
 
 /**
  * A class used to handle keyboard input.
- * 
- * @version 1.0
- * @since 1.0
+ *
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public class KeyboardInput extends KeyAdapter {
 
-	private static HashMap<String, Boolean> keysPressed = new HashMap<String, Boolean>();
-	private static HashMap<String, Boolean> keysPressedAndReleased = new HashMap<String, Boolean>();
+	private static HashMap<String, Boolean> keysPressed = new HashMap<>();
+	private static HashMap<String, Boolean> keysPressedAndReleased = new HashMap<>();
 
 	/**
-	 * The constructor is only used to initalize the HashMap which will store the states of each 
+	 * The constructor is only used to initialize the HashMap which will store the states of each
 	 * key.
 	 */
 	public KeyboardInput() {

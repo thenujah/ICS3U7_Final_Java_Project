@@ -4,21 +4,20 @@ import java.util.ArrayList;
 
 import game.engine.components.Rect;
 import game.engine.components.Collider;
-import game.engine.util.KeyboardInput;
 import game.engine.util.Positioning;
-import game.game_objects.TileMap;
-import game.game_objects.Player;
-import game.game_objects.Entity;
 import game.game_objects.attacks.Push;
 
 /**
  * A class which creates Enemy instances. It will be inherited by all types of enemies.
+ *
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public class Enemy extends Entity {
 
-    private final int ATTACK_COOLDOWN = 5;
+    private final int ATTACK_COOL_DOWN = 5;
 
-    private int range = 100;
+    private final int range = 100;
     private int[] targetPosition = new int[2];
 
     public Push push;
@@ -45,6 +44,11 @@ public class Enemy extends Entity {
         push = new Push(damage, sprite);
     }
 
+    /**
+     * A method which deals damage to one entity.
+     *
+     * @param entity The entity to be attacked.
+     */
     public void attack(Entity entity) { push.attack(entity); }
 
     /**

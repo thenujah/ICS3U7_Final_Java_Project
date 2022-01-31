@@ -1,16 +1,14 @@
 package game.engine.util;
 
-import java.util.Collections;
-import java.util.Arrays;
 import java.util.Map;
 
 import game.game_objects.TileMap;
 
 /**
  * A class with some methods and variables used for positioning.
- * 
- * @version 2.0
- * @since 1.0
+ *
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public class Positioning {
 	
@@ -22,16 +20,29 @@ public class Positioning {
 
 	public static final int TILE_SIZE = 32;
 
+	/**
+	 * An enum representing the four directions.
+	 */
 	public enum Direction { 
 		UP(0), DOWN(180), RIGHT(90), LEFT(270); 
 
 		private int rotation;
 
+		/**
+		 * The constructor for the Directions.
+		 *
+		 * @param rotation The rotation corresponding to the direction.
+		 */
 		Direction(int rotation) {
 			this.rotation = rotation;
 		}
 
-		public int rotation() { return rotation; }
+		/**
+		 * A getter method for the angle of rotation for the corresponding direction.
+		 *
+		 * @return The rotation.
+		 */
+		public int getRotation() { return rotation; }
 	}
 	
 	public static Direction[] directions = Direction.values();
@@ -60,7 +71,7 @@ public class Positioning {
 	 * @param firstPos The first position.
 	 * @param secondPos The second position.
 	 * 
-	 * @return The mid point of the two specified points.
+	 * @return The mid-point of the two specified points.
 	 */
 	public static int[] averagePos(int[] firstPos, int[] secondPos) {
 		return new int[]{(firstPos[0] + secondPos[0]) / 2, (firstPos[1] + secondPos[1]) / 2};

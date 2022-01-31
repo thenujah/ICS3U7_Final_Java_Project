@@ -5,9 +5,9 @@ import java.awt.event.MouseEvent;
 
 /**
  * A class used to handle mouse input.
- * 
- * @version 1.1
- * @since 1.0
+ *
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public class MouseInput extends MouseAdapter {
 	
@@ -29,18 +29,18 @@ public class MouseInput extends MouseAdapter {
 	 */
 	public void mousePressed(MouseEvent e) {
 		switch (e.getButton()) {
-		case MouseEvent.BUTTON1:
-			button1Pressed = true;
-			button1Clicked = true;
-			break;
-		case MouseEvent.BUTTON2:
-			button2Pressed = true;
-			button2Clicked = true;
-			break;
-		case MouseEvent.BUTTON3:
-			button3Pressed = true;
-			button3Clicked = true;
-			break;
+			case MouseEvent.BUTTON1 -> {
+				button1Pressed = true;
+				button1Clicked = true;
+			}
+			case MouseEvent.BUTTON2 -> {
+				button2Pressed = true;
+				button2Clicked = true;
+			}
+			case MouseEvent.BUTTON3 -> {
+				button3Pressed = true;
+				button3Clicked = true;
+			}
 		}
 	}
 
@@ -52,15 +52,9 @@ public class MouseInput extends MouseAdapter {
 	 */
 	public void mouseReleased(MouseEvent e) {
 		switch (e.getButton()) {
-		case MouseEvent.BUTTON1:
-			button1Pressed = false;
-			break;
-		case MouseEvent.BUTTON2:
-			button2Pressed = false;
-			break;
-		case MouseEvent.BUTTON3:
-			button3Pressed = false;
-			break;
+			case MouseEvent.BUTTON1 -> button1Pressed = false;
+			case MouseEvent.BUTTON2 -> button2Pressed = false;
+			case MouseEvent.BUTTON3 -> button3Pressed = false;
 		}
 	}
 
@@ -99,37 +93,31 @@ public class MouseInput extends MouseAdapter {
 	 * @return A boolean representing if the button is pressed.
 	 */
 	public static boolean isPressed(int button) {
-		switch (button) {
-		case 1:
-			return button1Pressed;
-		case 2:
-			return button2Pressed;
-		case 3:
-			return button3Pressed;
-		}
-		return false;
+		return switch (button) {
+			case 1 -> button1Pressed;
+			case 2 -> button2Pressed;
+			case 3 -> button3Pressed;
+			default -> false;
+		};
 	}
 
 	/**
 	 * A method which checks if a mouse button was pressed in the last frame.
 	 * 
-	 * @param button A numbet representing one of three buttons on a mouse.
+	 * @param button A number representing one of three buttons on a mouse.
 	 * @return A boolean representing if a button is pressed.
 	 */
 	public static boolean isClicked(int button) {
-		switch (button) {
-			case 1:
-				return button1Clicked;
-			case 2:
-				return button2Clicked;
-			case 3:
-				return button3Clicked;
-		}
-		return false;
+		return switch (button) {
+			case 1 -> button1Clicked;
+			case 2 -> button2Clicked;
+			case 3 -> button3Clicked;
+			default -> false;
+		};
 	}
 
     /**
-	 * The getter method for the x positon of the mouse.
+	 * The getter method for the x position of the mouse.
 	 */
 	public static int getX() { return x; }
 

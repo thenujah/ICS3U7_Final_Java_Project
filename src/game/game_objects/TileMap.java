@@ -1,6 +1,5 @@
 package game.game_objects;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -13,19 +12,18 @@ import game.engine.components.Rect;
 import game.engine.components.Collider;
 import game.engine.util.Positioning;
 import game.engine.util.Positioning.Direction;
-import game.game_objects.Entity;
 
 /**
  * The TileMap class creates randomly generated rooms for each level.
  *
- * @version 3.0
- * @since 1.0
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public class TileMap {
 
 	private static final int MAX_NUMBER_OF_RECTS = 3;
 
-	private Rect[] rects;
+	private final Rect[] rects;
 	public Rect rect;
 
 	public int[][] map;
@@ -34,11 +32,16 @@ public class TileMap {
 	public ArrayList<Object[]> entrances = new ArrayList<>();
 	public ArrayList<Entity> enemies = new ArrayList<>();
 
+	/**
+	 * The constructor for the TileMap. It generates random Rects that overlap each other to create
+	 * random room shapes.
+	 */
 	public TileMap() {
 		int RECT_NUMBER = (int) (Math.random() * MAX_NUMBER_OF_RECTS) + 1;
 
 		rects = new Rect[RECT_NUMBER];
 
+		// Generating the Rects used to give the room a random shape.
 		for (int i = 0; i < RECT_NUMBER; i++) {
 			rects[i] = generateRect();
 		}
@@ -96,6 +99,11 @@ public class TileMap {
 		return new Rect(x, y, width, height);
 	}
 
+	/**
+	 * A method which generates a random Rect that overlaps any pre-existing Rects in the room.
+	 *
+	 * @return The randomly generated Rect.
+	 */
 	private Rect generateRect() {
 		if (Arrays.stream(rects).allMatch(Objects::isNull)) {
 			return randomRect();
@@ -106,6 +114,7 @@ public class TileMap {
 		
 			boolean overlaps = false;
 
+			// Check if the Rect generated overlaps with the other Rects that already exist.
 			for (Rect rect : rects) {
 				if (rect != null) {
 
@@ -129,9 +138,6 @@ public class TileMap {
 		}
 	}
 
-	// TODO: Fix the bug which causes a 1 by X row/column to form in the tilemap and mess up the 
-	// 	 border generation.
-
 	/**
 	 * A method which checks if a position is within the tile map.
 	 *
@@ -147,7 +153,13 @@ public class TileMap {
 		return false;
 	}
 
-	public boolean connectedTo(TileMap tilemap) { // TODO: Refactor to 'connectedTo'
+	/**
+	 * A method which checks if this TileMap is connected to another TileMap by an entrance.
+	 *
+	 * @param tilemap The other TileMap.
+	 * @return A boolean stating if the TileMaps are connected.
+	 */
+	public boolean connectedTo(TileMap tilemap) {
 		for (Object[] list : entrances) {
 			if (tilemap == list[1]) {
 				return true;
@@ -157,7 +169,14 @@ public class TileMap {
 		return false;
 	}
 
-	public int[][] generateBorders(int rightBound, int bottomBound) {
+	/**
+	 * A method which generates the borders of the TileMap based on the randomly generates Rects.
+	 *
+	 * @param rightBound The highest x value a tile can have.
+	 * @param bottomBound The highest y value a tile can have.
+	 * @return The map generated.
+	 */
+	private int[][] generateBorders(int rightBound, int bottomBound) {
 		map = new int[bottomBound + 2][rightBound + 2];
 
 		for (int y = 0; y < map.length; y++) {
@@ -165,39 +184,39 @@ public class TileMap {
 
 			for (int x = 0; x < row.length; x++) {
 
-				if (contains(new int[]{x, y})) { // inner
+				if (contains(new int[]{x, y})) { // Ground tile
 					row[x] = 1;
 				} else if (contains(new int[]{x + 1, y + 1}) && 
-					!(contains(new int[]{x + 1, y}) || contains(new int[]{x, y + 1}))) { // top left inward
+					!(contains(new int[]{x + 1, y}) || contains(new int[]{x, y + 1}))) { // top left inward tile
 					row[x] = 2;
 				} else if (contains(new int[]{x - 1, y - 1}) && 
-					!(contains(new int[]{x - 1, y}) || contains(new int[]{x, y - 1}))) { // bottom right inward
+					!(contains(new int[]{x - 1, y}) || contains(new int[]{x, y - 1}))) { // bottom right inward tile
 					row[x] = 3;
 				} else if (contains(new int[]{x - 1, y + 1}) && 
-					!(contains(new int[]{x - 1, y}) || contains(new int[]{x, y + 1}))) { // top tight inward
+					!(contains(new int[]{x - 1, y}) || contains(new int[]{x, y + 1}))) { // top tight inward tile
 					row[x] = 4;
 				} else if (contains(new int[]{x + 1, y - 1}) &&
-					!(contains(new int[]{x + 1, y}) || contains(new int[]{x, y - 1}))) { // bottom left inward
+					!(contains(new int[]{x + 1, y}) || contains(new int[]{x, y - 1}))) { // bottom left inward tile
 					row[x] = 5;
 				} else if (contains(new int[]{x - 1, y - 1}) &&
-						contains(new int[]{x - 1, y}) && contains(new int[]{x, y - 1})) { // top left outward
+						contains(new int[]{x - 1, y}) && contains(new int[]{x, y - 1})) { // top left outward tile
 					row[x] = 6;
 				} else if (contains(new int[]{x + 1, y - 1}) &&
-						contains(new int[]{x + 1, y}) && contains(new int[]{x, y - 1})) { // top right outward
+						contains(new int[]{x + 1, y}) && contains(new int[]{x, y - 1})) { // top right outward tile
 					row[x] = 7;
 				} else if (contains(new int[]{x + 1, y + 1}) && 
-					contains(new int[]{x + 1, y}) && contains(new int[]{x, y + 1})) { // bottom right outward
+					contains(new int[]{x + 1, y}) && contains(new int[]{x, y + 1})) { // bottom right outward tile
 					row[x] = 8;
 				} else if (contains(new int[]{x - 1, y + 1}) && 
-					contains(new int[]{x - 1, y}) && contains(new int[]{x, y + 1})) { // bottom left outward
+					contains(new int[]{x - 1, y}) && contains(new int[]{x, y + 1})) { // bottom left outward tile
 					row[x] = 9;
-				} else if (contains(new int[]{x, y + 1})) { // up
+				} else if (contains(new int[]{x, y + 1})) { // top tile
 					row[x] = 10;
-				} else if (contains(new int[]{x - 1, y})) { // right
+				} else if (contains(new int[]{x - 1, y})) { // right tile
 					row[x] = 11;
-				} else if (contains(new int[]{x, y - 1})) { // down
+				} else if (contains(new int[]{x, y - 1})) { // bottom tile
 					row[x] = 12;
-				} else if (contains(new int[]{x + 1, y})) { // left
+				} else if (contains(new int[]{x + 1, y})) { // left tile
 					row[x] = 13;
 				} else {
 					row[x] = 0;
@@ -209,6 +228,12 @@ public class TileMap {
 		return map;
 	}
 
+	/**
+	 * A method used to add entrances from one TileMap that lead to another.
+	 *
+	 * @param direction Side of the tilemap that the entrance can be located on.
+	 * @param connectingRoom The room on the other side of the entrance.
+	 */
 	public void addEntrance(Direction direction, TileMap connectingRoom) {
 		int maxPosition, xPos, yPos;
 		boolean positionSet = false;
@@ -281,6 +306,9 @@ public class TileMap {
 		} while (!positionSet);
 	}
 
+	/**
+	 * A method which generates the colliders for the borders of the room.
+	 */
 	public void createColliders() {
 		for (int y = 0; y < map.length; y++) {
 			for (int x = 0; x < map[y].length; x++) {
@@ -301,8 +329,13 @@ public class TileMap {
 
 	}
 
-	// TODO: Convert the switch cases to a HashMap or something similar.
-
+	/**
+	 * A method which renders all the ground tiles of the TileMap.
+	 *
+	 * @param g The Graphics2D object used to draw the images to the screen.
+	 * @param translation How much each image needs to be translated.
+	 * @param scale How much each image should be scaled.
+	 */
 	public void renderGround(Graphics2D g, int[] translation, double scale) {
 		for (int y = 0; y < map.length; y++) {
 			for (int x = 0; x < map[y].length; x++) {
@@ -325,6 +358,13 @@ public class TileMap {
 		}
 	}
 
+	/**
+	 * A method which renders all tiles which should appear behind the Player.
+	 *
+	 * @param g The Graphics2D object used to draw the images to the screen.
+	 * @param translation How much each image needs to be translated.
+	 * @param scale How much each image should be scaled.
+	 */
 	public void renderBackground(Graphics2D g, int[] translation, double scale) {
 		for (int y = 0; y < map.length; y++) {
 			for (int x = 0; x < map[y].length; x++) {
@@ -356,11 +396,18 @@ public class TileMap {
 		}
 	}
 
+	/**
+	 * A method which renders all tiles which should appear in front the Player.
+	 *
+	 * @param g The Graphics2D object used to draw the images to the screen.
+	 * @param translation How much each image needs to be translated.
+	 * @param scale How much each image should be scaled.
+	 */
 	public void renderForeground(Graphics2D g, int[] translation, double scale) {
 		for (int y = 0; y < map.length; y++) {
 			for (int x = 0; x < map[y].length; x++) {
 				int tile = map[y][x];
-				
+
 				BufferedImage image = switch (tile) {
 					case 3 -> Tiles.LARGE_BOTTOM_RIGHT_CORNER.getImage();
 					case 5 -> Tiles.LARGE_BOTTOM_LEFT_CORNER.getImage();
@@ -370,32 +417,16 @@ public class TileMap {
 					case 15 -> Tiles.BOTTOM_DOOR.getImage();
 					default -> null;
 				};
-				
+
 				if (image != null) {
 					AffineTransform transform = new AffineTransform();
 					transform.translate(x * Positioning.TILE_SIZE * scale - translation[0],
-										y * Positioning.TILE_SIZE * scale - translation[1]);
+							y * Positioning.TILE_SIZE * scale - translation[1]);
 					transform.scale(scale, scale);
 					g.drawImage(image, transform, null);
 				}
 			}
 		}
-	}
-
-	public void debug(Graphics2D g) {
-		for (Collider tile : walls) {
-			tile.debug(g);
-		}
-
-		for (Object[] entranceInfo : entrances) {
-			Collider collider = (Collider) entranceInfo[0];
-			collider.debug(g);
-		}
-
-		g.drawRect(rect.getX(), 
-				   rect.getY(),
-				   rect.getWidth(), 
-				   rect.getHeight());
 	}
 
 }

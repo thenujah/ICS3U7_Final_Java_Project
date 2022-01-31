@@ -6,9 +6,9 @@ import game.engine.util.Positioning;
  * A class which creates objects to represent points on a 2D plane in the form of a rectangle. 
  * Game objects and various other renderable things can use this to aid in positioning, collisions,
  * and anything else.
- *  
- * @version 2.0
- * @since 1.0
+ *
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public class Rect {
 
@@ -71,11 +71,19 @@ public class Rect {
 		center = Positioning.averagePos(topLeft, bottomRight);
 	}
 
+	/**
+	 * A method which returns the string representation of a Rect.
+	 *
+	 * @return The string representation of the Rect.
+	 */
 	public String toString() {
 		return String.format("<Rect points: (%d, %d) (%d, %d)>", 
 			topLeft[0], topLeft[1], bottomRight[0], bottomRight[1]);
 	}
 
+	/**
+	 * A method which rotates a Rect 90 degrees.
+	 */
 	public void rotate() {
 		int[] center = getCenter();
 
@@ -129,6 +137,12 @@ public class Rect {
 		return rect.contains(topLeft) && rect.contains(bottomRight);
 	}
 
+	/**
+	 * A method which checks if one Rect overlaps another.
+	 *
+	 * @param rect The Rect that is possibly overlapping the current Rect instance.
+	 * @return A boolean saying if the Rects are overlapping.
+	 */
 	public boolean overlaps(Rect rect) {
 		return containsExclusive(rect.getTopLeft())
 			|| containsExclusive(rect.getTopRight())
@@ -471,5 +485,3 @@ public class Rect {
 	public void setCenter(int[] point) { setCenter(point[0], point[1]); }
 
 }
-
-// TODO: Add a non-zero test.

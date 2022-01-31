@@ -4,9 +4,9 @@ import javax.swing.JFrame;
 
 /**
  * The class which creates the window for the game.
- * 
- * @version 1.0
- * @since 1.0
+ *
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public class Window extends JFrame {
 

@@ -5,15 +5,14 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.RenderingHints;
 
-import game.engine.AppManager;
 import game.engine.util.KeyboardInput;
 import game.engine.util.MouseInput;
 
 /**
  * The class which draws stuff to the screen and contains the game loop.
- * 
- * @version 1.0
- * @since 1.0
+ *
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public class Application extends Canvas {
 
@@ -22,24 +21,24 @@ public class Application extends Canvas {
 	private final MouseInput mouse = new MouseInput();
 	private final KeyboardInput keyboard = new KeyboardInput();
 
+	/**
+	 * The constructor for the Application. It adds all the listeners needed for the app.
+	 */
 	public Application() {
 		app = new AppManager();
 
 		this.addKeyListener(keyboard);
 		this.addMouseMotionListener(mouse);
 		this.addMouseListener(mouse);
-		
 	}
 
 	/**
-	 * Executed each frame.
+	 * A method executed each frame used to update the states of all the objects.
 	 */
-	private void update() {
-		app.update();
-	}
+	private void update() { app.update(); }
 
 	/**
-	 * Executed each frame.
+	 * A method executed each frame used to render all the objects in the game.
 	 */
 	private void render() {
 		BufferStrategy buffStrat = this.getBufferStrategy();
@@ -48,7 +47,7 @@ public class Application extends Canvas {
 			return;
 		}
 
-		Graphics2D g = (Graphics2D) buffStrat.getDrawGraphics(); // Returns sun.java2d.SunGraphics2D
+		Graphics2D g = (Graphics2D) buffStrat.getDrawGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                            RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -58,8 +57,6 @@ public class Application extends Canvas {
 		g.dispose();
 		buffStrat.show();
 	}
-
-	// TODO: Simplify the game loop?
 
 	/**
 	 * The game loop.
@@ -86,7 +83,7 @@ public class Application extends Canvas {
 				frames++;
 
 				if (System.currentTimeMillis() - time >= 1000) {
-						// System.out.println("FPS: " + frames + " | Current scene: " + app.currentScene);
+						System.out.println("FPS - " + frames);
 						time += 1000;
 						frames = 0;
 				}

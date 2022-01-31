@@ -15,6 +15,9 @@ import game.engine.util.Positioning.Direction;
 
 /**
  * A class which all Entities inherit. It includes support for attacks, colliders and movement.
+ *
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public abstract class Entity {
 
@@ -36,7 +39,6 @@ public abstract class Entity {
     protected double xFriction = 0;
     protected double yFriction = 0;
     protected int[] force = new int[2];
-    protected int knockbackTimer;
 
     /**
      * The constructor for the Entity class.
@@ -60,17 +62,42 @@ public abstract class Entity {
         currentHealth = Positioning.clamp(currentHealth - damage, totalHealth, 0);
     }
 
+    /**
+     * A getter method for the health of the Entity.
+     *
+     * @return The Entity's health.
+     */
     public int getHealth() { return currentHealth; }
+
+    /**
+     * A getter method for the sprite of the Entity.
+     *
+     * @return The Entity's sprite.
+     */
     public Rect getSprite() { return sprite; }
+
+    /**
+     * A getter method for the direction the Entity is facing.
+     *
+     * @return The direction the Entity is facing.
+     */
     public Direction getDirectionFacing() { return facing; }
+
+    /**
+     * A getter method for the Collider of the Entity.
+     *
+     * @return The Entity's collider.
+     */
     public Collider getCollider() { return collider; }
 
-    public ArrayList<Collider> getCollisions(ArrayList<Collider> colliders) { 
-        return collider.getCollisions(colliders);
-    }
-
-    public ArrayList<Entity> getEntityCollisions(ArrayList<Entity> colliders) { 
-        return collider.getEntityCollisions(colliders);
+    /**
+     * A method which determines which other Entities an Entity has collided with.
+     *
+     * @param entities The Entities that can be collided with.
+     * @return The Entities that were collided with.
+     */
+    public ArrayList<Entity> getEntityCollisions(ArrayList<Entity> entities) {
+        return collider.getEntityCollisions(entities);
     }
 
     /**
@@ -85,7 +112,7 @@ public abstract class Entity {
     /**
      * A method which updates the x position of the entity.
      * 
-     * @param diff The change in the x axis.
+     * @param diff The change in the x-axis.
      */
     protected void updateXPosition(int diff) {
 
@@ -98,7 +125,7 @@ public abstract class Entity {
                 force[0] = Positioning.clamp(force[0] + (int) xFriction, 0, force[0]);
             }
         } else {
-            force[0] = force[1] = 0;
+            force[1] = 0;
             xFriction = 0;
         }
 
@@ -109,7 +136,7 @@ public abstract class Entity {
     /**
      * A method which updates the y position of the entity.
      * 
-     * @param diff The change in the y axis.
+     * @param diff The change in the y-axis.
      */
     protected void updateYPosition(int diff) {
         if (force[1] != 0) {
@@ -121,7 +148,7 @@ public abstract class Entity {
                 force[1] = Positioning.clamp(force[1] + (int) yFriction, 0, force[1]);
             }
         } else {
-            force[0] = force[1] = 0;
+            force[0] = 0;
             yFriction = 0;
         }
 

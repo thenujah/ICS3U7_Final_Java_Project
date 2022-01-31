@@ -4,6 +4,9 @@ import game.engine.components.Rect;
 
 /**
  * A class which handles scaling and translating the visuals of the game.
+ *
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public class Camera {
 
@@ -16,6 +19,11 @@ public class Camera {
 	private boolean shaking = false;
 	private int shakeMagnitude = MAX_SHAKE;
 
+	/**
+	 * The constructor for the Camera.
+	 *
+	 * @param scale How much the camera will scale all the visuals.
+	 */
 	public Camera(double scale) {
 		this.scale = scale;
 	}
@@ -23,12 +31,13 @@ public class Camera {
 	/**
 	 * A method which updates the offset of the camera.
 	 * 
-	 * @param focus The rect which will be the followed by the camera.
+	 * @param focus The Rect which will be the followed by the camera.
 	 */
 	public void update(Rect focus) {
 		offsets[0] += (focus.getCenter()[0] * scale - offsets[0] - Positioning.SCREEN_CENTER_X) / LAG;
 		offsets[1] += (focus.getCenter()[1] * scale - offsets[1] - Positioning.SCREEN_CENTER_Y) / LAG;
 
+		// Adding a camera shake.
 		if (shaking) {
 			offsets[0] += (int) (Math.random() * shakeMagnitude) - shakeMagnitude / 2;
 			offsets[1] += (int) (Math.random() * shakeMagnitude) - shakeMagnitude / 2;
@@ -42,7 +51,7 @@ public class Camera {
 	}
 
 	/**
-	 * A getter method for the scale.
+	 * A getter method for the translation.
 	 * 
 	 * @return The amount the graphics need to be offset.
 	 */
@@ -55,6 +64,9 @@ public class Camera {
 	 */
 	public double getScale() { return scale; }
 
+	/**
+	 * A method which allows the camera to start shaking.
+	 */
 	public void shake() { shaking = true; }
 
 }

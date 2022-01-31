@@ -1,7 +1,5 @@
 package game.engine.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,51 +7,71 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import game.engine.components.Rect;
-
+/**
+ * A class which reads the high score of the game from a .txt file and stores it in a variable.
+ * The high score in this file can be overwritten as well.
+ *
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
+ */
 public class Memory {
 
-    private String pathToFile;
-    private int highscore;
+    private final String pathToFile;
+    private int highScore;
     
+    /**
+     * The constructor for the Memory object.
+     * 
+     * @param path The path to the file containing the high score.
+     */
     public Memory(String path) {
         pathToFile = path;
 
+        // Trying to read the file.
         try {
             BufferedReader reader = new BufferedReader(new FileReader(pathToFile));
 
             String line = reader.readLine();
-            highscore = Integer.parseInt(line);
+            highScore = Integer.parseInt(line);
             
             reader.close();
         }
         
         catch(IOException e) {
+
+            // If the file doesn't exist create a new file.
             try {
                 File file = new File(path);
                 file.createNewFile();
-                highscore = 0;
+                highScore = 0;
             } catch (IOException e2) {
                 e2.printStackTrace();
             }
         }
     }
 
-    public int getHighscore() { return highscore; }
+    /**
+     * A getter method for the high score of the game.
+     * 
+     * @return The high score.
+     */
+    public int getHighScore() { return highScore; }
 
-    public void saveScore(int highscore) {
-        this.highscore = highscore;
+    /**
+     * A method which saves the high score to a .txt file.
+     * 
+     * @param highScore The high score.
+     */
+    public void saveScore(int highScore) {
+        this.highScore = highScore;
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(pathToFile));
-
-            writer.write(String.valueOf(highscore));
+            writer.write(String.valueOf(highScore));
             writer.newLine();
-            
             writer.close();
-
         } catch(IOException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 

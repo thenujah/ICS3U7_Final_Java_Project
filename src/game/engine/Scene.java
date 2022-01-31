@@ -4,9 +4,9 @@ import java.awt.Graphics2D;
 
 /**
  * The Scene class is an abstract class all scenes need to extend.
- * 
- * @version 1.0
- * @since 1.0
+ *
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public abstract class Scene {
 
@@ -14,6 +14,8 @@ public abstract class Scene {
 
     /**
 	 * The constructor for the Scene class.
+	 *
+	 * @param app The AppManager of the App.
 	 */
 	public Scene(AppManager app) {
 		this.app = app;

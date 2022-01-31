@@ -1,16 +1,13 @@
 package game.game_objects;
 
-import java.util.HashMap;
-
-import game.game_objects.TileMap;
 import game.engine.util.Positioning;
 import game.engine.util.Positioning.Direction;
 
 /**
  * The TileMap class creates randomly generated rooms for each level.
  *
- * @version 1.1
- * @since 1.1
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public class Level {
     
@@ -21,7 +18,13 @@ public class Level {
 
     private int totalEnemies = 0;
 
+    /**
+     * The constructor for the game levels.
+     *
+     * @param difficulty The difficulty of the level.
+     */
     public Level(int difficulty) {
+        // Generate a random number of rooms.
         int ROOM_COUNT = (int) (Math.random() * difficulty) + 1;
         rooms = new TileMap[ROOM_COUNT];
 
@@ -37,6 +40,7 @@ public class Level {
                 boolean makeConnection = false;
                 int randomRoom = 0;
 
+                // Find a random room that the current room can be connected to.
                 for (int j = 0; j < 10; j++)  {
                     randomRoom = (int) (Math.random() * rooms.length);
 
@@ -49,6 +53,7 @@ public class Level {
                     }
                 }
 
+                // Connect the current room with the random room.
                 if (makeConnection) {
                     int randomDirectionIndex = (int) (Math.random() 
                         * Positioning.directions.length);
@@ -72,10 +77,6 @@ public class Level {
 
             for (int i = 0; i < numberOfEnemies; i++) {
                 int[] position = Positioning.generateRandomPositionWithin(room);
-
-                int x = position[0];
-                int y = position[1];
-
                 room.enemies.add(new Enemy(position[0], position[1]));
             }
         }

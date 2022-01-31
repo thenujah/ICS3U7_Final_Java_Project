@@ -14,9 +14,9 @@ import game.engine.components.Rect;
 
 /**
  * A class which creates buttons.
- * 
- * @version 1.1
- * @since 1.0
+ *
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public class Button {
 
@@ -31,8 +31,6 @@ public class Button {
     private boolean hasBorder = false;
     private int borderWidth = 0;
     private int borderRadius = 0;
-
-    // TODO: Add the option to use images for the button.
     
     /**
      * The constructor which initializes the rect of the button.
@@ -63,7 +61,8 @@ public class Button {
             e.printStackTrace();
         }
 
-        rect = new Rect(0, 0, (int) (image.getWidth() * scale), (int) (image.getHeight() * scale));
+        rect = new Rect(0, 0, (int) (image.getWidth() * scale),
+                       (int) (image.getHeight() * scale));
     }
 
     /**
@@ -177,6 +176,7 @@ public class Button {
     /** The method which is called to render a button with an image.
      * 
      * @param g A Graphics2D object used to draw the button to the screen.
+     * @param transform The transformation of the image.
      */
     public void render(Graphics2D g, AffineTransform transform) {
         g.drawImage(image, transform, null);
