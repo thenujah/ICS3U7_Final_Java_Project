@@ -36,7 +36,6 @@ public class Game extends Scene {
     private final Player player;
 
     private int currentLevel = 1;
-    private int difficulty = 1;
     private boolean initializeLevel = false;
 
     private BufferedImage pauseTitle;
@@ -82,34 +81,50 @@ public class Game extends Scene {
         back.setTopLeft(resume.rect.getLeft(), resume.rect.getTop() + DISTANCE_BETWEEN_BUTTONS * 2);
     }
 
-    public int getDifficulty() { return difficulty / 5 + 1; }
+    /**
+     * A getter method for the difficulty of the current level.
+     * 
+     * @return The difficulty.
+     */
+    public int getDifficulty() { return currentLevel / 5 + 1; }
 
+    /**
+     * A method which initializes a new level.
+     * 
+     * @param difficulty The difficulty of the level.
+     */
     public void initLevel(int difficulty) {
         level = new Level(difficulty);
         player.setCenter(200, 200);
         player.resetHealth();
-        difficulty++;
         currentLevel++;
         initializeLevel = false;
     }
 
+    /**
+     * A method which updates the state of the instructions page.
+     */
     public void update() {
         if (initializeLevel) initLevel(getDifficulty());
 
+        // Pausing the game.
         if (KeyboardInput.wasPressed("esc")) {
             paused = !paused;
             fadeIn = true;
         }
 
         if (!paused && !levelCompleted) {
+        	// Updating the player.
             player.updatePosition(level.currentRoom, level);
             player.updateDirection(camera.getTranslation(), camera.getScale());
 
+            // Updating the enemies.
             for (Entity entity : level.currentRoom.enemies) {
                 Enemy enemy = (Enemy) entity;
                 enemy.movement(player, level.currentRoom);
             }
 
+            // Attacking the enemies.
             ArrayList<Entity> enemiesHit = player.attack(level.currentRoom.enemies);
 
             for (Entity enemy : enemiesHit) {
@@ -124,37 +139,38 @@ public class Game extends Scene {
 
             }
 
+            // Checking if the player won.
             if (level.getTotalEnemies() == 0) {
-                System.out.println("u win");
-                difficulty++;
                 levelCompleted = true;
                 wonLevel = true;
                 fadeIn = true;
                 levelCompleteMessageTimer = INBETWEEN_LEVEL_TIMER;
             }
 
+            // Enemies attacking the player.
             ArrayList<Entity> playerHits = player.getEntityCollisions(level.currentRoom.enemies);
             for (Entity entity : playerHits) {
                 Enemy enemy = (Enemy) entity;
 
                 enemy.attack(player);
 
+                // Checking if the player lost.
                 if (player.getHealth() == 0) {
-                    System.out.println("u ded");
-                    if (app.getHighscore() < currentLevel) app.setHighscore(currentLevel);
+                    if (app.getHighScore() < currentLevel) app.setHighScore(currentLevel);
                     currentLevel = 0;
-                    difficulty = 1;
                     levelCompleted = true;
                     fadeIn = true;
                     levelCompleteMessageTimer = INBETWEEN_LEVEL_TIMER;
                 }
             }
 
-
+            // Adding a camera shake if the player was hit by an enemy.
             if (playerHits.size() > 0) {
                 camera.shake();
             }
         } else if (paused) {
+
+        	// Pause menu events
             if (resume.isClicked()) paused = !paused;
             else if (back.isClicked()) {
                 paused = !paused;
@@ -166,6 +182,11 @@ public class Game extends Scene {
         camera.update(player.getSprite());
     }
 
+    /**
+     * A method which renders the all the objects in the game.
+     *
+     * @param g The Graphics2D object used to draw images to the screen.
+     */
     public void render(Graphics2D g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, Positioning.SCREEN_WIDTH, Positioning.SCREEN_HEIGHT);
@@ -180,13 +201,13 @@ public class Game extends Scene {
 
         level.currentRoom.renderForeground(g, camera.getTranslation(), camera.getScale());
 
+        // Render the UI elements.
         g.setColor(Color.WHITE);
         g.setFont(font);
         g.drawString("Lvl - " + currentLevel, 50, 75);
         g.drawString("HP - " + player.getHealth(), 50, 50);
 
-        g.setColor(Color.GREEN);
-
+        // Update the animations for the pause menu.
         if (paused || levelCompleteMessageTimer > 0) {
         	if (titleVelocity <= 0.1 && fadeIn) {
                 titleVelocity = 128;
@@ -196,6 +217,7 @@ public class Game extends Scene {
             }
         }
 
+        // Render the pause menu.
         if (paused) {
             renderPauseMenu(g);
         } else if (levelCompleteMessageTimer > 1) {
@@ -209,6 +231,11 @@ public class Game extends Scene {
         }
     }
 
+    /**
+     * A method which renders the pause menu over the game.
+     *
+     * @param g The Graphics2D object used to draw images to the screen.
+     */
     private void renderPauseMenu(Graphics2D g) {
         g.setColor(new Color(0f, 0f, 0f, 0.5f));
         g.fillRect(0, 0, Positioning.SCREEN_WIDTH, Positioning.SCREEN_HEIGHT);
@@ -230,6 +257,11 @@ public class Game extends Scene {
         back.render(g, menuTransform);
     }
 
+    /**
+     * A method which renders the game-over screen over the game.
+     *
+     * @param g The Graphics2D object used to draw images to the screen.
+     */
     private void renderGameOverScreen(Graphics2D g) {
     	levelCompleteMessageTimer--; 
 

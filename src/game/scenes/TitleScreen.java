@@ -13,13 +13,12 @@ import javax.imageio.ImageIO;
 import game.engine.AppManager;
 import game.engine.Scene;
 import game.engine.util.Button;
-import game.engine.util.Positioning;
 
 /**
  * A class which controls the title screen scene of the game.
  * 
- * @version 1.0
- * @since 1.0
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public class TitleScreen extends Scene {
 
@@ -35,6 +34,11 @@ public class TitleScreen extends Scene {
 	private final Button exitButton;
     private BufferedImage titleScreenBackground;
 
+	/**
+	 * The constructor for the title screen.
+	 *
+	 * @param app The AppManager that controls the app.
+	 */
 	public TitleScreen(AppManager app) {
 		super(app);
 
@@ -54,18 +58,17 @@ public class TitleScreen extends Scene {
 		exitButton.backgroundColor = LIGHT_BLUE;
 		exitButton.font = subtitleFont;
 		exitButton.text = "Quit Game";
-		
 
 		try {
-			
             titleScreenBackground = ImageIO.read(new File("./assets/TitleScreen_Background.png"));
-            
         } catch (IOException e) {
-        	
             e.printStackTrace();
         }
 	}
 
+	/**
+	 * A method which updates the state of the title screen.
+	 */
 	public void update() {
 		if (mainMenuButton.isClicked()) {
 			app.currentScene = "main menu";
@@ -77,31 +80,33 @@ public class TitleScreen extends Scene {
 
 	}
 
+	/**
+	 * A method which renders the main menu.
+	 *
+	 * @param g The Graphics2D object used to draw images to the screen.
+	 */
 	public void render(Graphics2D g) {
-		
-		 AffineTransform titleTransform = new AffineTransform();
-	        titleTransform.translate(-115, -15);
-	        titleTransform.scale(1.2, 1.2);
-	        
+		AffineTransform titleTransform = new AffineTransform();
+		titleTransform.translate(-170, 0);
+		titleTransform.scale(1.3, 1.3);
+
 		g.drawImage(titleScreenBackground, titleTransform, null);
 
 		// Title
-	    g.setFont(titleFont);
-	    g.setColor(WHITE);
+		g.setFont(titleFont);
+		g.setColor(WHITE);
 		g.drawString("Winter Wonderland", 390, 200);
-		
+
 		// Formatting of names, date and class
-	    g.setFont(subtitleFont);
+		g.setFont(subtitleFont);
 
 		g.drawString("By: Monica and Thenujah", 1000, 500);
 		g.drawString("Ms.Xie - ICS3U7", 1000, 540);
 		g.drawString("January 4, 2022", 1000, 580);
 
 		mainMenuButton.render(g);
-		exitButton.render(g);		
+		exitButton.render(g);
 		
 	}
 
 }
-
-// TODO: Maybe add a fade-in animation?

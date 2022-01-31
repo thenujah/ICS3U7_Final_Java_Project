@@ -7,14 +7,12 @@ import java.awt.Graphics2D;
 import game.engine.AppManager;
 import game.engine.Scene;
 import game.engine.util.Button;
-import game.engine.util.KeyboardInput;
-import game.scenes.*;
 
 /**
  * A class which controls the instruction scene of the game.
  * 
- * @version 1.0
- * @since 1.0
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public class InstructionsPage extends Scene{
 
@@ -31,27 +29,34 @@ public class InstructionsPage extends Scene{
 	
 	//Buttons
 	private Button backButton;
-	
+
+	/**
+	 * The constructor for the instructions page.
+	 *
+	 * @param app The AppManager that controls the app.
+	 */
 	public InstructionsPage (AppManager app) {
 		super(app);
 		subtitleFont = new Font("DialogInput", Font.PLAIN, 20);
 		titleFont = new Font("Serif", Font.BOLD, 60);
 		
-		//Back Button
-			backButton = new Button(200, 50);
-			backButton.setCenter(1100, 600);
-			backButton.backgroundColor = GREEN;
-			backButton.font = subtitleFont;
-			backButton.text = "Back";
+		// Back Button
+		backButton = new Button(200, 50);
+		backButton.setCenter(1100, 600);
+		backButton.backgroundColor = GREEN;
+		backButton.font = subtitleFont;
+		backButton.text = "Back";
 
 	}
-	
-public void update() {
-		
+
+	/**
+	 * A method which updates the state of the instructions page.
+	 */
+	public void update() {
 		if (backButton.isClicked()) {
 			app.currentScene = "main menu";
 		}
-		}
+	}
 
 	
 		public void render(Graphics2D g) {

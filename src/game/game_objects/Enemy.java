@@ -15,12 +15,10 @@ import game.game_objects.attacks.Push;
  */
 public class Enemy extends Entity {
 
-    private final int ATTACK_COOL_DOWN = 5;
-
     private final int range = 100;
     private int[] targetPosition = new int[2];
 
-    public Push push;
+    private Push push;
     
     /**
      * The constructor for the Enemy class. 

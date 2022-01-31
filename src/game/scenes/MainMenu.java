@@ -18,8 +18,8 @@ import game.engine.util.Positioning;
 /**
  * A class which controls the main menu scene of the game.
  * 
- * @version 1.0
- * @since 1.0
+ * @author Monica Damyanova & Thenujah Ketheeswaran
+ * @since Jan 30 2021
  */
 public class MainMenu extends Scene{
 
@@ -38,6 +38,11 @@ public class MainMenu extends Scene{
     
     private BufferedImage mainMenu_Background;
 
+    /**
+     * The constructor for the main menu.
+     *
+     * @param app The AppManager that controls the app.
+     */
     public MainMenu(AppManager app) {
         super(app);
         subtitleFont = new Font("DialogInput", Font.PLAIN, 20);
@@ -71,16 +76,16 @@ public class MainMenu extends Scene{
         quitGame.text = "Quit Game";
         
         try {
-			
             mainMenu_Background = ImageIO.read(new File("./assets/MainMenu_Background.jpeg"));
-            
         } catch (IOException e) {
-        	
             e.printStackTrace();
         }
         
     }
-    
+
+    /**
+     * A method which updates the state of the main menu.
+     */
     public void update() {
         
         // Starting the game if user presses "Start Game"
@@ -96,14 +101,19 @@ public class MainMenu extends Scene{
 
     }
 
+    /**
+     * A method which renders the main menu.
+     *
+     * @param g The Graphics2D object used to draw images to the screen.
+     */
     public void render(Graphics2D g) {
     	
     	g.setColor(Color.black);
         g.fillRect(0,0, Positioning.SCREEN_WIDTH, Positioning.SCREEN_HEIGHT);
         
     	AffineTransform titleTransform = new AffineTransform();
-        titleTransform.translate(20, -15);
-        titleTransform.scale(1.2, 1.2);
+        titleTransform.translate(50, 0);
+        titleTransform.scale(1.25, 1.25);
         
         g.drawImage(mainMenu_Background, titleTransform, null);
     	
@@ -112,9 +122,7 @@ public class MainMenu extends Scene{
         backToTitleScreen.render(g);
         quitGame.render(g);
 
-
-
-        g.drawString("Highscore: Level " + app.getHighscore(), 170, 120);
+        g.drawString("High score: Level " + app.getHighScore(), 200, 150);
 
     }
 
