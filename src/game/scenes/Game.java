@@ -119,7 +119,7 @@ public class Game extends Scene {
                 }
 
             }
-            
+
             if (level.getTotalEnemies() == 0) {
                 System.out.println("u win");
                 difficulty++;
@@ -201,6 +201,7 @@ public class Game extends Scene {
         	levelCompleted = false;
         	levelCompleteMessageTimer--;
         	if (!wonLevel) app.currentScene = "main menu";
+        	wonLevel = false;
         }
     }
 
